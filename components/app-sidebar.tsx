@@ -11,7 +11,6 @@ import {
   PieChart,
   Settings,
   Settings2,
-  SquareTerminal,
 } from "lucide-react"
 import {
   Sidebar,
