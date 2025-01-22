@@ -2,29 +2,66 @@
 'use server'
 import { loginSchema } from '@/lib/zod'
 import { z } from "zod";
-import bcrypt from 'bcryptjs';
+import { hash } from "bcryptjs";
+
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 
-export async function login(email: string | undefined, password: string | undefined) {
+export async function login(email: string | undefined) {
 
-  return await fetch('http://localhost:4000/api/users', {
+  const res = await fetch('http://localhost:4000/api/users/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json', // Specify the content type as JSON
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email }),
   })
+
+  return res.json()
 }
 
+
+
 export const loginAction = async (values: z.infer<typeof loginSchema>) => {
-  console.log(values)
+  const { data, success } = loginSchema.safeParse(values);
+  if (!success) {
+    return {
+      error: "inalid data",
+    };
+  }
+  try {
+    const user = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false
+    })
+
+    return user;
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+
+          return {
+            message: 'Credenciales inválidas'
+          }
+
+        default:
+          return {
+            message: 'Hubo un error'
+          }
+      }
+    }
+    throw error;
+  }
 }
 
 
 export async function userRegister(formData: FormData) {
 
   //encrypt password
-  const passEncryp = await bcrypt.hash(formData.get('password') as string, 10);
+  const passEncryp = await hash(formData.get('password') as string, 10);
 
   const data = {
     'name': formData.get('name'),
@@ -43,7 +80,7 @@ export async function userRegister(formData: FormData) {
     })
 
     const user = await res.json();
-    console.log("mi resultado->", user)
+    // console.log("mi resultado->", user)
     return user;
   } catch (error) {
     console.log('error: ', error)

@@ -15,11 +15,23 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { ToggleTheme } from "@/components/ToggleTheme";
+import {auth} from '@/auth'
+import { redirect } from "next/navigation";
+
 export default async function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+   const session = await auth();
+
+   
+
+  if (!session?.user || !session.user.email) {
+    return redirect("/login");
+  }
+
+  // sidebar state persisting
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true"
   return (

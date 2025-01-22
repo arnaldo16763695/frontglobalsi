@@ -13,10 +13,15 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
+import { loginAction } from "@/app/lib/users-actions";
+
+
 // import { loginAction } from "@/app/lib/users-actions";
 
 const FormLogin = () => {
-
+    const router = useRouter();
     // 1. Define your form.
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -27,16 +32,20 @@ const FormLogin = () => {
     })
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof loginSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        // const response = await loginAction(values);
-        // if (response?.error) {
-        //     console.log('error')
-        // } else {
 
-        //     console.log('redirect')
-        // }
-        console.log(values)
+        // console.log(values)
+        try {
+            const user = await loginAction(values)
+            if (!user.message) {
+                toast.success('Bienvenido')
+                router.push("/");
+            } else if (user.message) {
+                toast.error(user.message);
+            }
+            // console.log('desde el cliente', user)
+        } catch (error) {
+            console.log(error)
+        }
 
     }
     return (
@@ -49,7 +58,7 @@ const FormLogin = () => {
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input placeholder="correo@email.com" {...field} />
+                                <Input placeholder="correo@email.com" autoComplete="off" {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -63,7 +72,7 @@ const FormLogin = () => {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="introduce tu contaseña" {...field} />
+                                <Input type="password" autoComplete="off" placeholder="introduce tu contaseña" {...field} />
                             </FormControl>
 
                             <FormMessage />
