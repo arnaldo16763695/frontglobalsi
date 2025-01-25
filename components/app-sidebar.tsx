@@ -1,5 +1,5 @@
-'use client'
-import * as React from "react"
+"use client";
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -11,7 +11,7 @@ import {
   PieChart,
   Settings,
   Settings2,
-} from "lucide-react"
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -21,11 +21,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { NavUser } from "@/app/components/users/NavUser"
-import { NavManagment } from "@/app/components/NavManagment"
-import { NavMain } from "@/app/components/NavMain"
-
+} from "@/components/ui/sidebar";
+import { NavUser } from "@/app/components/users/NavUser";
+import { NavManagment } from "@/app/components/NavManagment";
+import { NavMain } from "@/app/components/NavMain";
+import { useSession } from "next-auth/react";
 // This is sample data.
 const data = {
   user: {
@@ -154,15 +154,17 @@ const data = {
       icon: Map,
     },
   ],
-}
-
-const user = {
-  name: "Arnaldo Espinoza",
-  email: "arnaldoespinoza1@hotmail.com",
-  avatar: "mi avatar"
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: session, status } = useSession();
+
+  const user = {
+    name: status === "authenticated" ? session?.user?.name || "Exmple" : "",
+    email: status === "authenticated" ? session?.user?.email || "example" : "",
+    avatar: "/avatar.png",
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -183,13 +185,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+
+        {/* *********Menues*********  */}
+
+        {
+           session?.user?.role === 'ADMIN' && <NavMain items={data.navMain} />
+        }
         <NavManagment itemsManagment={data.projects} />
+
+        {/* *********Menues*********  */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

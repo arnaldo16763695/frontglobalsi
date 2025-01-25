@@ -15,10 +15,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { userRegister } from "@/app/lib/users-actions";
+import { useRouter } from 'next/navigation';
 // import { loginAction } from "@/app/lib/users-actions";
 
 const FormRegister = () => {
-
+    const router = useRouter()
     // 1. Define your form.
     const form = useForm<z.infer<typeof userRegisterSchema>>({
         resolver: zodResolver(userRegisterSchema),
@@ -45,12 +46,8 @@ const FormRegister = () => {
             }
         }else{
          toast.success('Registro creado exitosamente');
-         form.reset({
-            name: "",
-            phone: "",
-            email: "",
-            password: "",
-          });
+      
+          router.push('/users/list')
         }
 
     }
