@@ -87,7 +87,7 @@ export const columns: ColumnDef<User>[] = [
               <Link href={`/users/${row.original.id}/edit`}>Editar</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link href={`/users/${row.original.id}/edit_pass`}>Restablecer contraseña</Link></DropdownMenuItem>
+            <DropdownMenuItem><Link href={`/users/${row.original.id}/changepass`}>Cambiar contraseña</Link></DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

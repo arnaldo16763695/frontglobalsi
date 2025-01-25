@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
+
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -58,6 +60,8 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
+ 
+   
 
   return (
     <div className="p-2">
@@ -112,9 +116,10 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -157,3 +162,4 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+

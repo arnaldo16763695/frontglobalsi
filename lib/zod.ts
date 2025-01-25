@@ -24,6 +24,18 @@ export const userRegisterSchema = object({
   phone: string(),
 });
 
+export const userChangePassSchema = object({   
+  password: string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(32, "Password must be less than 32 characters"),
+  password2: string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(32, "Password must be less than 32 characters"),
+ 
+});
+
 export const userEditSchema = object({
   name: string({ required_error: "Name is required" })
     .min(1, "Name is required")
