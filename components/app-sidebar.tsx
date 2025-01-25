@@ -63,7 +63,7 @@ const data = {
         },
         {
           title: "Usuarios",
-          url: "#",
+          url: "/users/list",
         },
         {
           title: "Clientes",
