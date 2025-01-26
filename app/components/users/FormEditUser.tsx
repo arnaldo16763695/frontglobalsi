@@ -31,7 +31,7 @@ export type User = {
   name: string;
   phone: string;
   role: string;
-  status: "ACTIVE" | "INAVTIVE" | "DELETED";
+  status: string;
 };
 const FormEditUser = ({ user }: { user: User }) => {
   enum Role {
@@ -42,8 +42,7 @@ const FormEditUser = ({ user }: { user: User }) => {
   }
   enum Status {
     ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE",
-    
+    INACTIVE = "INACTIVE",    
   }
   const roles = Object.values(Role);
   const status = Object.values(Status);
@@ -56,6 +55,7 @@ const FormEditUser = ({ user }: { user: User }) => {
       phone: user.phone,
       email: user.email,
       role: user.role,
+      status: user.status,
     },
   });
   // 2. Define a submit handler.
@@ -129,7 +129,7 @@ const FormEditUser = ({ user }: { user: User }) => {
         <FormField
           control={form.control}
           name="role"
-          defaultValue={user.role}
+          
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rol</FormLabel>
@@ -153,7 +153,7 @@ const FormEditUser = ({ user }: { user: User }) => {
         <FormField
           control={form.control}
           name="status"
-          defaultValue={user.status}
+          
           render={({ field }) => (
             <FormItem>
               <FormLabel>Status</FormLabel>
