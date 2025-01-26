@@ -80,6 +80,7 @@ export async function userRegister(formData: FormData) {
     console.log("error: ", error);
   }
 }
+
 export async function userEdit(id: string, formData: FormData) {
   const data = {
     name: formData.get("name"),
@@ -106,6 +107,8 @@ export async function userEdit(id: string, formData: FormData) {
     console.log("error: ", error);
   }
 }
+
+
 export async function userChangePass(id: string, formData: FormData) {
   //encrypt password
   const passEncryp = await hash(formData.get("password") as string, 10);

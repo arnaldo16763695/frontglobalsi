@@ -10,6 +10,7 @@ import {
   import { Separator } from "@/components/ui/separator"
 import { ToggleTheme } from "@/components/ToggleTheme";
 import {  SidebarTrigger } from "@/components/ui/sidebar"
+import Link from "next/link";
 
 const HeaderSideBar = ({title, before, href}: {title: string, before: string, href: string}) => {
   return (
@@ -20,8 +21,8 @@ const HeaderSideBar = ({title, before, href}: {title: string, before: string, hr
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href={href}>
-              {before}
+            <BreadcrumbLink asChild>
+              <Link href={href}>{before}</Link>          
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="hidden md:block" />

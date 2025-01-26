@@ -1,12 +1,9 @@
 export async function fetchAllUsers() {
   try {
-    const users = await fetch("http://localhost:4000/api/users", {
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate", // Evita la caché
-        Pragma: "no-cache", // Compatibilidad con HTTP/1.0
-        Expires: "0", // Fecha de expiración en el pasado
-      },
-    });
+
+//  await new Promise((resolve) => setTimeout(resolve, 3000))
+
+    const users = await fetch("http://localhost:4000/api/users",{ cache: 'no-store' });
     return await users.json();
   } catch (error) {
     console.log(error);
@@ -15,13 +12,7 @@ export async function fetchAllUsers() {
 
 export async function fetchOneUser(id: string) {
   try {
-    const user = await fetch(`http://localhost:4000/api/users/${id}`, {
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate", // Evita la caché
-        Pragma: "no-cache", // Compatibilidad con HTTP/1.0
-        Expires: "0", // Fecha de expiración en el pasado
-      },
-    });
+    const user = await fetch(`http://localhost:4000/api/users/${id}`, { cache: 'no-store' });
 
     if (!user.ok) {
       throw new Error("Usuario no existe");

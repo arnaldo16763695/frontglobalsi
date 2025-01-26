@@ -18,6 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 export function NavMain({
   items,
@@ -33,9 +34,10 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const pathName = usePathname();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Globalsi</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -55,8 +57,8 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
+                    <SidebarMenuSubItem key={subItem.title} className={`${pathName === subItem.url ? 'dark:bg-slate-800 bg-slate-200 ' : ''}`}  >
+                      <SidebarMenuSubButton asChild >
                         <Link href={subItem.url}>
                           <span>{subItem.title}</span>
                         </Link>
