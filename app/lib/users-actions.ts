@@ -78,6 +78,10 @@ export async function userRegister(formData: FormData) {
     return user;
   } catch (error) {
     console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
   }
 }
 
@@ -105,6 +109,10 @@ export async function userEdit(id: string, formData: FormData) {
     return user;
   } catch (error) {
     console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
   }
 }
 

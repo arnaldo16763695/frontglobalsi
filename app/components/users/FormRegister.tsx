@@ -44,7 +44,7 @@ const FormRegister = () => {
             if (res.error === 'Conflict') {
                 toast.error(res.message);
             }
-        }else{
+        }else{ 
          toast.success('Registro creado exitosamente');
       
           router.push('/users/list')
