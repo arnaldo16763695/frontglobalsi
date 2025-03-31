@@ -5,7 +5,8 @@ import { auth } from "@/auth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { redirect } from "next/navigation";
 
-const editUserPage = async ({ params }: { params: { id: string } }) => {
+const editUserPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   const user = await fetchOneUser(params.id);
 
 

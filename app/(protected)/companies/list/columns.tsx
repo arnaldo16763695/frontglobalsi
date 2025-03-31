@@ -17,6 +17,7 @@ import Link from "next/link";
  type Company = {
   id: string;
   rut: string;  
+  email: string;
   companyName: string;
   location: string;
   observations: string;
@@ -42,6 +43,20 @@ export const columns: ColumnDef<Company>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Rut
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -75,7 +90,7 @@ export const columns: ColumnDef<Company>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/clients/${row.original.id}/edit`}>Editar</Link>
+              <Link href={`/companies/${row.original.id}/edit`}>Editar</Link>
             </DropdownMenuItem>           
           </DropdownMenuContent>
         </DropdownMenu>

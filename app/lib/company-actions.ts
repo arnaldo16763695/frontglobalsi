@@ -2,18 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 
-export async function clientRegister(formData: FormData) {
+export async function companyRegister(formData: FormData) {
   //encrypt password
 
   const data = {
-    name: formData.get("name"),
+    companyName: formData.get("companyName"),
     phone: formData.get("phone"),
     email: formData.get("email"),
     rut: formData.get("rut"),
+    location: formData.get("location"),
+    observations: formData.get("observations"),
   };
 
   try {
-    const res = await fetch("http://localhost:4000/api/clients", {
+    const res = await fetch("http://localhost:4000/api/companies", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,28 +23,30 @@ export async function clientRegister(formData: FormData) {
       body: JSON.stringify(data),
     });
 
-    const client = await res.json();
+    const company = await res.json();
     // console.log("mi resultado->", user)
-    revalidatePath("/clients/list");
+    revalidatePath("/companies/list");
     
-    return client;
+    return company;
   } catch (error) {
     console.log("error: ", error);
   }
 }
 
 
-export async function clientEdit(id: string, formData: FormData) {
+export async function companyEdit(id: string, formData: FormData) {
     const data = {
-      name: formData.get("name"),
+      companyName: formData.get("companyName"),
       phone: formData.get("phone"),
       email: formData.get("email"),
       rut: formData.get("rut"),
       status: formData.get("status"),
+      location: formData.get("location"),
+      observations: formData.get("observations"),
     };
   
     try {
-      const res = await fetch(`http://localhost:4000/api/clients/${id}`, {
+      const res = await fetch(`http://localhost:4000/api/companies/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -50,9 +54,9 @@ export async function clientEdit(id: string, formData: FormData) {
         body: JSON.stringify(data),
       });
   
-      const client = await res.json();
-      revalidatePath("/clients/list");
-      return client;
+      const company = await res.json();
+      revalidatePath("/companies/list");
+      return company;
     } catch (error) {
       console.log("error: ", error);
     }

@@ -84,7 +84,7 @@ export function DataTableCompany<TData, TValue>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Link href="/clients/register">Crear Cliente</Link>
+                <Link href="/companies/register">Crear empresa</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

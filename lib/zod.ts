@@ -84,3 +84,45 @@ export const clientEditSchema = object({
     "Name is required"
   ),
 });
+
+export const companyRegisterSchema = object({
+  companyName: string({ required_error: "Name is required" })
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+  email: string({ required_error: "Email is required" })
+    .min(1, "Email is required")
+    .email("Invalid email"),
+  phone: string(),
+  rut: string({ required_error: "Name is required" })
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+  location: string({ required_error: "Location is required" })
+    .min(1, "Location is required")
+    .max(32, "Location must be less than 32 characters"),
+  observations: string(),
+});
+
+export const companyEditSchema = object({
+  companyName: string({ required_error: "Name is required" })
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+  email: string({ required_error: "Email is required" })
+    .min(1, "Email is required")
+    .email("Invalid email"),
+  phone: string(),
+  rut: string({ required_error: "Name is required" })
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+  location: string({ required_error: "Location is required" })
+    .min(1, "Location is required")
+    .max(32, "Location must be less than 32 characters"),
+  observations: string(),
+  status: string({ required_error: "Status is required" }).min(
+    1,
+    "Name is required"
+  ),
+});
+
+
+
+

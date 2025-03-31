@@ -5,7 +5,8 @@ import { auth } from "@/auth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { redirect } from "next/navigation";
 
-const editClientPage = async ({ params }: { params: { id: string } }) => {
+const editClientPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   const session = await auth();
   if (session?.user?.role !== "ADMIN") {
     redirect("/");
@@ -16,7 +17,7 @@ const editClientPage = async ({ params }: { params: { id: string } }) => {
       <HeaderSideBar
         title="Registro cliente"
         before="Listado de clientes"
-        href="/cients/list"
+        href="/clients/list"
       />
 
       <div className="flex flex-1 flex-col gap-4 p-4">
