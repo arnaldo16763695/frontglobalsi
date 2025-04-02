@@ -174,7 +174,7 @@ const FormEditUser = ({ user }: { user: User }) => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Guardar</Button>
       </form>
     </Form>
   );
