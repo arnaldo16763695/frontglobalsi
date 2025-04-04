@@ -23,18 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { clientEdit } from "@/app/lib/clients-actions";
-// import { loginAction } from "@/app/lib/users-actions";
+import { Clients } from "@/lib/types";
 
-type Client = {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  rut: string;
-  status: string;
-};
-
-const FormEditClient = ({ client }: { client: Client }) => {
+const FormEditClient = ({ client }: { client: Clients }) => {
   enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",

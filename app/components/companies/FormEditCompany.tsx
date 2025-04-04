@@ -23,19 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { companyEdit } from "@/app/lib/company-actions";
+import { Company, Clients } from "@/lib/types";
 
-type Company = {
-  id: string;
-  companyName: string;
-  phone: string;
-  email: string;
-  rut: string;
-  location: string;
-  observations: string;
-  status: string;
-};
-
-const FormEditCompany = ({ company }: { company: Company }) => {
+const FormEditCompany = ({ company, clients }: { company: Company, clients: Clients[] }) => {
   const router = useRouter();
   enum Status {
     ACTIVE = "ACTIVE",
@@ -51,6 +41,7 @@ const FormEditCompany = ({ company }: { company: Company }) => {
       phone: company.phone,
       email: company.email,
       rut: company.rut,
+      client: company.clientsId,
       location: company.location,
       observations: company.observations,
       status: company.status,
@@ -140,6 +131,31 @@ const FormEditCompany = ({ company }: { company: Company }) => {
             </FormItem>
           )}
         />
+         <FormField
+            control={form.control}
+            name="client"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cliente</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger className="w-[280px]">
+                      <SelectValue placeholder="Selecciona un cliente" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clients.length > 0 && clients.map((client) => (
+                        <SelectItem key={client.id} value={client.id}>
+                          {client.name + " " + client.rut}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         <FormField
           control={form.control}
           name="location"

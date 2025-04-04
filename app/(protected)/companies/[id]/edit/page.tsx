@@ -2,17 +2,12 @@ import FormEditCompany from '@/app/components/companies/FormEditCompany'
 import HeaderSideBar from '@/app/components/HeaderSideBar'
 import { fetchOneCompany } from '@/app/lib/company-data'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-
+import { fetchAllClients } from '@/app/lib/client-data'
 
 const page = async (props: { params: Promise<{ id: string }> }) => {
-  const session = await auth();
-  if (session?.user?.role !== "ADMIN") {
-    redirect("/");
-  }
   const params = await props.params;
   const company = await fetchOneCompany(params.id);
+  const clients = await fetchAllClients();
 
   return (
     <>
@@ -27,7 +22,7 @@ const page = async (props: { params: Promise<{ id: string }> }) => {
         <Card className="md:w-[80%] w-[95%]">
           <CardHeader className='text-2xl font-bold'>Edición de empresa</CardHeader>
           <CardContent>
-            <FormEditCompany company={company}/>
+            <FormEditCompany company={company} clients={clients}/>
           </CardContent>
         </Card>
         

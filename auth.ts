@@ -1,83 +1,86 @@
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-import { compare } from "bcryptjs";
+import { login } from "@/app/lib/users-actions";
+import { API_URL } from "./lib/constants";
+import { JWT } from "next-auth/jwt";
 
-import { login } from "./app/lib/users-actions";
+
+
+async function refreshToken(token: JWT): Promise<JWT> {
+  if (!token.refreshToken) {
+    throw new Error("No refresh token");
+  }
+  const res = await fetch(`${API_URL}/api/auth/refresh`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Refresh ${token.refreshToken}`,
+    },
+  });
+  const data = await res.json();
+  console.log("refreshed", data);
+  return {
+    ...token,
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+    expiresIn: data.expiresIn,
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // credentials: {
-      //   email: { label: "Email", type: "text", placeholder: "correo@email.com" },
-      //   password: { label: "Password", type: "password", placeholder: "Tu contraseña" },
-      // },
-
       authorize: async (credentials) => {
-        let user = null
         if (!credentials?.email || !credentials?.password) {
-          // throw new Error("Invalid credentials");
-          return null
+          return null;
         }
-        const email = credentials.email as string
-        // logic to salt and hash password
-
-
-        // logic to verify if the user exists
-        user = await login(email)
-
-        if (!user) {
-          console.log('Invalid credentials')
-          return null
+      
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+      
+        // Realiza la solicitud al backend
+        const response = await login(email, password);
+      
+        // Validación de respuesta
+        if (!response || response.error) {
+          return null;
         }
-
-        if (user.error) {
-          // No user found, so this is their first attempt to login
-          // Optionally, this is also the place you could do a user registration
-          return null
-        }
-
-        const isCorrectpass = await compare(
-          credentials.password as string,
-          user.password
-        );
-
-        if (!isCorrectpass) {
-          return null
-        }
-
-        // return user object with their profile data
+      
+        // Extraer correctamente desde backendToken
+        const { user, backendToken } = response;
+      
         return {
-          email: user.email,
-          name: user.name,
-          id: user.id,
-          role: user.role
-        }
+          ...user,
+          accessToken: backendToken.accessToken,
+          refreshToken: backendToken.refreshToken,
+          expiresIn: backendToken.expiresIn,
+        };
       },
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
-      if (user) { // User is available during sign-in
-        token.id = user.id;
-        token.role = user.role || ""; // Aseguramos que role esté en el token, si no está asignamos un valor vacío
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.expiresIn = user.expiresIn;
       }
-      return token;
+
+      if(new Date().getTime() < (token.expiresIn as unknown as number)) {
+        return token;
+      }
+
+      return await refreshToken(token);
     },
-    session({ session, token }) {
-      // Aseguramos que el objeto session.user tenga las propiedades id y role
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-      }
-      console.log(session, '------', token)
+    async session({ session, token }) {
+      // Guardar tokens en la sesión
+      session.user.role = token.role as string;
+      session.user.accessToken = token.accessToken as string;
+      session.user.refreshToken = token.refreshToken as string;
       return session;
     },
-  }
+  },
+});
 
-
-
-
-})

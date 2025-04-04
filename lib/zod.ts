@@ -93,6 +93,7 @@ export const companyRegisterSchema = object({
     .min(1, "Email is required")
     .email("Invalid email"),
   phone: string(),
+  client: string({ required_error: "Client is required" }).min(1, "Client is required"),
   rut: string({ required_error: "Name is required" })
     .min(1, "Name is required")
     .max(32, "Name must be less than 32 characters"),
@@ -113,6 +114,7 @@ export const companyEditSchema = object({
   rut: string({ required_error: "Name is required" })
     .min(1, "Name is required")
     .max(32, "Name must be less than 32 characters"),
+  client: string({ required_error: "Client is required" }).min(1, "Client is required"),
   location: string({ required_error: "Location is required" })
     .min(1, "Location is required")
     .max(32, "Location must be less than 32 characters"),

@@ -1,18 +1,11 @@
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import FormChangePass from "@/app/components/users/FormChangePass";
 import { fetchOneUser } from "@/app/lib/user-data";
-import { auth } from "@/auth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { redirect } from "next/navigation";
 
 const changePassPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const user = await fetchOneUser(params.id);
-  const session = await auth();
-
-  if (session?.user?.role !== "ADMIN") {
-    redirect("/");
-  }
   return (
     <>
       <HeaderSideBar

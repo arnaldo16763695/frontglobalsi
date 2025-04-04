@@ -1,24 +1,12 @@
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import FormEditUser from "@/app/components/users/FormEditUser";
 import { fetchOneUser } from "@/app/lib/user-data";
-import { auth } from "@/auth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { redirect } from "next/navigation";
 
 const editUserPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const user = await fetchOneUser(params.id);
 
-
-  // if(user.error ==='Not Found'){
-  //   redirect('/')
-  // }
-
-  const session = await auth();
-
-  if (session?.user?.role !== "ADMIN") {
-    redirect("/");
-  }
   return (
     <>
       <HeaderSideBar

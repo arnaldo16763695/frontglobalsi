@@ -1,10 +1,20 @@
 // next-auth.d.ts
-import { DefaultUser } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 
 // Extender la interfaz User de NextAuth para incluir la propiedad 'role'
 declare module "next-auth" {
-  interface User {
-    role?: string; // Agregamos role como opcional, puedes cambiar esto a 'string' si es obligatorio
+  interface Session {
+    user: {
+      accessToken?: string;
+      refreshToken?: string;
+      expiresIn?: number
+    } & DefaultSession["user"];
+  }
+  interface User extends DefaultUser {
+    accessToken?: string;
+    refreshToken?: string;
+    expiresIn?: number
+    role?: string;
   }
 }
 

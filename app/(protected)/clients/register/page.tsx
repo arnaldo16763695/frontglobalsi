@@ -1,14 +1,8 @@
 import FormRegisterClient from "@/app/components/clients/FormRegisterClient";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
-import { auth } from "@/auth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { redirect } from "next/navigation";
 
 const registerClientPage = async () => {
-  const session = await auth();
-  if (session?.user?.role !== "ADMIN") {
-    redirect("/");
-  }
   return (
     <>
       <HeaderSideBar

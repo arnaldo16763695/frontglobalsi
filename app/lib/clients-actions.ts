@@ -1,6 +1,8 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
+import { API_URL } from "@/lib/constants";
+import { auth } from "@/auth";
 
 export async function clientRegister(formData: FormData) {
   //encrypt password
@@ -13,9 +15,11 @@ export async function clientRegister(formData: FormData) {
   };
 
   try {
-    const res = await fetch("http://localhost:4000/api/clients", {
+    const session = await auth();
+    const res = await fetch(`${API_URL}/api/clients`, {
       method: "POST",
       headers: {
+        authorization: `Bearer ${session?.user?.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -33,6 +37,7 @@ export async function clientRegister(formData: FormData) {
 
 
 export async function clientEdit(id: string, formData: FormData) {
+  const session = await auth();
     const data = {
       name: formData.get("name"),
       phone: formData.get("phone"),
@@ -42,9 +47,10 @@ export async function clientEdit(id: string, formData: FormData) {
     };
   
     try {
-      const res = await fetch(`http://localhost:4000/api/clients/${id}`, {
+      const res = await fetch(`${API_URL}/api/clients/${id}`, {
         method: "PATCH",
         headers: {
+          authorization: `Bearer ${session?.user?.accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),

@@ -38,7 +38,7 @@ const FormLogin = () => {
             const user = await loginAction(values)
             if (!user.message) {
                 toast.success('Bienvenido')
-                router.push("/");
+                router.push("/dashboard");
             } else if (user.message) {
                 toast.error(user.message);
             }

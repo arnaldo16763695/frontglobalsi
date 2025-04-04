@@ -1,9 +1,11 @@
 import FormAddCompany from '@/app/components/companies/FormAddCompany'
 import HeaderSideBar from '@/app/components/HeaderSideBar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import React from 'react'
+import { fetchAllClients } from '@/app/lib/client-data';
 
-const page = () => {
+const RegisterCompanyPage = async () => {
+
+  const clients = await fetchAllClients();
   return (
     <>
     <HeaderSideBar 
@@ -19,7 +21,7 @@ const page = () => {
           
           <CardHeader className='text-2xl font-bold'>Registro de empresa</CardHeader>
           <CardContent>
-            <FormAddCompany />
+            <FormAddCompany clients={clients} />
           </CardContent>
         </Card>
       </div>
@@ -28,4 +30,4 @@ const page = () => {
   )
 }
 
-export default page
+export default RegisterCompanyPage

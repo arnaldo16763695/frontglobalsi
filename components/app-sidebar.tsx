@@ -27,6 +27,7 @@ import { NavManagment } from "@/app/components/NavManagment";
 import { NavMain } from "@/app/components/NavMain";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { NavUserMobile } from "@/app/components/users/NavUserMobile";
 // This is sample data.
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -194,6 +195,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavManagment itemsManagment={data.projects} />
 
         {/* *********Menues*********  */}
+        <NavUserMobile user={user} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

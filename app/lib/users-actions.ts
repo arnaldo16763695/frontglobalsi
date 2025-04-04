@@ -3,20 +3,31 @@ import { loginSchema } from "@/lib/zod";
 import { z } from "zod";
 import { hash } from "bcryptjs";
 
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { API_URL } from "@/lib/constants";
+import { JWT } from "next-auth/jwt";
 
-export async function login(email: string | undefined) {
-  const res = await fetch("http://localhost:4000/api/users/login", {
+export async function login(
+  email: string | undefined,
+  password: string | undefined
+) {
+  const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json", // Specify the content type as JSON
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, password }),
   });
 
-  return res.json();
+  if (res.status === 401) {
+    console.log(res.statusText);
+    return null;
+  }
+
+  const user = await res.json();
+  return user;
 }
 
 export const loginAction = async (values: z.infer<typeof loginSchema>) => {
@@ -64,7 +75,7 @@ export async function userRegister(formData: FormData) {
   };
 
   try {
-    const res = await fetch("http://localhost:4000/api/users", {
+    const res = await fetch(`${API_URL}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,11 +105,13 @@ export async function userEdit(id: string, formData: FormData) {
     status: formData.get("status"),
   };
 
+  const session = await auth();
   try {
-    const res = await fetch(`http://localhost:4000/api/users/${id}`, {
+    const res = await fetch(`${API_URL}/api/users/${id} `, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
       },
       body: JSON.stringify(data),
     });
@@ -116,7 +129,6 @@ export async function userEdit(id: string, formData: FormData) {
   }
 }
 
-
 export async function userChangePass(id: string, formData: FormData) {
   //encrypt password
   const passEncryp = await hash(formData.get("password") as string, 10);
@@ -125,17 +137,16 @@ export async function userChangePass(id: string, formData: FormData) {
     password: passEncryp,
   };
 
+  const session = await auth();
   try {
-    const res = await fetch(
-      `http://localhost:4000/api/users/changepass/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const res = await fetch(`${API_URL}/api/users/changepass/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
 
     const user = await res.json();
     console.log("mi resultado->", user);
@@ -145,3 +156,20 @@ export async function userChangePass(id: string, formData: FormData) {
     console.log("error: ", error);
   }
 }
+
+export async function refreshToken(token: JWT): Promise<JWT> {
+  if (!token.refreshToken) {
+    throw new Error("No refresh token");
+  }
+  const res = await fetch(`${API_URL}/api/auth/refresh`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Refresh ${token.refreshToken}`,
+    },
+  });
+
+  const data = await res.json();
+  return data;
+}
+
