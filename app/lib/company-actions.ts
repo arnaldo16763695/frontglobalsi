@@ -46,6 +46,7 @@ export async function companyEdit(id: string, formData: FormData) {
       email: formData.get("email"),
       rut: formData.get("rut"),
       status: formData.get("status"),
+      clientsId: formData.get("client"),
       location: formData.get("location"),
       observations: formData.get("observations"),
     };

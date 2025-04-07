@@ -48,20 +48,20 @@ const FormEditClient = ({ client }: { client: Clients }) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof clientEditSchema>) {
     const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("phone", values.phone);
-    formData.append("email", values.email);
-    formData.append("rut", values.rut);
+    formData.append("name", values.name.trim());
+    formData.append("phone", values.phone.trim());
+    formData.append("email", values.email.trim());
+    formData.append("rut", values.rut.trim());
     formData.append("status", values.status);
 
     const res = await clientEdit(client.id, formData);
-
+    console.log(res)
     if (res.error) {
       if (res.error === "Conflict") {
         toast.error(res.message);
       }
     } else {
-      toast.success("Registro creado exitosamente");
+      toast.success("Registro editado exitosamente");
 
       router.push("/clients/list");
     }

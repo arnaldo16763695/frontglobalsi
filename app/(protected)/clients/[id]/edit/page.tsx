@@ -9,7 +9,7 @@ const editClientPage = async (props: { params: Promise<{ id: string }> }) => {
   return (
     <>
       <HeaderSideBar
-        title="Registro cliente"
+        title="Edición de cliente"
         before="Listado de clientes"
         href="/clients/list"
       />

@@ -38,8 +38,8 @@ const FormChangePass = ({ user }: { user: User }) => {
   async function onSubmit(values: z.infer<typeof userChangePassSchema>) {
     // return console.log(values)
     const formData = new FormData();
-    formData.append("password", values.password);
-    formData.append("password2", values.password2);
+    formData.append("password", values.password.trim());
+    formData.append("password2", values.password2.trim());
     const pass1 = formData.get("password");
     const pass2 = formData.get("password2");
 

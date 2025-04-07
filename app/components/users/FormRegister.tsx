@@ -34,10 +34,10 @@ const FormRegister = () => {
     async function onSubmit(values: z.infer<typeof userRegisterSchema>) {
 
         const formData = new FormData()
-        formData.append('name', values.name)
-        formData.append('phone', values.phone)
-        formData.append('email', values.email)
-        formData.append('password', values.password)
+        formData.append('name', values.name.trim())
+        formData.append('phone', values.phone.trim())
+        formData.append('email', values.email.trim())
+        formData.append('password', values.password.trim())
         const res = await userRegister(formData);
 
         if (res.error) {

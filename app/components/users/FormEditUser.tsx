@@ -62,9 +62,9 @@ const FormEditUser = ({ user }: { user: User }) => {
   async function onSubmit(values: z.infer<typeof userEditSchema>) {
     // return console.log(values)
     const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("phone", values.phone);
-    formData.append("email", values.email);
+    formData.append("name", values.name.trim());
+    formData.append("phone", values.phone.trim());
+    formData.append("email", values.email.trim());
     formData.append("role", values.role);
     formData.append("status", values.status);
 

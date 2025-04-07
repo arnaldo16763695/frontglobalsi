@@ -44,16 +44,16 @@ const FormAddCompany = ({ clients }: { clients: Clients[] }) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof companyRegisterSchema>) {
     const formData = new FormData();
-    formData.append("companyName", values.companyName);
-    formData.append("phone", values.phone);
-    formData.append("email", values.email);
-    formData.append("rut", values.rut);
+    formData.append("companyName", values.companyName.trim());
+    formData.append("phone", values.phone.trim());
+    formData.append("email", values.email.trim());
+    formData.append("rut", values.rut.trim());
     formData.append("client", values.client);
-    formData.append("location", values.location);
-    formData.append("observations", values.observations);
+    formData.append("location", values.location.trim());
+    formData.append("observations", values.observations.trim());
 
     const res = await companyRegister(formData);
-
+    console.log('respuesta: ->',res);
     if (res.error) {
       if (res.error === "Conflict") {
         toast.error(res.message);

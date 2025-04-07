@@ -34,10 +34,10 @@ const FormRegisterClient = () => {
     async function onSubmit(values: z.infer<typeof clientRegisterSchema>) {
 
         const formData = new FormData()
-        formData.append('name', values.name)
-        formData.append('phone', values.phone)
-        formData.append('email', values.email)
-        formData.append('rut', values.rut)
+        formData.append('name', values.name.trim())
+        formData.append('phone', values.phone.trim())
+        formData.append('email', values.email.trim())
+        formData.append('rut', values.rut.trim())
 
 
         const res = await clientRegister(formData);

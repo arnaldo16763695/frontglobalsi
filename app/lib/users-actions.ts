@@ -117,7 +117,7 @@ export async function userEdit(id: string, formData: FormData) {
     });
 
     const user = await res.json();
-    console.log("mi resultado->", user);
+    // console.log("mi resultado->", user);
     revalidatePath("/users/list");
     return user;
   } catch (error) {
