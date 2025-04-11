@@ -21,7 +21,11 @@ export async function fetchAllCompanies() {
     // console.log(companies);
     return await companies.json();
   } catch (error) {
-    console.log(error);
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
   }
 }
 

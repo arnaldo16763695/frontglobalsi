@@ -125,6 +125,14 @@ export const companyEditSchema = object({
   ),
 });
 
+export const projectRegisterSchema = object({
+  company: string({ required_error: "Company is required" }).min(1, "Company is required"),
+});
+
+
+
+
+
 
 
 

@@ -82,8 +82,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: Bot,
         items: [
           {
-            title: "Genesis",
-            url: "#",
+            title: "Ordenes",
+            url: "/projects/list",
           },
           {
             title: "Explorer",
