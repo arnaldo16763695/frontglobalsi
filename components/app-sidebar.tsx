@@ -23,7 +23,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/app/components/users/NavUser";
-import { NavManagment } from "@/app/components/NavManagment";
+// import { NavManagment } from "@/app/components/NavManagment";
 import { NavMain } from "@/app/components/NavMain";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
@@ -95,52 +95,52 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
-      {
-        title: "Documentation",
-        url: "#",
-        icon: BookOpen,
-        items: [
-          {
-            title: "Introduction",
-            url: "#",
-          },
-          {
-            title: "Get Started",
-            url: "#",
-          },
-          {
-            title: "Tutorials",
-            url: "#",
-          },
-          {
-            title: "Changelog",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Settings",
-        url: "#",
-        icon: Settings2,
-        items: [
-          {
-            title: "General",
-            url: "#",
-          },
-          {
-            title: "Team",
-            url: "#",
-          },
-          {
-            title: "Billing",
-            url: "#",
-          },
-          {
-            title: "Limits",
-            url: "#",
-          },
-        ],
-      },
+      // {
+      //   title: "Documentation",
+      //   url: "#",
+      //   icon: BookOpen,
+      //   items: [
+      //     {
+      //       title: "Introduction",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Get Started",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Tutorials",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Changelog",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: "Settings",
+      //   url: "#",
+      //   icon: Settings2,
+      //   items: [
+      //     {
+      //       title: "General",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Team",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Billing",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Limits",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
     ],
     projects: [
       {
@@ -180,8 +180,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Documentation</span>
-                  <span className="">v1.0.0</span>
+                  <span className="font-semibold">Globalsi</span>
+                  
                 </div>
               </a>
             </SidebarMenuButton>
@@ -192,7 +192,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* *********Menues*********  */}
 
         {session?.user?.role === "ADMIN" && <NavMain items={data.navMain} />}
-        <NavManagment itemsManagment={data.projects} />
+        
+        {/* <NavManagment itemsManagment={data.projects} /> */}
 
         {/* *********Menues*********  */}
         <NavUserMobile user={user} />

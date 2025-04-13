@@ -37,7 +37,7 @@ export function NavMain({
   const pathName = usePathname();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Globalsi</SidebarGroupLabel>
+      <SidebarGroupLabel>Menú</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

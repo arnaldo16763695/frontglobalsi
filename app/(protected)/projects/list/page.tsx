@@ -6,7 +6,7 @@ import { fetchAllProjects } from "@/app/lib/projects-data";
 
 const ListProjectPage = async () => {
   const data = await fetchAllProjects();
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <HeaderSideBar

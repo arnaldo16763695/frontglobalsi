@@ -79,7 +79,7 @@ const FormLogin = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Entrar</Button>
             </form>
         </Form>
     )

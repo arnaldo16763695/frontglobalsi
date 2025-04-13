@@ -18,4 +18,4 @@ declare module "next-auth" {
   }
 }
 
-console.log(DefaultUser)
+// console.log(DefaultUser)

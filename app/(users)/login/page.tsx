@@ -18,9 +18,9 @@ const loginPage = async () => {
             <div className='w-full text-right'>
                 <ToggleTheme/>
             </div>
-            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+            <main className="flex flex-col gap-8 row-start-2 w-full items-center ">
 
-                <Card>
+                <Card className="w-[90%] md:w-[50%] lg:w-[30%]">
                     <CardHeader>
                         Bienvenido
                     </CardHeader>

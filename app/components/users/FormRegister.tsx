@@ -39,7 +39,7 @@ const FormRegister = () => {
         formData.append('email', values.email.trim())
         formData.append('password', values.password.trim())
         const res = await userRegister(formData);
-
+        console.log('---->',res);
         if (res.error) {
             if (res.error === 'Conflict') {
                 toast.error(res.message);
