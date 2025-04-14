@@ -1,7 +1,11 @@
-import React from 'react'
-import HeaderSideBar from '@/app/components/HeaderSideBar'
+import React from "react";
+import HeaderSideBar from "@/app/components/HeaderSideBar";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import FormAddOrder from "@/app/components/work/FormAddOrder";
+import { fetchAllCompanies } from "@/app/lib/company-data";
 
-const regiterProjectPage = () => {
+const regiterProjectPage = async () => {
+  const companies = await fetchAllCompanies();
   return (
     <>
       <HeaderSideBar
@@ -9,8 +13,20 @@ const regiterProjectPage = () => {
         before="Listado de ordenes"
         href="/projects/list"
       />
+      <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="min-h-[100vh] flex-1 flex justify-center items-center rounded-xl bg-muted/50 md:min-h-min">
+          <Card className="md:w-[80%] w-[95%]">
+            <CardHeader className="text-2xl font-bold">
+              Registro de ordenes
+            </CardHeader>
+            <CardContent>
+              <FormAddOrder companies={companies} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default regiterProjectPage
+export default regiterProjectPage;

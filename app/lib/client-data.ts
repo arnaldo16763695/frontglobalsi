@@ -12,6 +12,7 @@ export async function fetchAllClients() {
         "Content-Type": "application/json",
       },
     });
+    console.log('clients: ', clients);
     return await clients.json();
   } catch (error) {
     console.log(error);

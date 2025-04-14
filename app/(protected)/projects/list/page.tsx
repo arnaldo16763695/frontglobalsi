@@ -2,7 +2,7 @@ import HeaderSideBar from "@/app/components/HeaderSideBar";
 import React from "react";
 import { DataTableProject } from "./data-table";
 import { columns } from "./columns";
-import { fetchAllProjects } from "@/app/lib/projects-data";
+import { fetchAllProjects } from "@/app/lib/orders-data";
 
 const ListProjectPage = async () => {
   const data = await fetchAllProjects();

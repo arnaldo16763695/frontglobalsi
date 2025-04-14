@@ -62,10 +62,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.sub = user.id;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.expiresIn = user.expiresIn;
       }
+
+      
 
       if(new Date().getTime() < (token.expiresIn as unknown as number)) {
         return token;
@@ -76,6 +79,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       // Guardar tokens en la sesión
       session.user.role = token.role as string;
+      session.user.id = token.sub as string;
       session.user.accessToken = token.accessToken as string;
       session.user.refreshToken = token.refreshToken as string;
       return session;

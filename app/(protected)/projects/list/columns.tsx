@@ -14,31 +14,61 @@ import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
- type Projects = {
-  id: string;
-  rut: string;  
-  companyId: string;  
-  company:{
-    companyName:string;
-    rut:string;
-  };
-  progress: "NOT_STARTED" | "FINISHED" | "NOT_STARTED";
-  status: "ACTIVE" | "INAVTIVE" | "DELETE";
-};
+
+import { Projects } from "@/lib/types";
 
 export const columns: ColumnDef<Projects>[] = [
+
   {
-    accessorKey: "status",
-    header: "Status",
+    id: "progress",
+    accessorKey: "progress",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Estatus
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
-      // Obtén el valor de "status" y aplícale toLowerCase()
-      const status = row.getValue<string>("status").toLowerCase();
-      return <div>{status}</div>;
+      const value = row.getValue<"NOT_STARTED" | "IN_PROGRESS" | "FINISHED">(
+        "progress"
+      );
+
+      switch (value) {
+        case "NOT_STARTED":
+          return (
+            <span className="text-red-600 font-semibold">No Iniciada</span>
+          );
+        case "IN_PROGRESS":
+          return (
+            <span className="text-yellow-600 font-semibold">En Proceso</span>
+          );
+        case "FINISHED":
+          return (
+            <span className="text-green-600 font-semibold">Finalizada</span>
+          );
+        default:
+          return <span className="text-muted-foreground">Desconocido</span>;
+      }
     },
   },
   {
+    accessorKey: "workCode",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Codigo
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+  },
+  {
     id: "companyName",
-    accessorFn: row => row.company?.companyName,
+    accessorFn: (row) => row.company?.companyName,
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -78,7 +108,7 @@ export const columns: ColumnDef<Projects>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <Link href={`/projects/${row.original.id}/edit`}>Editar</Link>
-            </DropdownMenuItem>           
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
