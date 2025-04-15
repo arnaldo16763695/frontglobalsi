@@ -7,7 +7,7 @@ import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { API_URL } from "@/lib/constants";
-import { JWT } from "next-auth/jwt";
+import { JWT } from "next-auth/jwt"; 
 
 export async function login(
   email: string | undefined,

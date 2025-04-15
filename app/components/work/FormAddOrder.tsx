@@ -1,4 +1,5 @@
 "use client";
+import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -56,7 +57,7 @@ const FormAddOrder = ({ companies }: { companies: Company[] }) => {
           name="companyId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cliente</FormLabel>
+              <FormLabel>Empresa</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
