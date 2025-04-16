@@ -128,6 +128,18 @@ export const companyEditSchema = object({
 export const projectRegisterSchema = object({
   companyId: string({ required_error: "Company is required" }).min(1, "Company is required"),
 });
+export const projectEditSchema = object({
+  companyId: string({ required_error: "Company is required" }).min(1, "Company is required"),
+});
+
+export const itemRegisterSchema = object({
+
+  description: string(),
+
+});
+
+
+
 
 
 

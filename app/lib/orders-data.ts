@@ -23,3 +23,23 @@ export async function fetchAllProjects() {
     };
   }
 }
+
+export async function fetchOneProject(id:string) {
+  const session = await auth();
+  try {
+    const project = await fetch(`${API_URL}/api/works/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+
+    if (!project.ok) {
+      throw new Error("Proyecto no existe");
+    }
+    return await project.json();
+  } catch (error) {
+    console.log(error);
+  }
+}

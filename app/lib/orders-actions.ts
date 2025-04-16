@@ -37,3 +37,27 @@ export async function orderRegister(values: z.infer<typeof projectRegisterSchema
   }
 }
 
+export async function addItemInWork(id: string, data: FormData){
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/works/${id} `, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify(data)
+    })
+
+    const user = await res.json()
+    revalidatePath("/users/list")
+    return user
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
+

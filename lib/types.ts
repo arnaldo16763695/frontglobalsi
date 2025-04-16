@@ -21,12 +21,21 @@ export type Company = {
 
   export type Projects = {
     id: string;
-    rut: string;  
-    companyId: string;  
+    rut: string;
+    companyId: string;
+    workCode: string;
+    description: string;
+    finalObservation: string;
+    images: string[];
+    stepsToWork: string[];
+    startedAt: string;
+    finishedAt: string;
     company:{
       companyName:string;
       rut:string;
+      clientsId:string;
     };
-    progress: "NOT_STARTED" | "FINISHED" | "NOT_STARTED";
+    progress: "IN_PROGRESS" | "FINISHED" | "NOT_STARTED";
     status: "ACTIVE" | "INAVTIVE" | "DELETE";
+    createdAt: string;
   };

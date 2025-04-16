@@ -1,7 +1,7 @@
 import React from "react";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import FormAddOrder from "@/app/components/work/FormAddOrder";
+import FormAddOrder from "@/app/components/projects/FormAddOrder";
 import { fetchAllCompanies } from "@/app/lib/company-data";
 
 const regiterProjectPage = async () => {
