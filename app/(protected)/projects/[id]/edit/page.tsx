@@ -7,13 +7,14 @@ import { fetchAllCompanies } from "@/app/lib/company-data";
 import { fetchOneClient } from "@/app/lib/client-data";
 import { formatDateTime } from "@/lib/formatDataTime";
 import ListItemsDialog from "@/app/components/projects/ListItemsDialog";
+import { Steps } from "@/lib/types";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const project = await fetchOneProject(params.id);
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
-  const steps = await fetStepsToWorkByIdWork(params.id);
+  const steps : Steps[] = await fetStepsToWorkByIdWork(params.id);
 
   return (
     <>
@@ -45,6 +46,11 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 <fieldset className="border p-2">
                   <legend>Tareas</legend>
                   <ListItemsDialog steps={steps} idWork={params.id} />
+                  {steps.length > 0 && steps.map((step) => (
+                    <div key={step.id}>
+                      <div>{step.description}</div>
+                    </div>
+                  ))}
                 </fieldset>
               </div>
             </CardContent>

@@ -21,7 +21,6 @@ export const ListItemsDnD = ({ steps }: { steps: Steps[] }) => {
         const newIndex = steps.findIndex((step) => step.id === over.id);
         return arrayMove(steps, oldIndex, newIndex);
     })
-    console.log(Mysteps) 
   };
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

@@ -20,6 +20,7 @@ import { ListItemsDnD } from "./ListItemsDnD";
 import { Steps } from "@/lib/types";
 
 const FormAddItems = ({ id, steps }: { id: string; steps: Steps[] }) => {
+  
   // 1. Define your form.
   const form = useForm<z.infer<typeof itemRegisterSchema>>({
     resolver: zodResolver(itemRegisterSchema),
