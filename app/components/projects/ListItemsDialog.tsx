@@ -9,9 +9,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import FormAddItems from "./FormAddItems"
+import { Steps } from "@/lib/types";
 
-
-export default function ListItemsDialog() {
+export default function ListItemsDialog({ steps, idWork }: { steps: Steps[], idWork:string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -25,7 +25,7 @@ export default function ListItemsDialog() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <FormAddItems />
+          <FormAddItems id={idWork} steps={steps} />
         </div>
         <DialogFooter>
           {/* <Button type="submit">Save changes</Button> */}

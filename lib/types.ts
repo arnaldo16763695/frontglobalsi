@@ -39,3 +39,9 @@ export type Company = {
     status: "ACTIVE" | "INAVTIVE" | "DELETE";
     createdAt: string;
   };
+
+  export type Steps = {
+    id: string;
+    description: string;  
+   
+  };

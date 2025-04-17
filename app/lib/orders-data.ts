@@ -43,3 +43,24 @@ export async function fetchOneProject(id:string) {
     console.log(error);
   }
 }
+
+
+export async function  fetStepsToWorkByIdWork(id: string) {
+  const session = await auth();
+  try {
+    const steps = await fetch(`${API_URL}/api/stepstoworks/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+
+    if (!steps.ok) {
+      throw new Error("Steps no existen");
+    }
+    return await steps.json();
+  } catch (error) {
+    console.log(error);
+  }
+}

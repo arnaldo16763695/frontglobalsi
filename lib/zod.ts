@@ -133,9 +133,8 @@ export const projectEditSchema = object({
 });
 
 export const itemRegisterSchema = object({
-
   description: string(),
-
+  worksId: string(),
 });
 
 

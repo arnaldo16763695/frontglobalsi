@@ -1,17 +1,19 @@
 import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { fetchOneProject } from "@/app/lib/orders-data";
+import { fetchOneProject, fetStepsToWorkByIdWork } from "@/app/lib/orders-data";
 import FormEditProject from "@/app/components/projects/FormEditProject";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { fetchAllCompanies } from "@/app/lib/company-data";
 import { fetchOneClient } from "@/app/lib/client-data";
-import { Projects } from "@/lib/types";
 import { formatDateTime } from "@/lib/formatDataTime";
 import ListItemsDialog from "@/app/components/projects/ListItemsDialog";
-const EditProjectPage = async ({ params }: { params: { id: string } }) => {
-  const project: Projects = await fetchOneProject(params.id);
+
+const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
+  const project = await fetchOneProject(params.id);
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
+  const steps = await fetStepsToWorkByIdWork(params.id);
 
   return (
     <>
@@ -42,7 +44,7 @@ const EditProjectPage = async ({ params }: { params: { id: string } }) => {
               <div className="border w-[60%] p-2">
                 <fieldset className="border p-2">
                   <legend>Tareas</legend>
-                  <ListItemsDialog />
+                  <ListItemsDialog steps={steps} idWork={params.id} />
                 </fieldset>
               </div>
             </CardContent>

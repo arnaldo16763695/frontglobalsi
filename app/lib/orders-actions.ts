@@ -5,10 +5,10 @@ import { API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { projectRegisterSchema } from "@/lib/zod";
 import { z } from "zod";
+import { itemRegisterSchema } from "@/lib/zod";
 
 export async function orderRegister(values: z.infer<typeof projectRegisterSchema>) {
   //encrypt password
-
   const session = await auth();
   const data = {
     companyId: values.companyId,
@@ -37,21 +37,26 @@ export async function orderRegister(values: z.infer<typeof projectRegisterSchema
   }
 }
 
-export async function addItemInWork(id: string, data: FormData){
+export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
   const session = await auth();
+  console.log("steps",data)
   try {
-    const res = await fetch(`${API_URL}/api/works/${id} `, {
+    const res = await fetch(`${API_URL}/api/stepstoworks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${session?.user?.accessToken}`,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        description: data.description,
+        worksId: data.worksId,
+        userId: session?.user?.id,
+      })
     })
 
-    const user = await res.json()
-    revalidatePath("/users/list")
-    return user
+    const user = await res.json();
+    revalidatePath(`/projects/${data.worksId}/edit`);
+    return user;
   } catch (error) {
     console.log("error: ", error);
     return {
