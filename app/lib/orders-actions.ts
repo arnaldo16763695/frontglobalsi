@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
-import { projectRegisterSchema } from "@/lib/zod";
+import { editStepToWorkSchema, projectRegisterSchema, updateCompanyInWorkSchema, updateWorkStatusSchema } from "@/lib/zod";
 import { z } from "zod";
 import { itemRegisterSchema } from "@/lib/zod";
 
@@ -51,6 +51,7 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
         description: data.description,
         worksId: data.worksId,
         userId: session?.user?.id,
+        order: data.order,
       })
     })
 
@@ -65,4 +66,122 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
     };
   }
 }
+
+export async function reorderSteps(idWork: string, payload: { id: string; order: number }[]) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/stepstoworks/reorder/${idWork}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        worksId: idWork,
+        ordered: payload
+      }),
+    });
+    const client = await res.json();
+    revalidatePath(`/projects/${idWork}/edit`);
+    return client;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+export async function editStepToWork(idWork: string, data: z.infer<typeof editStepToWorkSchema>) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/stepstoworks/${data.stepId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        description: data.description,
+        userId: session?.user?.id,
+      }),
+    });
+    const client = await res.json();
+    revalidatePath(`/projects/${idWork}/edit`);
+    return client;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+export async function deleteStepToWork(idWork: string) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/stepstoworks/${idWork}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      }, 
+    });
+    const step = await res.json();
+    revalidatePath(`/projects/${idWork}/edit`);
+    return step;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+export async function updateWorkStatus(idWork: string, status: z.infer<typeof updateWorkStatusSchema>) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/works/${idWork}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        progress:status.status,
+        userId: session?.user?.id,
+      }),
+    });
+    const resp = await res.json();
+    
+    revalidatePath(`/projects/${idWork}/edit`);
+    return resp;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+} 
+
+export async function editCompanyInWork(idWork: string, data: z.infer<typeof updateCompanyInWorkSchema>) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/works/companyinwork/${idWork}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        companyId: data.companyId,
+        userId: session?.user?.id,
+      }),
+    });
+    const resp = await res.json();
+    
+    revalidatePath(`/projects/${idWork}/edit`);
+    return resp;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+
+
+
+
+
+
+
+
+
 

@@ -9,15 +9,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import FormAddItems from "./FormAddItems"
-import { Steps } from "@/lib/types";
 
-export default function ListItemsDialog({ steps, idWork }: { steps: Steps[], idWork:string }) {
+
+export default function ListItemsDialog({  idWork }: {  idWork:string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Agregar tareas</Button>
+        <Button variant="outline" className="bg-slate-200 dark:text-black dark:hover:text-white">Agregar tareas</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[80%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Agregar tareas</DialogTitle>
           <DialogDescription>
@@ -25,7 +25,7 @@ export default function ListItemsDialog({ steps, idWork }: { steps: Steps[], idW
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <FormAddItems id={idWork} steps={steps} />
+          <FormAddItems id={idWork}  />
         </div>
         <DialogFooter>
           {/* <Button type="submit">Save changes</Button> */}
@@ -33,4 +33,4 @@ export default function ListItemsDialog({ steps, idWork }: { steps: Steps[], idW
       </DialogContent>
     </Dialog>
   )
-}
+} 

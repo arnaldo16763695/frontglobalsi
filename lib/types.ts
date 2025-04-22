@@ -45,3 +45,5 @@ export type Company = {
     description: string;  
    
   };
+
+

@@ -1,4 +1,4 @@
-import { object, string } from "zod";
+import { number, object, string } from "zod";
 
 export const loginSchema = object({
   email: string({ required_error: "Email is required" })
@@ -93,7 +93,10 @@ export const companyRegisterSchema = object({
     .min(1, "Email is required")
     .email("Invalid email"),
   phone: string(),
-  client: string({ required_error: "Client is required" }).min(1, "Client is required"),
+  client: string({ required_error: "Client is required" }).min(
+    1,
+    "Client is required"
+  ),
   rut: string({ required_error: "Name is required" })
     .min(1, "Name is required")
     .max(32, "Name must be less than 32 characters"),
@@ -114,7 +117,10 @@ export const companyEditSchema = object({
   rut: string({ required_error: "Name is required" })
     .min(1, "Name is required")
     .max(32, "Name must be less than 32 characters"),
-  client: string({ required_error: "Client is required" }).min(1, "Client is required"),
+  client: string({ required_error: "Client is required" }).min(
+    1,
+    "Client is required"
+  ),
   location: string({ required_error: "Location is required" })
     .min(1, "Location is required")
     .max(32, "Location must be less than 32 characters"),
@@ -126,24 +132,37 @@ export const companyEditSchema = object({
 });
 
 export const projectRegisterSchema = object({
-  companyId: string({ required_error: "Company is required" }).min(1, "Company is required"),
+  companyId: string({ required_error: "Company is required" }).min(
+    1,
+    "Company is required"
+  ),
 });
 export const projectEditSchema = object({
-  companyId: string({ required_error: "Company is required" }).min(1, "Company is required"),
+  companyId: string({ required_error: "Company is required" }).min(
+    1,
+    "Company is required"
+  ),
 });
 
 export const itemRegisterSchema = object({
   description: string(),
   worksId: string(),
+  order: number(),
 });
 
+export const editStepToWorkSchema = object({
+  description: string({ required_error: "Description is required" }).min(
+    1,
+    "Description is required"
+  ),
+  stepId: string(),
+});
 
+export const updateWorkStatusSchema = object({
+  status: string(),
+});
 
-
-
-
-
-
-
-
+export const updateCompanyInWorkSchema = object({
+  companyId: string(),
+});
 

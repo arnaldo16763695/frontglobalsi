@@ -8,13 +8,15 @@ import { fetchOneClient } from "@/app/lib/client-data";
 import { formatDateTime } from "@/lib/formatDataTime";
 import ListItemsDialog from "@/app/components/projects/ListItemsDialog";
 import { Steps } from "@/lib/types";
+import FormEditStepToWork from "@/app/components/projects/FormEditStepToWork";
+import DiagDeleteStepToWork from "@/app/components/projects/DiagDeleteStepToWork";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const project = await fetchOneProject(params.id);
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
-  const steps : Steps[] = await fetStepsToWorkByIdWork(params.id);
+  const steps: Steps[] = await fetStepsToWorkByIdWork(params.id);
 
   return (
     <>
@@ -24,14 +26,14 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
         href="/projects/list"
       />
 
-      <div className="flex flex-1 flex-col gap-4 p-4">
+      <div className="flex text-xs md:text-sm flex-1 flex-col gap-4 p-2 md:p-4">
         <div className="min-h-[100vh] flex-1 flex justify-center items-start rounded-xl bg-muted/50 md:min-h-min">
-          <Card className="md:w-[99%] w-[95%] mt-2">
+          <Card className="w-[100%] mt-2">
             <CardHeader className="flex flex-col lg:flex-row justify-between">
-              <div className="">Gestión de orden de trabajo</div>
+              <div className="md:text-xl">Gestión de orden de trabajo</div>
               <div className="">
                 <span className="text-sm md:text-base">Fecha de creación:</span>{" "}
-                <span className="text-green-600 text-xs md:text-base">
+                <span className="text-green-600 ">
                   {formatDateTime(project.createdAt)}
                 </span>
               </div>
@@ -42,13 +44,24 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 companies={companies}
                 client={client}
               />
-              <div className="border w-[60%] p-2">
-                <fieldset className="border p-2">
+              <div className="w-[100%] p-0 md:p-2 mt-4">
+                <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
                   <legend>Tareas</legend>
-                  <ListItemsDialog steps={steps} idWork={params.id} />
-                  {steps.length > 0 && steps.map((step) => (
-                    <div key={step.id}>
-                      <div>{step.description}</div>
+
+                  <ListItemsDialog idWork={params.id} />
+
+                  {steps.map((step) => (
+                    <div
+                      key={step.id}
+                      className="flex  justify-between border w-full"
+                    >
+                      <div className="flex items-center  border px-2 py-1 w-[70%] md:w-[90%] ">
+                        {step.description}
+                      </div>
+                      <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
+                        <FormEditStepToWork step={step} />
+                        <DiagDeleteStepToWork step={step} />
+                      </div>
                     </div>
                   ))}
                 </fieldset>

@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "react-hot-toast";
-import { auth } from "@/auth";
 
 
 const geistSans = localFont({
@@ -28,9 +27,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = await auth();
-  
-  console.log('My session is', session)
+ 
  
   return (
     <html lang="en" suppressHydrationWarning>

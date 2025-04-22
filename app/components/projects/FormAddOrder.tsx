@@ -38,15 +38,13 @@ const FormAddOrder = ({ companies }: { companies: Company[] }) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof projectRegisterSchema>) {
     const res = await orderRegister(values);
-    console.log('respuesta: ->',res);
     if (res.error) {
       if (res.error === "Conflict") {
         toast.error(res.message);
       }
     } else {
       toast.success("Registro creado exitosamente");
-
-      router.push("/projects/list");
+      router.push(`/projects/${res.id}/edit`);
     }
   }
   return (

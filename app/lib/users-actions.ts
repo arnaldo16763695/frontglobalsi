@@ -149,7 +149,6 @@ export async function userChangePass(id: string, formData: FormData) {
     });
 
     const user = await res.json();
-    console.log("mi resultado->", user);
     revalidatePath("/users/list");
     return user;
   } catch (error) {
