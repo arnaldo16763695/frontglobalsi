@@ -2,7 +2,7 @@
 import * as React from "react";
 import {
   AudioWaveform,
-  BookOpen,
+  // BookOpen,
   Bot,
   Command,
   Frame,
@@ -10,7 +10,7 @@ import {
   Map,
   PieChart,
   Settings,
-  Settings2,
+  // Settings2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -27,7 +27,8 @@ import { NavUser } from "@/app/components/users/NavUser";
 import { NavMain } from "@/app/components/NavMain";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { NavUserMobile } from "@/app/components/users/NavUserMobile";
+// import { NavUserMobile } from "@/app/components/users/NavUserMobile";
+import { NavTech } from "@/app/components/technician/NavTech";
 // This is sample data.
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -60,7 +61,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Administración",
         url: "#",
         icon: Settings,
-        isActive: pathName === "/users/list" || pathName === "/clients/list" ,
+        isActive: pathName === "/users/list" || pathName === "/clients/list",
         items: [
           {
             title: "Usuarios",
@@ -159,6 +160,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: Map,
       },
     ],
+    technicianNav: [
+      {
+        title: "Proyectos",
+        url: "#",
+        icon: Settings,
+        items: [
+          {
+            title: "Ordenes",
+            url: "/projects/technicians/list",
+          },
+          {
+            title: "Técnicos",
+            url: "#",
+          },
+        ],
+      },
+    ],
   };
 
   const { data: session, status } = useSession();
@@ -181,7 +199,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Globalsi</span>
-                  
                 </div>
               </a>
             </SidebarMenuButton>
@@ -192,11 +209,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* *********Menues*********  */}
 
         {session?.user?.role === "ADMIN" && <NavMain items={data.navMain} />}
-        
+        {session?.user?.role === "TECHNICIAN" && <NavTech items={data.technicianNav} />}
+
+
         {/* <NavManagment itemsManagment={data.projects} /> */}
 
         {/* *********Menues*********  */}
-        <NavUserMobile user={user} />
+        {/* <NavUserMobile user={user} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

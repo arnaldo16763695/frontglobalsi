@@ -5,7 +5,7 @@ import { API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { editStepToWorkSchema, projectRegisterSchema, updateCompanyInWorkSchema, updateWorkStatusSchema } from "@/lib/zod";
 import { z } from "zod";
-import { itemRegisterSchema } from "@/lib/zod";
+import { itemRegisterSchema, technicianToWorkSchema } from "@/lib/zod";
 
 export async function orderRegister(values: z.infer<typeof projectRegisterSchema>) {
   //encrypt password
@@ -167,6 +167,31 @@ export async function editCompanyInWork(idWork: string, data: z.infer<typeof upd
       }),
     });
     const resp = await res.json();
+    
+    revalidatePath(`/projects/${idWork}/edit`);
+    return resp;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+
+export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>, idWork: string) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/technicians`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        technicianId: data.idTech,
+        workId: idWork,
+      }),
+    });
+    const resp = await res.json();
+    console.log(resp)
     
     revalidatePath(`/projects/${idWork}/edit`);
     return resp;

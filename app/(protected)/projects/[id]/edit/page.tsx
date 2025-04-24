@@ -1,15 +1,17 @@
 import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { fetchOneProject, fetStepsToWorkByIdWork } from "@/app/lib/orders-data";
+import { fetchAllTechsInWork, fetchOneProject, fetStepsToWorkByIdWork } from "@/app/lib/orders-data";
 import FormEditProject from "@/app/components/projects/FormEditProject";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { fetchAllCompanies } from "@/app/lib/company-data";
 import { fetchOneClient } from "@/app/lib/client-data";
 import { formatDateTime } from "@/lib/formatDataTime";
 import ListItemsDialog from "@/app/components/projects/ListItemsDialog";
-import { Steps } from "@/lib/types";
+import { Steps, User, Technicians } from "@/lib/types";
 import FormEditStepToWork from "@/app/components/projects/FormEditStepToWork";
 import DiagDeleteStepToWork from "@/app/components/projects/DiagDeleteStepToWork";
+import DiagAddTechToWork from "@/app/components/projects/DiagAddTechToWork";
+import { fetchAllTechs } from "@/app/lib/user-data";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
@@ -17,7 +19,9 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
   const steps: Steps[] = await fetStepsToWorkByIdWork(params.id);
-
+  const techniciansInWork: Technicians[] = await fetchAllTechsInWork(params.id);
+  const technicians: User[] = await fetchAllTechs();
+  console.log("technicians", technicians);
   return (
     <>
       <HeaderSideBar
@@ -44,6 +48,26 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 companies={companies}
                 client={client}
               />
+              <div className="w-[100%] p-0 md:p-2 mt-4">
+                <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
+                  <legend>Técnicos encargados</legend>
+                  <DiagAddTechToWork
+                    idWork={params.id}
+                    technicians={technicians}
+                  />
+                  {techniciansInWork.length > 0 && techniciansInWork.map((tech) => (
+                    <div
+                      key={tech.technician.id}
+                      className="flex  justify-between border w-full"
+                    >
+                      <div className="flex items-center  border px-2 py-1 w-[70%] md:w-[90%] ">
+                        {tech.technician.name}
+                      </div>
+                      <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center"></div>
+                    </div>
+                  ))}
+                </fieldset>
+              </div>
               <div className="w-[100%] p-0 md:p-2 mt-4">
                 <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
                   <legend>Tareas</legend>

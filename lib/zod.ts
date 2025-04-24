@@ -166,3 +166,10 @@ export const updateCompanyInWorkSchema = object({
   companyId: string(),
 });
 
+export const technicianToWorkSchema = object({
+  idTech: string({ required_error: "Técnico is required" }).min(
+    1,
+    "Técnico is required"
+  ),
+});
+

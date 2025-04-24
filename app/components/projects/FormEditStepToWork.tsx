@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,7 +32,8 @@ import { editStepToWork } from "@/app/lib/orders-actions";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function FormEditStepToWork({ step }: { step: Steps }) {
+
+export default function FormEditStepToWork({ step }: { step: Steps; }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -90,6 +92,9 @@ export default function FormEditStepToWork({ step }: { step: Steps }) {
                     <Textarea placeholder="Descripción" {...field} className="md:w-[100%]" />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                    Tarea creada por: {step.user.name} {step.user.email}
+                  </FormDescription>
                 </FormItem>
               )}
             />

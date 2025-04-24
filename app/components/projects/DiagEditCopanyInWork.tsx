@@ -65,6 +65,7 @@ export function DiagEditCopanyInWork({
       toast.error(res.message); 
     } else {
       setDialogOpen(false);
+      toast.success("Registro editado exitosamente");
       router.push(`/projects/${idProject}/edit`);
     }
   }

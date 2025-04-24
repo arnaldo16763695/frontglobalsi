@@ -64,3 +64,46 @@ export async function  fetStepsToWorkByIdWork(id: string) {
     console.log(error);
   }
 }
+
+export async function fetchAllTechsInWork(idWork: string) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/technicians/${idWork}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
+
+export async function fetchAllOrdersByIdTech(idTech: string) {
+  const session = await auth();
+  try {
+    const orders = await fetch(`${API_URL}/api/works/technicians/${idTech}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+    const data = await orders.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
+

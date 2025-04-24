@@ -7,43 +7,62 @@ export type Clients = {
   status: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  rut: string;
+  status: string;
+};
+
 export type Company = {
-    id: string;
+  id: string;
+  companyName: string;
+  phone: string;
+  email: string;
+  rut: string;
+  clientsId: string;
+  location: string;
+  observations: string;
+  status: string;
+};
+
+export type Projects = {
+  id: string;
+  rut: string;
+  companyId: string;
+  workCode: string;
+  description: string;
+  finalObservation: string;
+  images: string[];
+  stepsToWork: string[];
+  startedAt: string;
+  finishedAt: string;
+  company: {
     companyName: string;
-    phone: string;
-    email: string;
     rut: string;
     clientsId: string;
-    location: string;
-    observations: string;
-    status: string;
   };
+  progress: "IN_PROGRESS" | "FINISHED" | "NOT_STARTED";
+  status: "ACTIVE" | "INAVTIVE" | "DELETE";
+  createdAt: string;
+};
 
-  export type Projects = {
+export type Steps = {
+  id: string;
+  description: string;
+  user: {
     id: string;
-    rut: string;
-    companyId: string;
-    workCode: string;
-    description: string;
-    finalObservation: string;
-    images: string[];
-    stepsToWork: string[];
-    startedAt: string;
-    finishedAt: string;
-    company:{
-      companyName:string;
-      rut:string;
-      clientsId:string;
-    };
-    progress: "IN_PROGRESS" | "FINISHED" | "NOT_STARTED";
-    status: "ACTIVE" | "INAVTIVE" | "DELETE";
-    createdAt: string;
+    name: string;
+    email: string;
   };
+};
 
-  export type Steps = {
+export type Technicians = {
+  technician: {
     id: string;
-    description: string;  
-   
+    name: string;
+    email: string;
   };
-
-
+};

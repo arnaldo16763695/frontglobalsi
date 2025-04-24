@@ -40,3 +40,19 @@ export async function fetchOneUser(id: string) {
     console.log(error);
   }
 }
+
+export async function fetchAllTechs() {
+  const session = await auth();
+  try {
+    const users = await fetch(`${API_URL}/api/technicians`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${session?.user?.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return await users.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
