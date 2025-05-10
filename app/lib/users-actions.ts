@@ -21,6 +21,8 @@ export async function login(
     body: JSON.stringify({ email, password }),
   });
 
+  console.log(`${API_URL}/api/auth/login`)
+
   if (res.status === 401) {
     console.log(res.statusText);
     return null;

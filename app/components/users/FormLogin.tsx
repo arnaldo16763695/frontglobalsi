@@ -37,6 +37,7 @@ const FormLogin = () => {
         // console.log(values)
         try {
             const user = await loginAction(values)
+            console.log(user)
             if (!user.message) {
                 toast.success('Bienvenido')
                 router.push("/dashboard");
