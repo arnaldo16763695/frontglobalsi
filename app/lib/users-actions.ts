@@ -9,28 +9,65 @@ import { revalidatePath } from "next/cache";
 import { API_URL } from "@/lib/constants";
 import { JWT } from "next-auth/jwt"; 
 
+// export async function login(
+//   email: string | undefined,
+//   password: string | undefined
+// ) {
+//   const res = await fetch(`${API_URL}/api/auth/login`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ email, password }),
+//   });
+
+//   console.log(`${API_URL}/api/auth/login`)
+
+//   if (res.status === 401) {
+//     console.log(res.statusText);
+//     return null;
+//   }
+
+//   const user = await res.json();
+//   return user;
+// }
+
 export async function login(
   email: string | undefined,
   password: string | undefined
 ) {
-  const res = await fetch(`${API_URL}/api/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  console.log(`${API_URL}/api/auth/login`)
+    console.log(`Login request to: ${API_URL}/api/auth/login`);
 
-  if (res.status === 401) {
-    console.log(res.statusText);
+    const contentType = res.headers.get("content-type");
+
+    if (res.status === 401) {
+      console.log("Unauthorized:", res.statusText);
+      return null;
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      return await res.json();
+    }
+
+    const body = await res.text();
+    console.error("Expected JSON but got:", body);
+    return null;
+
+  } catch (err) {
+    console.error("Login fetch failed:", err);
     return null;
   }
-
-  const user = await res.json();
-  return user;
 }
+
 
 export const loginAction = async (values: z.infer<typeof loginSchema>) => {
   const { data, success } = loginSchema.safeParse(values);
