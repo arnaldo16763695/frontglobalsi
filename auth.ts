@@ -5,10 +5,6 @@ import { login } from "@/app/lib/users-actions";
 import { API_URL } from "./lib/constants";
 import { JWT } from "next-auth/jwt";
 
-if (process.env.NODE_ENV === "production") {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-}
-
 async function refreshToken(token: JWT): Promise<JWT> {
   if (!token.refreshToken) {
     throw new Error("No refresh token");
