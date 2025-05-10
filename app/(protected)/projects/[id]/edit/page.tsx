@@ -12,6 +12,7 @@ import FormEditStepToWork from "@/app/components/projects/FormEditStepToWork";
 import DiagDeleteStepToWork from "@/app/components/projects/DiagDeleteStepToWork";
 import DiagAddTechToWork from "@/app/components/projects/DiagAddTechToWork";
 import { fetchAllTechs } from "@/app/lib/user-data";
+import DiagDeleteTechFromWork from "@/app/components/projects/DiagDeleteTechFromWork";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
@@ -63,7 +64,9 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                       <div className="flex items-center  border px-2 py-1 w-[70%] md:w-[90%] ">
                         {tech.technician.name}
                       </div>
-                      <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center"></div>
+                      <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
+                        <DiagDeleteTechFromWork techId={tech.technician.id} workId={project.id} />
+                      </div>
                     </div>
                   ))}
                 </fieldset>

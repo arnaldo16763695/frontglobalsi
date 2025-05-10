@@ -9,17 +9,16 @@ import {
   DialogTrigger,
   DialogClose
 } from "@/components/ui/dialog";
-import { Steps } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { deleteStepToWork } from "@/app/lib/orders-actions";
+import { deleteTechFromWork } from "@/app/lib/orders-actions";
 import { useState } from "react";
 import { DeleteIcon } from "lucide-react";
 
 
-export default function DiagDeleteStepToWork({ step }: { step: Steps }) {
+export default function DiagDeleteTechFromWork({ techId, workId }: { techId: string, workId: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -29,9 +28,9 @@ export default function DiagDeleteStepToWork({ step }: { step: Steps }) {
 
   // 2. Define a submit handler.
   async function handleClick() {
-    console.log(step);
+    console.log(techId, workId  );
   
-    const res = await deleteStepToWork(step.id);
+    const res = await deleteTechFromWork(techId, workId);
     if (res.error) {
         toast.error(res.message);
     } else {

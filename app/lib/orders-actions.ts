@@ -200,6 +200,25 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
   }
 }
 
+export async function deleteTechFromWork(idTech: string, idWork: string) {
+  const session = await auth();
+  try {
+    const res = await fetch(`${API_URL}/api/technicians/removefromwork/${idWork}/${idTech}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      }, 
+    });
+    const tech = await res.json();
+    revalidatePath(`/projects/${idWork}/edit`);
+    return tech;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+
 
 
 
