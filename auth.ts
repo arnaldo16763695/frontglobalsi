@@ -11,6 +11,8 @@ async function refreshToken(token: JWT): Promise<JWT> {
   if (!token.refreshToken) {
     throw new Error("No refresh token");
   }
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
   const res = await fetch(`${API_URL}/api/auth/refresh`, {
     method: "POST",
     headers: {
