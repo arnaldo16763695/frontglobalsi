@@ -114,16 +114,17 @@ export async function userRegister(formData: FormData) {
   };
 
   try {
+    const session = await auth();
     const res = await fetch(`${API_URL}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
       },
       body: JSON.stringify(data),
     });
 
     const user = await res.json();
-    // console.log("mi resultado->", user)
     revalidatePath("/users/list");
     return user;
   } catch (error) {

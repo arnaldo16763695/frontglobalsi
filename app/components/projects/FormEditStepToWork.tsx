@@ -89,7 +89,7 @@ export default function FormEditStepToWork({ step }: { step: Steps; }) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Descripción" {...field} className="md:w-[100%]" />
+                    <Textarea placeholder="Descripción" {...field} className="md:w-[100%]" spellCheck={true} />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>

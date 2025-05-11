@@ -72,6 +72,7 @@ const FormAddItems = ({ id }: { id: string }) => {
                       placeholder="Introduzca la tarea"
                       {...field}
                       className="md:w-[600px]"
+                      spellCheck={true}
                     /> 
                   </FormControl>
                   <FormMessage />
