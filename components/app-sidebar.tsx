@@ -30,6 +30,8 @@ import { usePathname } from "next/navigation";
 // import { NavUserMobile } from "@/app/components/users/NavUserMobile";
 import { NavTech } from "@/app/components/technician/NavTech";
 // This is sample data.
+import Image from "next/image";
+import Link from "next/link";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathName = usePathname();
@@ -192,15 +194,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
+            <SidebarMenuButton size="lg" asChild >
+              <Link href="/dashboard" >
+                <div className="flex aspect-square w-full items-center justify-center rounded-lg text-sidebar-primary-foreground">
+                  {/* <GalleryVerticalEnd className="size-4" /> */}
+                  <Image className="dark:hidden" src="/images/logo.png" alt="Logo" width={90} height={90} />
+                  <Image className="hidden dark:block" src="/images/logo_dark.png" alt="Logo" width={90} height={90} />
                 </div>
-                <div className="flex flex-col gap-0.5 leading-none">
+                {/* <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Globalsi</span>
-                </div>
-              </a>
+                </div> */}
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
