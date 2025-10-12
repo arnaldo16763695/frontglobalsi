@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+
 import {
   BadgeCheck,
   Bell,
@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger, 
 } from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
@@ -29,13 +29,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { signOut } from "next-auth/react";
+import { ThemeMenuItems } from "../ThemeMenuItems"
+import { signOut } from "next-auth/react"
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string 
+    name: string
     email: string
     avatar: string
   }
@@ -56,14 +57,14 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -75,7 +76,7 @@ export function NavUser({
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate font-medium">{user.name}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -93,6 +94,11 @@ export function NavUser({
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
+
+              {/* Submenú para cambiar tema */}
+              
+              <ThemeMenuItems />
+
               <DropdownMenuItem>
                 <CreditCard />
                 Billing
@@ -104,8 +110,8 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()}>
-                <LogOut />
-                Log out
+              <LogOut />
+              Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

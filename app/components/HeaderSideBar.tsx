@@ -8,7 +8,7 @@ import {
     BreadcrumbSeparator,
   } from "@/components/ui/breadcrumb"
   import { Separator } from "@/components/ui/separator"
-import { ToggleTheme } from "@/components/ToggleTheme";
+// import { ToggleTheme } from "@/components/ToggleTheme";
 import {  SidebarTrigger } from "@/components/ui/sidebar"
 import Link from "next/link";
 
@@ -33,9 +33,9 @@ const HeaderSideBar = ({title, before, href}: {title: string, before: string, hr
       </Breadcrumb>
 
     </div>
-    <div className="pr-4">
+    {/* <div className="pr-4">
       <ToggleTheme />
-    </div>
+    </div> */}
   </header>
   )
 }
