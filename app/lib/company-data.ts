@@ -1,6 +1,6 @@
 
 
-import { API_URL } from "@/lib/constants";
+import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 
 export const dynamic = 'force-dynamic'; // Desactiva el renderizado estático
@@ -11,7 +11,7 @@ export async function fetchAllCompanies() {
 
 //  await new Promise((resolve) => setTimeout(resolve, 3000))
 
-    const companies = await fetch(`${API_URL}/api/companies`, {
+    const companies = await fetch(`${process.env.API_URL}/api/companies`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,
@@ -33,7 +33,7 @@ export async function fetchAllCompanies() {
 export async function fetchOneCompany(id: string) {
   const session = await auth();
   try {
-    const companies = await fetch(`${API_URL}/api/companies/${id}`, {
+    const companies = await fetch(`${process.env.API_URL}/api/companies/${id}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,

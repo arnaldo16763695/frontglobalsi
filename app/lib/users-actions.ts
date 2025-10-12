@@ -6,14 +6,13 @@ import { hash } from "bcryptjs";
 import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { API_URL } from "@/lib/constants";
 import { JWT } from "next-auth/jwt"; 
 
 export async function login(
   email: string | undefined,
   password: string | undefined
 ) {
-  const res = await fetch(`${API_URL}/api/auth/login`, {
+  const res = await fetch(`${process.env.API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -76,7 +75,7 @@ export async function userRegister(formData: FormData) {
   };
 
   try {
-    const res = await fetch(`${API_URL}/api/users`, {
+    const res = await fetch(`${process.env.API_URL}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +108,7 @@ export async function userEdit(id: string, formData: FormData) {
 
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/users/${id} `, {
+    const res = await fetch(`${process.env.API_URL}/api/users/${id} `, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +140,7 @@ export async function userChangePass(id: string, formData: FormData) {
 
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/users/changepass/${id}`, {
+    const res = await fetch(`${process.env.API_URL}/api/users/changepass/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -162,7 +161,7 @@ export async function refreshToken(token: JWT): Promise<JWT> {
   if (!token.refreshToken) {
     throw new Error("No refresh token");
   }
-  const res = await fetch(`${API_URL}/api/auth/refresh`, {
+  const res = await fetch(`${process.env.API_URL}/api/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,11 +1,10 @@
 import { auth } from "@/auth";
-import { API_URL } from "@/lib/constants";
 
 export const dynamic = 'force-dynamic'; // Desactiva el renderizado estático
 export async function fetchAllClients() {
   const session = await auth();
   try {
-    const clients = await fetch(`${API_URL}/api/clients`, {
+    const clients = await fetch(`${process.env.API_URL}/api/clients`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,
@@ -23,7 +22,7 @@ export async function fetchAllClients() {
 export async function fetchOneClient(id: string) {
   const session = await auth();
   try {
-    const client = await fetch(`${API_URL}/api/clients/${id}`, {
+    const client = await fetch(`${process.env.API_URL}/api/clients/${id}`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,

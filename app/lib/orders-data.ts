@@ -1,12 +1,12 @@
 "use server";
 
-import { API_URL } from "@/lib/constants";
+import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 
 export async function fetchAllProjects() {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/works`, {
+    const res = await fetch(`${process.env.API_URL}/api/works`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export async function fetchAllProjects() {
 export async function fetchOneProject(id:string) {
   const session = await auth();
   try {
-    const project = await fetch(`${API_URL}/api/works/${id}`, {
+    const project = await fetch(`${process.env.API_URL}/api/works/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export async function fetchOneProject(id:string) {
 export async function  fetStepsToWorkByIdWork(id: string) {
   const session = await auth();
   try {
-    const steps = await fetch(`${API_URL}/api/stepstoworks/${id}`, {
+    const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export async function  fetStepsToWorkByIdWork(id: string) {
 export async function fetchAllTechsInWork(idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/technicians/${idWork}`, {
+    const res = await fetch(`${process.env.API_URL}/api/technicians/${idWork}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export async function fetchAllTechsInWork(idWork: string) {
 export async function fetchAllOrdersByIdTech(idTech: string) {
   const session = await auth();
   try {
-    const orders = await fetch(`${API_URL}/api/works/technicians/${idTech}`, {
+    const orders = await fetch(`${process.env.API_URL}/api/works/technicians/${idTech}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

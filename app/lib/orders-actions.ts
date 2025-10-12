@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { API_URL } from "@/lib/constants";
+import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { editStepToWorkSchema, projectRegisterSchema, updateCompanyInWorkSchema, updateWorkStatusSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -17,7 +17,7 @@ export async function orderRegister(values: z.infer<typeof projectRegisterSchema
 
   try {
     console.log('Session que se envía:', session?.user?.id);
-    const res = await fetch(`${API_URL}/api/works`, {
+    const res = await fetch(`${process.env.API_URL}/api/works`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,
@@ -41,7 +41,7 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
   const session = await auth();
   console.log("steps",data)
   try {
-    const res = await fetch(`${API_URL}/api/stepstoworks`, {
+    const res = await fetch(`${process.env.API_URL}/api/stepstoworks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
 export async function reorderSteps(idWork: string, payload: { id: string; order: number }[]) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/stepstoworks/reorder/${idWork}`, {
+    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/reorder/${idWork}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export async function reorderSteps(idWork: string, payload: { id: string; order:
 export async function editStepToWork(idWork: string, data: z.infer<typeof editStepToWorkSchema>) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/stepstoworks/${data.stepId}`, {
+    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${data.stepId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export async function editStepToWork(idWork: string, data: z.infer<typeof editSt
 export async function deleteStepToWork(idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/stepstoworks/${idWork}`, {
+    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${idWork}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export async function deleteStepToWork(idWork: string) {
 export async function updateWorkStatus(idWork: string, status: z.infer<typeof updateWorkStatusSchema>) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/works/${idWork}`, {
+    const res = await fetch(`${process.env.API_URL}/api/works/${idWork}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export async function updateWorkStatus(idWork: string, status: z.infer<typeof up
 export async function editCompanyInWork(idWork: string, data: z.infer<typeof updateCompanyInWorkSchema>) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/works/companyinwork/${idWork}`, {
+    const res = await fetch(`${process.env.API_URL}/api/works/companyinwork/${idWork}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -179,7 +179,7 @@ export async function editCompanyInWork(idWork: string, data: z.infer<typeof upd
 export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>, idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/technicians`, {
+    const res = await fetch(`${process.env.API_URL}/api/technicians`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -203,7 +203,7 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
 export async function deleteTechFromWork(idTech: string, idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${API_URL}/api/technicians/removefromwork/${idWork}/${idTech}`, {
+    const res = await fetch(`${process.env.API_URL}/api/technicians/removefromwork/${idWork}/${idTech}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

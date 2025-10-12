@@ -1,6 +1,6 @@
 'use server'
 
-import { API_URL } from "@/lib/constants";
+import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
@@ -19,7 +19,7 @@ export async function companyRegister(formData: FormData) {
   };
 
   try {
-    const res = await fetch(`${API_URL}/api/companies`, {
+    const res = await fetch(`${process.env.API_URL}/api/companies`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export async function companyEdit(id: string, formData: FormData) {
   
     const session = await auth();
     try {
-      const res = await fetch(`${API_URL}/api/companies/${id}`, {
+      const res = await fetch(`${process.env.API_URL}/api/companies/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

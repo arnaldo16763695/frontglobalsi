@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { login } from "@/app/lib/users-actions";
-import { API_URL } from "./lib/constants";
 import { JWT } from "next-auth/jwt";
 
 
@@ -11,7 +10,7 @@ async function refreshToken(token: JWT): Promise<JWT> {
   if (!token.refreshToken) {
     throw new Error("No refresh token");
   }
-  const res = await fetch(`${API_URL}/api/auth/refresh`, {
+  const res = await fetch(`${process.env.API_URL}/api/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

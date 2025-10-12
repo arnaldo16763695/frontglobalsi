@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 
 export async function clientRegister(formData: FormData) {
@@ -16,7 +15,7 @@ export async function clientRegister(formData: FormData) {
 
   try {
     const session = await auth();
-    const res = await fetch(`${API_URL}/api/clients`, {
+    const res = await fetch(`${process.env.API_URL}/api/clients`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,
@@ -47,7 +46,7 @@ export async function clientEdit(id: string, formData: FormData) {
     };
   
     try {
-      const res = await fetch(`${API_URL}/api/clients/${id}`, {
+      const res = await fetch(`${process.env.API_URL}/api/clients/${id}`, {
         method: "PATCH",
         headers: {
           authorization: `Bearer ${session?.user?.accessToken}`,
