@@ -64,6 +64,7 @@ export const loginAction = async (values: z.infer<typeof loginSchema>) => {
 };
 
 export async function userRegister(formData: FormData) {
+  const session = await auth();
   //encrypt password
   const passEncryp = await hash(formData.get("password") as string, 10);
 
@@ -79,6 +80,7 @@ export async function userRegister(formData: FormData) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
       },
       body: JSON.stringify(data),
     });
