@@ -28,6 +28,7 @@ async function refreshToken(token: JWT): Promise<JWT> {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true, // <- importante detrás de proxy (Dokploy/Nginx)
   providers: [
     Credentials({
       authorize: async (credentials) => {
