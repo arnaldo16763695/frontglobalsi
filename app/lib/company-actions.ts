@@ -1,6 +1,5 @@
 'use server'
 
-import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 

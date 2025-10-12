@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic"; // Desactiva el renderizado estático
 
-import { process.env.API_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 
 export async function fetchAllUsers() {
