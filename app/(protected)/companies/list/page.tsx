@@ -2,7 +2,11 @@ import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { DataTableCompany } from "./data-table";
 import { columns } from "./columns";
 import { fetchAllCompanies } from "@/app/lib/company-data";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Empresas',
+};
 const page = async () => {
   const data = await fetchAllCompanies();
 

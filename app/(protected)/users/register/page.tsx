@@ -1,7 +1,11 @@
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import FormRegister from "@/app/components/users/FormRegister";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Registro de usuarios',
+};
 const registerPage = async () => {
   return (
     <>

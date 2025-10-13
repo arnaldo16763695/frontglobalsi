@@ -2,7 +2,11 @@ import FormAddCompany from '@/app/components/companies/FormAddCompany'
 import HeaderSideBar from '@/app/components/HeaderSideBar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { fetchAllClients } from '@/app/lib/client-data';
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Registro de empresas',
+};
 const RegisterCompanyPage = async () => {
 
   const clients = await fetchAllClients();

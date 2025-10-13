@@ -30,6 +30,7 @@ import { usePathname } from "next/navigation";
 // import { NavUserMobile } from "@/app/components/users/NavUserMobile";
 import { NavTech } from "@/app/components/technician/NavTech";
 // This is sample data.
+import Image from "next/image";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathName = usePathname();
@@ -194,8 +195,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary">
+                  {/* <GalleryVerticalEnd className="size-4" /> */}
+                  <Image src="/logo.png" alt="Logo" width={20} height={20} /> 
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Globalsi</span>

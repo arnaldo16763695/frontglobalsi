@@ -3,7 +3,11 @@ import { columns } from "./columns";
 import { DataTableClient } from "./data-table";
 
 import { fetchAllClients } from "@/app/lib/client-data";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Clientes',
+};
 const listClientsPage = async () => {
   const data = await fetchAllClients();
 

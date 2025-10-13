@@ -2,8 +2,11 @@ import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { fetchAllUsers } from "@/app/lib/user-data";
+import type { Metadata } from "next";
 
-
+export const metadata: Metadata = {
+  title: 'Listado de usuarios',
+};
 
 const page = async () => {
   const data = await fetchAllUsers();

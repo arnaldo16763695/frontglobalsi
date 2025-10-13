@@ -2,6 +2,11 @@ import Dashboard from "@/app/components/Dashboard";
 import DashboardTech from "@/app/components/DashboardTech";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { auth } from "@/auth";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 export default async function Home() {
   const session = await auth();

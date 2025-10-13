@@ -1,7 +1,11 @@
 import FormRegisterClient from "@/app/components/clients/FormRegisterClient";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Registro de Clientes',
+};
 const registerClientPage = async () => {
   return (
     <>

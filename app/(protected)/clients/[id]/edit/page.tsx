@@ -2,7 +2,11 @@ import FormEditClient from "@/app/components/clients/FormEditClient";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
 import { fetchOneClient } from "@/app/lib/client-data";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Edición de cliente',
+};
 const editClientPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const client = await fetchOneClient(params.id);

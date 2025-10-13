@@ -3,7 +3,11 @@ import HeaderSideBar from '@/app/components/HeaderSideBar'
 import { fetchOneCompany } from '@/app/lib/company-data'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { fetchAllClients } from '@/app/lib/client-data'
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'Edición de empresas',
+};
 const page = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
   const company = await fetchOneCompany(params.id);
