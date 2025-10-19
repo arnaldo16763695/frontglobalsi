@@ -130,6 +130,35 @@ export async function userEdit(id: string, formData: FormData) {
   }
 }
 
+export async function profileEdit(id:string, formData: FormData){
+  const session = await auth();
+    const data = {
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+  };
+ try {
+    const res = await fetch(`${process.env.API_URL}/api/users/${id} `, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const user = await res.json();
+    // console.log("mi resultado->", user);
+    revalidatePath("/users/list");
+    return user;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
+
 export async function userChangePass(id: string, formData: FormData) {
   //encrypt password
   const passEncryp = await hash(formData.get("password") as string, 10);

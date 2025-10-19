@@ -16,18 +16,18 @@ export function ThemeMenuItems() {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
-        <Sun className="mr-2 h-4 w-4" />
-        Theme
+        <Sun className=" h-4 w-4" />
+        Tema
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent>
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          Claro
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          Oscuro
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
+          Sistema
         </DropdownMenuItem>
       </DropdownMenuSubContent>
     </DropdownMenuSub>
