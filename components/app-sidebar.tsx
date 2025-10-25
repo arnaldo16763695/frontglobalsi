@@ -185,7 +185,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const user = {
     name: status === "authenticated" ? session?.user?.name || "Exmple" : "",
     email: status === "authenticated" ? session?.user?.email || "example" : "",
-    avatar: "/avatar.png",
+    avatar: status === "authenticated" ? session?.user?.avatar || "/avatar.png" : "",
     id: status === "authenticated" ? session?.user?.id || "" : "",
   };
 

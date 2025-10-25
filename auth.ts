@@ -65,7 +65,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.sub = user.id;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
-        token.expiresIn = user.expiresIn;
+        token.expiresIn = user.expiresIn;        
+        token.avatar = user.avatar;        
       }
 
       
@@ -82,6 +83,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.sub as string;
       session.user.accessToken = token.accessToken as string;
       session.user.refreshToken = token.refreshToken as string;
+      session.user.avatar = token.avatar as string;
       return session;
     },
   },
