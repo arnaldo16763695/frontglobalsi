@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { userEditSchema } from "@/lib/zod";
+import { userEditProfileSchema } from "@/lib/zod";
 import {
   Form,
   FormControl,
@@ -15,9 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { userEdit } from "@/app/lib/users-actions";
+import { profileEdit } from "@/app/lib/users-actions";
 import { useRouter } from "next/navigation";
-
 
 // import { loginAction } from "@/app/lib/users-actions";
 export type User = {
@@ -29,33 +28,30 @@ export type User = {
   status: string;
 };
 const FormEditPofile = ({ user }: { user: User }) => {
-
   const router = useRouter();
   // 1. Define your form.
-  const form = useForm<z.infer<typeof userEditSchema>>({
-    resolver: zodResolver(userEditSchema),
+  const form = useForm<z.infer<typeof userEditProfileSchema>>({
+    resolver: zodResolver(userEditProfileSchema),
     defaultValues: {
       name: user.name,
       phone: user.phone,
     },
   });
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof userEditSchema>) {
-    // return console.log(values)
+  async function onSubmit(values: z.infer<typeof userEditProfileSchema>) {
     const formData = new FormData();
     formData.append("name", values.name.trim());
     formData.append("phone", values.phone.trim());
 
-    const res = await userEdit(user.id, formData);
+    const res = await profileEdit(user.id, formData);
 
     if (res.error) {
       if (res.error === "Conflict") {
         toast.error(res.message);
       }
-      console.log(res.message)
     } else {
-      toast.success("Registro editado exitosamente");    
-      router.push("/users/list");
+      toast.success("Registro editado exitosamente");
+      router.push("/dashboard");
     }
   }
   return (
@@ -88,12 +84,13 @@ const FormEditPofile = ({ user }: { user: User }) => {
               <FormMessage />
             </FormItem>
           )}
-        />    
+        />
 
-    
+        
 
         <Button type="submit">Guardar</Button>
       </form>
+      
     </Form>
   );
 };

@@ -48,8 +48,27 @@ export async function fetchOneProfile(id: string) {
         authorization: `Bearer ${session?.user?.accessToken}`,
         "Content-Type": "application/json",
       },
-    });
+    });  
 
+    if (!user.ok) {
+      throw new Error("Usuario no existe");
+    }
+    return await user.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchUserProfile(id: string, accessToken: string | undefined ) {
+  try {
+    const user = await fetch(`${process.env.API_URL}/api/users/profile/${id}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    
     if (!user.ok) {
       throw new Error("Usuario no existe");
     }

@@ -85,7 +85,6 @@ export async function userRegister(formData: FormData) {
     });
 
     const user = await res.json();
-    // console.log("mi resultado->", user)
     revalidatePath("/users/list");
     return user;
   } catch (error) {
@@ -116,9 +115,7 @@ export async function userEdit(id: string, formData: FormData) {
       },
       body: JSON.stringify(data),
     });
-
     const user = await res.json();
-    // console.log("mi resultado->", user);
     revalidatePath("/users/list");
     return user;
   } catch (error) {
@@ -137,7 +134,7 @@ export async function profileEdit(id:string, formData: FormData){
     phone: formData.get("phone"),
   };
  try {
-    const res = await fetch(`${process.env.API_URL}/api/users/${id} `, {
+    const res = await fetch(`${process.env.API_URL}/api/users/profile/${id}/${session?.user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -149,6 +146,32 @@ export async function profileEdit(id:string, formData: FormData){
     const user = await res.json();
     // console.log("mi resultado->", user);
     revalidatePath("/users/list");
+    return user;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
+
+export async function profileEditAvatar(id:string, avatar: string, avatarKey: string ,accessToken: string | undefined){
+    const data = {
+    avatar,
+    avatarKey,
+  };
+ try {
+    const res = await fetch(`${process.env.API_URL}/api/users/profile/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const user = await res.json();
     return user;
   } catch (error) {
     console.log("error: ", error);
@@ -180,6 +203,33 @@ export async function userChangePass(id: string, formData: FormData) {
 
     const user = await res.json();
     revalidatePath("/users/list");
+    return user;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+export async function userProfileChangePass(id: string, formData: FormData) {
+  //encrypt password
+  const passEncryp = await hash(formData.get("password") as string, 10);
+
+  const data = {
+    password: passEncryp,
+  };
+
+  const session = await auth();
+  try {
+    const res = await fetch(`${process.env.API_URL}/api/users/changepassprofile/${id}/${session?.user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const user = await res.json();
+   
     return user;
   } catch (error) {
     console.log("error: ", error);

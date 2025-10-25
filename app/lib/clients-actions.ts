@@ -54,7 +54,8 @@ export async function clientEdit(id: string, formData: FormData) {
         },
         body: JSON.stringify(data),
       });
-  
+
+
       const client = await res.json();
       revalidatePath("/clients/list");
       return client;

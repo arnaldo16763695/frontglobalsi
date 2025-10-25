@@ -55,6 +55,15 @@ export const userEditSchema = object({
   ),
 });
 
+export const userEditProfileSchema = object({
+  name: string({ required_error: "Name is required" })
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+  phone: string()
+    .min(1, "Name is required")
+    .max(32, "Name must be less than 32 characters"),
+});
+
 export const clientRegisterSchema = object({
   name: string({ required_error: "Name is required" })
     .min(1, "Name is required")
