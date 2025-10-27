@@ -7,6 +7,7 @@ import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { JWT } from "next-auth/jwt"; 
+import { fetchUserProfile } from "./user-data";
 
 export async function login(
   email: string | undefined,
@@ -162,7 +163,8 @@ export async function profileEditAvatar(id:string, avatar: string, avatarKey: st
     avatarKey,
   };
  try {
-    const res = await fetch(`${process.env.API_URL}/api/users/profile/${id}`, {
+  const FromUser = await fetchUserProfile(id, accessToken);
+    const res = await fetch(`${process.env.API_URL}/api/users/profile/${id}/${FromUser.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
