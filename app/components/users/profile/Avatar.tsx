@@ -8,10 +8,11 @@ import { Pencil } from "lucide-react";
 interface AvatarProps {
   user: {
     avatar: string;
-    id: string;
+    id: string;   
   };
+  setShowButton: (show: boolean) => void;
 }
-function AvatarProfile({ user }: AvatarProps) {
+function AvatarProfile({ user, setShowButton }: AvatarProps) {
   const router = useRouter();
   const [upload, setUpload] = useState(false);
   return (
@@ -25,12 +26,17 @@ function AvatarProfile({ user }: AvatarProps) {
         className="ml-2 mt-4 ut-button:bg-slate-500 ut-button:ut-readying:bg-slate-500/50"
         onClientUploadComplete={() => {
           setUpload(false);
+          setShowButton(true);
           router.refresh()
-        }}
+        }} 
+        onUploadProgress={() => {
+          setShowButton(false);
+        }}       
         onUploadError={(error: Error) => {
           // Do something with the error.
           alert(`ERROR! ${error.message}`);
           setUpload(false)
+          setShowButton(true);
         }}        
       />
       : <span title="Editar avatar" onClick={() => setUpload(true)}><Pencil className="cursor-pointer ml-2" /></span>	

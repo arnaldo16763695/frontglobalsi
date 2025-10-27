@@ -17,17 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { profileEdit } from "@/app/lib/users-actions";
 import { useRouter } from "next/navigation";
-
+import { User } from "@/lib/types";
 // import { loginAction } from "@/app/lib/users-actions";
-export type User = {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  role: string;
-  status: string;
-};
-const FormEditPofile = ({ user }: { user: User }) => {
+
+const FormEditPofile = ({ user, showButton }: { user: User, showButton: boolean }) => {
   const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof userEditProfileSchema>>({
@@ -88,7 +81,7 @@ const FormEditPofile = ({ user }: { user: User }) => {
 
         
 
-        <Button type="submit">Guardar</Button>
+        <Button disabled={!showButton} type="submit">Guardar</Button>
       </form>
       
     </Form>

@@ -15,6 +15,8 @@ export type User = {
   phone: string;
   rut: string;
   status: string;
+  avatar: string;
+  role: string
 };
 
 export type Company = {
