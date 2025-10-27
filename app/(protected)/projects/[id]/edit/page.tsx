@@ -43,7 +43,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
 
       <div className="flex text-xs md:text-sm flex-1 flex-col gap-4 p-2 md:p-4">
         <div className="min-h-[100vh] flex-1 flex justify-center items-start rounded-xl bg-muted/50 md:min-h-min">
-          <Card className="w-[100%] mt-2">
+          <Card className="w-[100%] mt-2 mx-2">
             <CardHeader className="flex flex-col lg:flex-row justify-between">
               <div className="md:text-xl">Gestión de orden de trabajo</div>
               <div className="">

@@ -34,6 +34,7 @@ export async function fetchOneProject(id:string) {
       },
     });
 
+
     if (!project.ok) {
       throw new Error("Proyecto no existe");
     }
@@ -42,6 +43,48 @@ export async function fetchOneProject(id:string) {
     console.log(error);
   }
 }
+
+
+export async function  fethPendingStepsByIdWork(id: string) {
+  const session = await auth();
+  try {
+    const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/pending/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+
+    if (!steps.ok) {
+      throw new Error("Steps no existen");
+    }
+    return await steps.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function  fethFinishedStepsByIdWork(id: string) {
+  const session = await auth();
+  try {
+    const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/finished/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
+
+    if (!steps.ok) {
+      throw new Error("Steps no existen");
+    }
+    return await steps.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 
 export async function  fetStepsToWorkByIdWork(id: string) {
