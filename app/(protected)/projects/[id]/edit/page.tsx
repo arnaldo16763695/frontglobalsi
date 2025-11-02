@@ -45,7 +45,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
         <div className="min-h-[100vh] flex-1 flex justify-center items-start rounded-xl bg-muted/50 md:min-h-min">
           <Card className="w-[100%] mt-2 mx-2">
             <CardHeader className="flex flex-col lg:flex-row justify-between">
-              <div className="md:text-xl">Gestión de orden de trabajo</div>
+              <div className="md:text-xl font-bold">Gestión de orden de trabajo</div>
               <div className="">
                 <span className="text-sm md:text-base">Fecha de creación:</span>{" "}
                 <span className="text-green-600 ">
@@ -61,7 +61,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
               />
               <div className="w-[100%] p-0 md:p-2 mt-4">
                 <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
-                  <legend>Técnicos encargados</legend>
+                  <legend className="font-bold">Técnicos encargados</legend>
                   <DiagAddTechToWork
                     idWork={params.id}
                     technicians={technicians}
@@ -70,12 +70,12 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                     techniciansInWork.map((tech) => (
                       <div
                         key={tech.technician.id}
-                        className="flex  justify-between border w-full"
+                        className="flex py-1  justify-between border w-full rounded-md"
                       >
-                        <div className="flex items-center  border px-2 py-1 w-[70%] md:w-[90%] ">
+                        <div className="flex items-center px-2  w-[70%] md:w-[90%] ">
                           {tech.technician.name}
                         </div>
-                        <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
+                        <div className="flex flex-col md:flex-row items-center w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
                           <DiagDeleteTechFromWork
                             techId={tech.technician.id}
                             workId={project.id}
@@ -87,19 +87,19 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
               </div>
               <div className="w-[100%] p-0 md:p-2 mt-4">
                 <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
-                  <legend>Tareas</legend>
+                  <legend className="font-bold">Tareas</legend>
 
                   <ListItemsDialog idWork={params.id} />
 
                   {steps.map((step) => (
                     <div
                       key={step.id}
-                      className="flex  justify-between border w-full"
+                      className="flex py-1  justify-between border w-full rounded-md"
                     >
-                      <div className="flex items-center  border px-2 py-1 w-[70%] md:w-[90%] ">
+                      <div className="flex items-center px-2 w-[70%] md:w-[90%] ">
                         {step.description}
                       </div>
-                      <div className="flex flex-col md:flex-row items-center border p-2 w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
+                      <div className="flex flex-col md:flex-row items-center w-[30%] md:w-[10%] md:gap-4 gap-4 justify-center">
                         <FormEditStepToWork step={step} />
                         <DiagDeleteStepToWork step={step} />
                       </div>

@@ -125,7 +125,6 @@ export async function editStatusStepToWork(data:{ stepId: string, status: "PENDI
       }),
     });
     const result = await res.json();
-   console.log('---->',result)
     return result;
   } catch (error) {
     console.log("error: ", error);
@@ -212,7 +211,6 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
       }),
     });
     const resp = await res.json();
-    console.log('mi respuesta', resp)
     
     revalidatePath(`/projects/${idWork}/edit`);
     return resp;

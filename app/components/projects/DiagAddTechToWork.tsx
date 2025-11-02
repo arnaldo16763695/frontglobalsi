@@ -49,7 +49,7 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof technicianToWorkSchema>) {
     const res = await addTechToWork(values, idWork);
-    console.log(res)
+    
     if (res.error) {
         if (res.error === "Conflict") {
           toast.error(res.message);
@@ -59,12 +59,11 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
         setDialogOpen(false);
         router.refresh();
       }
-    console.log(values, idWork);
   }
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Asignar Técnico</Button>
+        <Button variant="outline" className="bg-slate-200 dark:text-black dark:hover:text-white">Asignar Técnico</Button> 
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -102,11 +101,11 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
             </FormItem>
           )}
         />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Guardar</Button>
           </form>
         </Form>
         <DialogFooter>
-          <Button type="submit">Cancelar</Button>
+      
         </DialogFooter>
       </DialogContent>
     </Dialog>

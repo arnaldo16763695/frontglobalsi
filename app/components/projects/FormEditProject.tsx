@@ -21,28 +21,28 @@ const FormEditProject = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 ">
           <div className="p-1 md:p-2 flex gap-1 items-center">
             <div>
-              <span className="font-bold">Orden: </span>
+              <span className="text-sm md:text-base">Orden: </span>
             </div>
             <div>
-              <span className="text-green-600">{project.workCode}</span>
+              <span className="text-green-600 text-sm md:text-base">{project.workCode}</span>
             </div>
           </div>
           <div className="p-1 md:p-2 flex gap-1 items-center">
             <div>
-              <span className="font-bold">Cliente: </span>
+              <span className=" text-sm md:text-base">Cliente: </span>
             </div>
             <div>
-              <span className="text-green-600">{client.name}</span>
+              <span className="text-green-600 text-sm md:text-base">{client.name}</span>
             </div>
           </div>
           <div className="p-1 md:p-2 flex gap-1 items-center ">
             <div>
-              <span className="font-bold">Estado de la orden: </span>
+              <span className=" text-sm md:text-base">Estado de la orden: </span>
             </div>
             <div>
               {
                 <span
-                  className={` ${(() => {
+                  className={`text-sm md:text-base ${(() => {
                     switch (project.progress) {
                       case "NOT_STARTED":
                         return "text-red-600";
@@ -77,10 +77,10 @@ const FormEditProject = ({
           </div>
           <div className="p-1 md:p-2 flex gap-1 items-center ">
             <div>
-              <span className="font-bold">Empresa: </span>
+              <span className=" text-sm md:text-base">Empresa: </span>
             </div>
             <div>
-              <span className="text-green-600">{project.company.companyName}</span>
+              <span className="text-green-600 text-sm md:text-base">{project.company.companyName}</span>
               <DiagEditCopanyInWork
                 companyId={project.companyId}
                 companies={companies}

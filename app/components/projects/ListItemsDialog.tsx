@@ -21,7 +21,7 @@ export default function ListItemsDialog({  idWork }: {  idWork:string }) {
         <DialogHeader>
           <DialogTitle>Agregar tareas</DialogTitle>
           <DialogDescription>
-            Escriba la descripción de la tarea y presione enter.
+            Escriba la descripción de la tarea y presione agregar.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

@@ -55,6 +55,7 @@ export type Projects = {
 export type Steps = {
   id: string;
   description: string;
+  status: "PENDING" | "FINISHED";
   user: {
     id: string;
     name: string;
