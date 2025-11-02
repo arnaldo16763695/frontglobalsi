@@ -195,14 +195,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary">
-                  {/* <GalleryVerticalEnd className="size-4" /> */}
-                  <Image src="/logo.png" alt="Logo" width={20} height={20} /> 
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Globalsi</span>
-                </div>
+              <a href="/dashboard">
+                <div className="flex aspect-square w-full  items-center justify-center rounded-lg ">
+                  <Image className="dark:hidden" src="/logo.png" alt="Logo" width={100} height={70} /> 
+                  <Image className="hidden dark:block" src="/logo_dark.png" alt="Logo" width={100} height={70} /> 
+                </div>              
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
