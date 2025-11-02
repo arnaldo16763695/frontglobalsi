@@ -110,6 +110,28 @@ export async function editStepToWork(idWork: string, data: z.infer<typeof editSt
   }
 }
 
+export async function editStatusStepToWork(data:{ stepId: string, status: "PENDING" | "FINISHED"}){
+    const session = await auth();
+  try {
+    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${data.stepId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        status: data.status,
+        userId: session?.user?.id,
+      }),
+    });
+    const result = await res.json();
+   console.log('---->',result)
+    return result;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
 export async function deleteStepToWork(idWork: string) {
   const session = await auth();
   try {
@@ -190,7 +212,7 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
       }),
     });
     const resp = await res.json();
-    console.log(resp)
+    console.log('mi respuesta', resp)
     
     revalidatePath(`/projects/${idWork}/edit`);
     return resp;
