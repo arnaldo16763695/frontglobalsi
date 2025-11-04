@@ -48,7 +48,7 @@ export async function fetchOneProfile(id: string) {
         authorization: `Bearer ${session?.user?.accessToken}`,
         "Content-Type": "application/json",
       },
-    });  
+    });
 
     if (!user.ok) {
       throw new Error("Usuario no existe");
@@ -59,7 +59,10 @@ export async function fetchOneProfile(id: string) {
   }
 }
 
-export async function fetchUserProfile(id: string, accessToken: string | undefined ) {
+export async function fetchUserProfile(
+  id: string,
+  accessToken: string | undefined
+) {
   try {
     const user = await fetch(`${process.env.API_URL}/api/users/profile/${id}`, {
       method: "GET",
@@ -68,7 +71,7 @@ export async function fetchUserProfile(id: string, accessToken: string | undefin
         "Content-Type": "application/json",
       },
     });
-    
+
     if (!user.ok) {
       throw new Error("Usuario no existe");
     }
@@ -93,3 +96,4 @@ export async function fetchAllTechs() {
     console.log(error);
   }
 }
+

@@ -30,8 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-
-
+import ReportDiag from "@/app/components/users/ReportDiag";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,20 +59,23 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
- 
-   
 
-  return (
+  return ( 
     <div className="p-2">
       <div className="flex justify-between items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="w-full flex justify-between items-center">
+          <Input
+            placeholder="Filter emails..."
+            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("email")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <div>
+            <ReportDiag />
+          </div>
+        </div>
         <div className="px-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -116,10 +118,9 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} >
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -162,4 +163,3 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
-
