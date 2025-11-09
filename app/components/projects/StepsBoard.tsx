@@ -32,7 +32,7 @@ function TaskCard({ id, title }: { id: string; title: string }) {
   return (
     <div
       ref={setNodeRef}
-      className="rounded-lg bg-white shadow-sm border px-3 py-2 mb-2 select-none text-sm"
+      className="rounded-lg bg-slate-400 dark:bg-slate-600 border px-3 py-2 mb-2 select-none text-sm"
       style={{
         opacity: isDragging ? 0.6 : 1,
         transform: transform
@@ -60,7 +60,7 @@ function TaskCard({ id, title }: { id: string; title: string }) {
         >
           <Move />
         </div>
-        <div className="min-w-0 break-words">{title}</div>
+        <div className="min-w-0 break-words  dark:text-white">{title}</div>
       </div>
     </div>
   );

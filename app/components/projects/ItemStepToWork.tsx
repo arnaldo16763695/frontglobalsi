@@ -14,7 +14,7 @@ const ItemStepToWork = ({ step }: { step: Steps }) => {
     }
   return (
     <Card {...attributes} {...listeners} ref={setNodeRef} style={style}>
-      <CardContent className='flex justify-start p-2 bg-slate-500 text-white dark:bg-slate-800 text-xs md:text-sm' >
+      <CardContent className='flex justify-start p-2 bg-slate-500 text-white dark:bg-slate-800 text-xs md:text-sm rounded-md' >
         {step.description}
       </CardContent>
     </Card>

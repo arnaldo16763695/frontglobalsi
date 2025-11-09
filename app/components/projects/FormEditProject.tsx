@@ -2,42 +2,53 @@
 
 import React from "react";
 import { Projects } from "@/lib/types";
- 
+
 import { Company, Clients } from "@/lib/types";
 import DiagEditStatusWork from "./DiagEditStatusWork";
 import { DiagEditCopanyInWork } from "./DiagEditCopanyInWork";
+import { ProgressWork } from "../Progress";
 const FormEditProject = ({
   project,
   companies,
   client,
+  progress,
 }: {
   project: Projects;
   companies: Company[];
   client: Clients;
+  progress: number;
 }) => {
   return (
-    <>
+    <div className="flex-col">
       <div className="flex flex-col gap-2 text-xs md:text-xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 ">
-          <div className="p-1 md:p-2 flex gap-1 items-center">
+        <div className="flex gap-1 justify-between p-2 ">
+          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
             <div>
               <span className="text-sm md:text-base">Orden: </span>
             </div>
             <div>
-              <span className="text-green-600 text-sm md:text-base">{project.workCode}</span>
+              <span className="text-green-600 text-sm md:text-base">
+                {project.workCode}
+              </span>
             </div>
           </div>
-          <div className="p-1 md:p-2 flex gap-1 items-center">
+
+          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
             <div>
               <span className=" text-sm md:text-base">Cliente: </span>
             </div>
             <div>
-              <span className="text-green-600 text-sm md:text-base">{client.name}</span>
+              <span className="text-green-600 text-sm md:text-base">
+                {client.name}
+              </span>
             </div>
           </div>
-          <div className="p-1 md:p-2 flex gap-1 items-center ">
+
+          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md ">
             <div>
-              <span className=" text-sm md:text-base">Estado de la orden: </span>
+              <span className=" text-sm md:text-base">
+                Estado de la orden:{" "}
+              </span>
             </div>
             <div>
               {
@@ -75,12 +86,15 @@ const FormEditProject = ({
               />
             </div>
           </div>
-          <div className="p-1 md:p-2 flex gap-1 items-center ">
+
+          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
             <div>
               <span className=" text-sm md:text-base">Empresa: </span>
             </div>
             <div>
-              <span className="text-green-600 text-sm md:text-base">{project.company.companyName}</span>
+              <span className="text-green-600 text-sm md:text-base">
+                {project.company.companyName}
+              </span>
               <DiagEditCopanyInWork
                 companyId={project.companyId}
                 companies={companies}
@@ -88,11 +102,14 @@ const FormEditProject = ({
               />
             </div>
           </div>
+
+          <div className="p-1 md:p-2 flex gap-2 items-center border rounded-md">
+            <ProgressWork progress={progress}  />
+            <span className="text-sm md:text-base">{progress} %</span>
+          </div>
         </div>
       </div>
-
-    
-    </>
+    </div>
   );
 };
 

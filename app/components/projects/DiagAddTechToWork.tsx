@@ -63,7 +63,7 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-slate-200 dark:text-black dark:hover:text-white">Asignar Técnico</Button> 
+        <Button >Asignar Técnico</Button> 
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

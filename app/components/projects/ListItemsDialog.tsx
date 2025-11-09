@@ -15,7 +15,7 @@ export default function ListItemsDialog({  idWork }: {  idWork:string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-slate-200 dark:text-black dark:hover:text-white">Agregar tareas</Button>
+        <Button >Agregar tareas</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[80%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>

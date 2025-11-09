@@ -78,6 +78,12 @@ export default function DiagEditStatusWork({
       if (res.error === "Conflict") {
         toast.error(res.message);
       }
+      if (res.error === "whitoutTech"){
+        toast.error(res.message);
+      }
+      if (res.error === "stepsPending"){
+        toast.error(res.message);
+      }
     } else {
       toast.success("Registro editado exitosamente");
       setDialogOpen(false);

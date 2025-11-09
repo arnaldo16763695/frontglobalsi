@@ -8,7 +8,6 @@ import { columns } from "./columns";
 const TechProjectsList = async () => {
   const session = await auth();
   const data = await fetchAllOrdersByIdTech(session?.user?.id || ""); 
-  console.log('ordenes mias', data)
   return (
     <>
       <HeaderSideBar
