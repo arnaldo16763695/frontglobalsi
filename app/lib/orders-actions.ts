@@ -1,12 +1,19 @@
-'use server'
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import { editStepToWorkSchema, projectRegisterSchema, updateCompanyInWorkSchema, updateWorkStatusSchema } from "@/lib/zod";
+import {
+  editStepToWorkSchema,
+  projectRegisterSchema,
+  updateCompanyInWorkSchema,
+  updateWorkStatusSchema,
+} from "@/lib/zod";
 import { z } from "zod";
 import { itemRegisterSchema, technicianToWorkSchema } from "@/lib/zod";
 
-export async function orderRegister(values: z.infer<typeof projectRegisterSchema>) {
+export async function orderRegister(
+  values: z.infer<typeof projectRegisterSchema>
+) {
   //encrypt password
   const session = await auth();
   const data = {
@@ -15,7 +22,7 @@ export async function orderRegister(values: z.infer<typeof projectRegisterSchema
   };
 
   try {
-    console.log('Session que se envía:', session?.user?.id);
+    console.log("Session que se envía:", session?.user?.id);
     const res = await fetch(`${process.env.API_URL}/api/works`, {
       method: "POST",
       headers: {
@@ -25,20 +32,19 @@ export async function orderRegister(values: z.infer<typeof projectRegisterSchema
       body: JSON.stringify(data),
     });
 
-
     const client = await res.json();
     // console.log("mi resultado->", user)
     revalidatePath("/projects/list");
-    
+
     return client;
   } catch (error) {
     console.log("error: ", error);
   }
 }
 
-export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
+export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>) {
   const session = await auth();
-  console.log("steps",data)
+  console.log("steps", data);
   try {
     const res = await fetch(`${process.env.API_URL}/api/stepstoworks`, {
       method: "POST",
@@ -51,8 +57,8 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
         worksId: data.worksId,
         userId: session?.user?.id,
         order: data.order,
-      })
-    })
+      }),
+    });
 
     const user = await res.json();
     revalidatePath(`/projects/${data.worksId}/edit`);
@@ -66,20 +72,26 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>){
   }
 }
 
-export async function reorderSteps(idWork: string, payload: { id: string; order: number }[]) {
+export async function reorderSteps(
+  idWork: string,
+  payload: { id: string; order: number }[]
+) {
   const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/reorder/${idWork}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-      body: JSON.stringify({
-        worksId: idWork,
-        ordered: payload
-      }),
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/reorder/${idWork}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          worksId: idWork,
+          ordered: payload,
+        }),
+      }
+    );
     const client = await res.json();
     revalidatePath(`/projects/${idWork}/edit`);
     return client;
@@ -88,20 +100,26 @@ export async function reorderSteps(idWork: string, payload: { id: string; order:
   }
 }
 
-export async function editStepToWork(idWork: string, data: z.infer<typeof editStepToWorkSchema>) {
+export async function editStepToWork(
+  idWork: string,
+  data: z.infer<typeof editStepToWorkSchema>
+) {
   const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${data.stepId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-      body: JSON.stringify({
-        description: data.description,
-        userId: session?.user?.id,
-      }),
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/${data.stepId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          description: data.description,
+          userId: session?.user?.id,
+        }),
+      }
+    );
     const client = await res.json();
     revalidatePath(`/projects/${idWork}/edit`);
     return client;
@@ -110,20 +128,26 @@ export async function editStepToWork(idWork: string, data: z.infer<typeof editSt
   }
 }
 
-export async function editStatusStepToWork(data:{ stepId: string, status: "PENDING" | "FINISHED"}){
-    const session = await auth();
+export async function editStatusStepToWork(data: {
+  stepId: string;
+  status: "PENDING" | "FINISHED";
+}) {
+  const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${data.stepId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-      body: JSON.stringify({
-        status: data.status,
-        userId: session?.user?.id,
-      }),
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/${data.stepId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          status: data.status,
+          userId: session?.user?.id,
+        }),
+      }
+    );
     const result = await res.json();
     return result;
   } catch (error) {
@@ -134,13 +158,16 @@ export async function editStatusStepToWork(data:{ stepId: string, status: "PENDI
 export async function deleteStepToWork(idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/stepstoworks/${idWork}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      }, 
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/${idWork}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
     const step = await res.json();
     revalidatePath(`/projects/${idWork}/edit`);
     return step;
@@ -149,9 +176,65 @@ export async function deleteStepToWork(idWork: string) {
   }
 }
 
-export async function updateWorkStatus(idWork: string, status: z.infer<typeof updateWorkStatusSchema>) {
+export async function updateWorkStatus(
+  idWork: string,
+  status: z.infer<typeof updateWorkStatusSchema>
+) {
   const session = await auth();
   try {
+    if (status.status === "IN_PROGRESS") {
+      const r = await fetch(
+        `${process.env.API_URL}/api/technicians/${idWork}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+        }
+      );
+
+      if (!r.ok) {
+        return { ok: false, error: "No se pudo verificar técnicos asignados." };
+      }
+
+      const exist = await r.json();
+
+      if (exist.length === 0) {
+        return {
+          ok: false,
+          error: "whitoutTech",
+          message: "Debe asignar al menos un técnico a la orden",
+        };
+      }
+    }
+    if (status.status === "FINISHED") {
+      const r = await fetch(
+        `${process.env.API_URL}/api/stepstoworks/pending/${idWork}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+        }
+      );
+
+      if (!r.ok) {
+        return { ok: false, error: "No se pudo verificar técnicos asignados." };
+      }
+
+      const exist = await r.json();
+
+      if (exist.length > 0) {
+        return {
+          ok: false,
+          error: "stepsPending",
+          message: "Aún existen tareas pendientes",
+        };
+      }
+    }
+
     const res = await fetch(`${process.env.API_URL}/api/works/${idWork}`, {
       method: "PATCH",
       headers: {
@@ -159,35 +242,13 @@ export async function updateWorkStatus(idWork: string, status: z.infer<typeof up
         authorization: `Bearer ${session?.user?.accessToken}`,
       },
       body: JSON.stringify({
-        progress:status.status,
+        progress: status.status,
         userId: session?.user?.id,
       }),
     });
     const resp = await res.json();
-    
-    revalidatePath(`/projects/${idWork}/edit`);
-    return resp;
-  } catch (error) {
-    console.log("error: ", error);
-  }
-} 
+    // console.log(resp, "rrrrrrrrrrrrr", status.status);
 
-export async function editCompanyInWork(idWork: string, data: z.infer<typeof updateCompanyInWorkSchema>) {
-  const session = await auth();
-  try {
-    const res = await fetch(`${process.env.API_URL}/api/works/companyinwork/${idWork}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-      body: JSON.stringify({
-        companyId: data.companyId,
-        userId: session?.user?.id,
-      }),
-    });
-    const resp = await res.json();
-    
     revalidatePath(`/projects/${idWork}/edit`);
     return resp;
   } catch (error) {
@@ -195,8 +256,39 @@ export async function editCompanyInWork(idWork: string, data: z.infer<typeof upd
   }
 }
 
+export async function editCompanyInWork(
+  idWork: string,
+  data: z.infer<typeof updateCompanyInWorkSchema>
+) {
+  const session = await auth();
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/api/works/companyinwork/${idWork}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          companyId: data.companyId,
+          userId: session?.user?.id,
+        }),
+      }
+    );
+    const resp = await res.json();
 
-export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>, idWork: string) {
+    revalidatePath(`/projects/${idWork}/edit`);
+    return resp;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+export async function addTechToWork(
+  data: z.infer<typeof technicianToWorkSchema>,
+  idWork: string
+) {
   const session = await auth();
   try {
     const res = await fetch(`${process.env.API_URL}/api/technicians`, {
@@ -211,7 +303,7 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
       }),
     });
     const resp = await res.json();
-    
+
     revalidatePath(`/projects/${idWork}/edit`);
     return resp;
   } catch (error) {
@@ -222,13 +314,16 @@ export async function addTechToWork(data: z.infer<typeof technicianToWorkSchema>
 export async function deleteTechFromWork(idTech: string, idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/technicians/removefromwork/${idWork}/${idTech}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      }, 
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/technicians/removefromwork/${idWork}/${idTech}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
     const tech = await res.json();
     revalidatePath(`/projects/${idWork}/edit`);
     return tech;
@@ -236,15 +331,3 @@ export async function deleteTechFromWork(idTech: string, idWork: string) {
     console.log("error: ", error);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
