@@ -60,6 +60,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 <span className="text-sm md:text-base">Fecha de creación:</span>{" "}
                 <span className="text-green-600 ">
                   {formatDateTime(project.createdAt)}
+                  {project.createdAt}
                 </span>             
               </div>
             </CardHeader>

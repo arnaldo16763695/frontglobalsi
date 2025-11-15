@@ -1,6 +1,7 @@
 export function formatDateTime(isoString: string): string {
+  // Convertimos la fecha ISO a la zona horaria de Chile
   const dateChile = new Date(
-    new Date(isoString).toLocaleString("es-CL", {
+    new Date(isoString).toLocaleString("en-US", {
       timeZone: "America/Santiago",
     })
   );
