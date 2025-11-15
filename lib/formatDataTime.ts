@@ -1,6 +1,6 @@
 export function formatDateTime(isoString: string): string {
   const dateChile = new Date(
-    new Date(isoString).toLocaleString("en-US", {
+    new Date(isoString).toLocaleString("es-CL", {
       timeZone: "America/Santiago",
     })
   );
