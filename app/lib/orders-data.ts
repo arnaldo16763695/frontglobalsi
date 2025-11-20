@@ -66,7 +66,7 @@ export async function fethPendingStepsByIdWork(id: string) {
   }
 }
 
-export async function fethFinishedStepsByIdWork(id: string) {
+export async function fetchFinishedStepsByIdWork(id: string) {
   const session = await auth();
   try {
     const steps = await fetch(
@@ -89,7 +89,7 @@ export async function fethFinishedStepsByIdWork(id: string) {
   }
 }
 
-export async function fetStepsToWorkByIdWork(id: string) {
+export async function fetchStepsToWorkByIdWork(id: string) {
   const session = await auth();
   try {
     const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/${id}`, {
