@@ -4,6 +4,8 @@ import { auth } from "@/auth";
 import { profileEditAvatar } from "@/app/lib/users-actions";
 import { fetchUserProfile } from "@/app/lib/user-data";
 import { UTApi } from "uploadthing/server";
+import { addImageToWork } from "@/app/lib/orders-actions";
+import z from "zod";
 
 
 const f = createUploadthing();
@@ -29,7 +31,6 @@ export const ourFileRouter = {
       const avatarKey = file.key;
 
       //read my before avatarKey fro my db
-      console.log("metadata", metadata.userId);
       const user = await fetchUserProfile(metadata.userId, metadata.accessToken);
       const oldAvatarKey = user.avatarKey;
 
@@ -44,6 +45,33 @@ export const ourFileRouter = {
       if (oldAvatarKey && oldAvatarKey !== avatarKey) {
         await utapi.deleteFiles(oldAvatarKey);
       }
+
+      return { uploadedBy: metadata.userId };
+    }),
+
+      imageWorkLoadder: f({
+    image: { maxFileSize: "4MB", maxFileCount: 10 },
+  }) .input(
+      z.object({
+        idWork: z.string(),
+      })
+    )
+    .middleware(async ({ req, input  }) => {
+      // Aquí sí se puede leer sesión
+      const session = await auth();
+      const userId = session?.user?.id;
+      const accessToken = session?.user?.accessToken; // we needed it to the api
+
+      if (!userId) throw new UploadThingError("Unauthorized");
+
+      // Pasa lo que necesitas hacia onUploadComplete
+      return { userId, accessToken, req, idWork: input.idWork };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      const imageUrl = file.ufsUrl;
+      const imageKey = file.key;   
+
+      await addImageToWork(metadata.idWork, imageUrl, imageKey, metadata.userId , metadata.accessToken)
 
       return { uploadedBy: metadata.userId };
     }),

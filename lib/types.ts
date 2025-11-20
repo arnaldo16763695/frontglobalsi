@@ -70,3 +70,11 @@ export type Technicians = {
     email: string;
   };
 };
+
+export type ImagesWorks ={
+  id:        string;
+  url:       string;
+  imageKey:  string;
+  userId:    string;
+  worksId:   string;
+}

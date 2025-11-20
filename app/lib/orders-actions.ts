@@ -331,3 +331,49 @@ export async function deleteTechFromWork(idTech: string, idWork: string) {
     console.log("error: ", error);
   }
 }
+
+export async function addImageToWork(
+  idWork: string,
+  urlImageWork: string,
+  imageKey: string,
+  userId: string,
+  accessToken: string| undefined  
+) {
+  const data = {
+    worksId: idWork,
+    url: urlImageWork,
+    userId,
+    imageKey,
+  };
+  try {
+    const images = await fetch(`${process.env.API_URL}/api/imagestowork`, {
+      method: "POST",
+       headers: {
+        authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),      
+    });
+    return images;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteImgFromDb(id:string){
+   const session = await auth();
+  try {
+     const images = await fetch(`${process.env.API_URL}/api/imagestowork/${id}`, {
+      method: "DELETE",
+       headers: {
+        authorization: `Bearer ${session?.user.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return images;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
