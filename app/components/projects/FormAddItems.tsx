@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { itemRegisterSchema } from "@/lib/zod";
 import { addItemInWork } from "@/app/lib/orders-actions";
 import toast from "react-hot-toast";
-import { fetStepsToWorkByIdWork } from "@/app/lib/orders-data";
+import { fetchStepsToWorkByIdWork } from "@/app/lib/orders-data";
 import { Steps } from "@/lib/types";
 import ListItemsDnD from "./ListItemsDnD";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,7 +25,7 @@ const FormAddItems = ({ id }: { id: string }) => {
 
   useEffect(() => {
     const fetchSteps = async () => {
-      const steps = await fetStepsToWorkByIdWork(id);
+      const steps = await fetchStepsToWorkByIdWork(id);
       setMySteps(steps);
     };
     fetchSteps();
@@ -51,7 +51,7 @@ const FormAddItems = ({ id }: { id: string }) => {
     if (res.error) {
       toast.error(res.message);
     } else {
-      const steps = await fetStepsToWorkByIdWork(id);
+      const steps = await fetchStepsToWorkByIdWork(id);
       setMySteps(steps);
       form.reset();
     }
