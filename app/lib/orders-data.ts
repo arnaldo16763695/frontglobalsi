@@ -23,7 +23,7 @@ export async function fetchAllProjects() {
   }
 }
 
-export async function fetchOneProject(id:string) {
+export async function fetchOneProject(id: string) {
   const session = await auth();
   try {
     const project = await fetch(`${process.env.API_URL}/api/works/${id}`, {
@@ -34,7 +34,6 @@ export async function fetchOneProject(id:string) {
       },
     });
 
-
     if (!project.ok) {
       throw new Error("Proyecto no existe");
     }
@@ -44,17 +43,19 @@ export async function fetchOneProject(id:string) {
   }
 }
 
-
-export async function  fethPendingStepsByIdWork(id: string) {
+export async function fethPendingStepsByIdWork(id: string) {
   const session = await auth();
   try {
-    const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/pending/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
+    const steps = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/pending/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
 
     if (!steps.ok) {
       throw new Error("Steps no existen");
@@ -65,16 +66,19 @@ export async function  fethPendingStepsByIdWork(id: string) {
   }
 }
 
-export async function  fethFinishedStepsByIdWork(id: string) {
+export async function fethFinishedStepsByIdWork(id: string) {
   const session = await auth();
   try {
-    const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/finished/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
+    const steps = await fetch(
+      `${process.env.API_URL}/api/stepstoworks/finished/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
 
     if (!steps.ok) {
       throw new Error("Steps no existen");
@@ -85,9 +89,7 @@ export async function  fethFinishedStepsByIdWork(id: string) {
   }
 }
 
-
-
-export async function  fetStepsToWorkByIdWork(id: string) {
+export async function fetStepsToWorkByIdWork(id: string) {
   const session = await auth();
   try {
     const steps = await fetch(`${process.env.API_URL}/api/stepstoworks/${id}`, {
@@ -110,13 +112,16 @@ export async function  fetStepsToWorkByIdWork(id: string) {
 export async function fetchAllTechsInWork(idWork: string) {
   const session = await auth();
   try {
-    const res = await fetch(`${process.env.API_URL}/api/technicians/${idWork}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.API_URL}/api/technicians/${idWork}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
     const data = await res.json();
     return data;
   } catch (error) {
@@ -131,13 +136,16 @@ export async function fetchAllTechsInWork(idWork: string) {
 export async function fetchAllOrdersByIdTech(idTech: string) {
   const session = await auth();
   try {
-    const orders = await fetch(`${process.env.API_URL}/api/works/technicians/${idTech}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
+    const orders = await fetch(
+      `${process.env.API_URL}/api/works/technicians/${idTech}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
     const data = await orders.json();
     return data;
   } catch (error) {
@@ -149,3 +157,26 @@ export async function fetchAllOrdersByIdTech(idTech: string) {
   }
 }
 
+export async function getAllImagesByWork(idWork: string) {
+  const session = await auth();
+  try {
+    const data = await fetch(
+      `${process.env.API_URL}/api/imagestowork/${idWork}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${session?.user.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const resp = await data.json();
+    return resp;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}

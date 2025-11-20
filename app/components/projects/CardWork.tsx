@@ -5,6 +5,9 @@ import { formatDateTime } from "@/lib/formatDataTime";
 import StepsBoard from "@/app/components/projects/StepsBoard";
 import { Projects, Steps, Technicians } from "@/lib/types";
 import { Progress } from "@/components/ui/progress";
+import DialogWorkImages from "../DialogWorkImages";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 function CardWork({
   project,
@@ -36,7 +39,8 @@ function CardWork({
             </span>
           </div>
           <div className="flex gap-2 text-xs md:text-sm">
-            <Progress value={progress} className="w-32" /> <span>{progress} %</span>
+            <Progress value={progress} className="w-32" />{" "}
+            <span>{progress} %</span>
           </div>
           <div className="text-xs md:text-sm">
             Fecha de creación:
@@ -64,10 +68,9 @@ function CardWork({
               ))}
           </fieldset>
           <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
-            <legend className="text-xs md:text-sm font-bold">
-              Agregar Tareas
-            </legend>
-            <div>tareas</div>
+            <legend className="text-xs md:text-sm font-bold">Agregar</legend>
+            <Button className="mr-2">Tarea<Plus/></Button>
+            <DialogWorkImages idWork={project.id}  />
           </fieldset>
         </div>
         <div className="w-[100%] p-0 md:p-2 mt-4">

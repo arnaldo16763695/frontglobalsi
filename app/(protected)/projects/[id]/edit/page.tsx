@@ -19,6 +19,7 @@ import { fetchAllTechs } from "@/app/lib/user-data";
 import DiagDeleteTechFromWork from "@/app/components/projects/DiagDeleteTechFromWork";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import DialogWorkImages from "@/app/components/DialogWorkImages";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const session = await auth();
@@ -102,12 +103,16 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 </div>
                 <div className="w-[100%] p-0 md:p-2 mt-4">
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
-                    <legend className="font-bold">Técnicos encargados</legend>
+                    <legend className="font-bold">Agregar</legend>
                     <DiagAddTechToWork
                       idWork={params.id}
                       technicians={technicians}
                     />
-                    {techniciansInWork.length > 0 &&
+                    <DialogWorkImages idWork={project.id}  />                   
+                  </fieldset>
+                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 mt-4" >
+                       <legend className="font-bold">Ténicos encargados</legend>
+                           {techniciansInWork.length > 0 &&
                       techniciansInWork.map((tech) => (
                         <div
                           key={tech.technician.id}
@@ -124,7 +129,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                           </div>
                         </div>
                       ))}
-                  </fieldset>
+                    </fieldset>
                 </div>
               </div>
             </CardContent>
