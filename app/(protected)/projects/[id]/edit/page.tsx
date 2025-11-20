@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   fetchAllTechsInWork,
   fetchOneProject,
-  fetStepsToWorkByIdWork,
+  fetchStepsToWorkByIdWork,
 } from "@/app/lib/orders-data";
 import FormEditProject from "@/app/components/projects/FormEditProject";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
@@ -30,7 +30,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const project = await fetchOneProject(params.id);
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
-  const steps: Steps[] = await fetStepsToWorkByIdWork(params.id);
+  const steps: Steps[] = await fetchStepsToWorkByIdWork(params.id);
   const techniciansInWork: Technicians[] = await fetchAllTechsInWork(params.id);
   const technicians: User[] = await fetchAllTechs();
 
