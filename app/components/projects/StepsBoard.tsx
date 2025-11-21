@@ -14,19 +14,32 @@ import {
 } from "@dnd-kit/core";
 import { editStatusStepToWork } from "@/app/lib/orders-actions";
 import { Move } from "lucide-react";
+import { Steps } from "@/lib/types";
+import FormEditStepToWork from "./FormEditStepToWork";
 
-type Step = {
-  id: string;
-  description: string;
-  status: "PENDING" | "FINISHED";
-};
 type Props = {
-  initialPending: Step[];
-  initialFinished: Step[];
+  initialPending: Steps[];
+  initialFinished: Steps[];
   setProgress: (progress: number) => void;
 };
 
-function TaskCard({ id, title }: { id: string; title: string }) {
+function TaskCard({
+  id,
+  title,
+  userName,
+  status,
+  userId,
+  email,
+  onStepUpdated,
+}: {
+  id: string;
+  title: string;
+  userName: string;
+  status: string;
+  userId: string;
+  email: string;
+  onStepUpdated: (updated: Steps)=> void;
+}) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
   return (
@@ -42,16 +55,16 @@ function TaskCard({ id, title }: { id: string; title: string }) {
     >
       <div className="flex items-center gap-2">
         {/* HANDLE: solo aquí aplicamos listeners/attributes */}
-         <div
+        <div
           {...listeners}
           {...attributes}
           role="button"
           tabIndex={0}
           // evita interferencias del navegador móvil:
           onContextMenu={(e) => e.preventDefault()}
-          className="shrink-0 rounded p-1 cursor-grab active:cursor-grabbing"
+          className="shrink-0 rounded p-1 cursor-grab active:cursor-grabbing w-[5%]"
           style={{
-            touchAction: "none",          // imprescindible en handle
+            touchAction: "none", // imprescindible en handle
             WebkitUserSelect: "none",
             userSelect: "none",
             WebkitTouchCallout: "none",
@@ -60,7 +73,22 @@ function TaskCard({ id, title }: { id: string; title: string }) {
         >
           <Move />
         </div>
-        <div className="min-w-0 break-words  dark:text-white">{title}</div>
+        <div className="min-w-0 break-words  dark:text-white w-[90%] pl-2">
+          {title}
+        </div>
+        <FormEditStepToWork
+          step={{
+            id,
+            description: title,
+            status: status === "PENDING" ? "PENDING" : "FINISHED",
+            user: {
+              id: userId,
+              name: userName,
+              email,
+            },
+          }}
+          onUpdated={onStepUpdated}
+        />
       </div>
     </div>
   );
@@ -91,20 +119,39 @@ function TaskColumn({
   );
 }
 
-export default function StepsBoard({ initialPending, initialFinished, setProgress }: Props) {
+export default function StepsBoard({
+  initialPending,
+  initialFinished,
+  setProgress,
+}: Props) {
   const [mounted, setMounted] = useState(false);
-  const [pending, setPending] = useState<Step[]>(initialPending);
-  const [finished, setFinished] = useState<Step[]>(initialFinished);
-  
+  const [pending, setPending] = useState<Steps[]>(initialPending);
+  const [finished, setFinished] = useState<Steps[]>(initialFinished);
+
   useEffect(() => setMounted(true), []);
 
-    useEffect(() => {
+  useEffect(() => {
     const total = pending.length + finished.length;
     const pct = total === 0 ? 0 : Math.round((finished.length * 100) / total); // o con 1 decimal
     // const pct = total === 0 ? 0 : Math.round(((finished.length * 1000) / total)) / 10; // 1 decimal
     setProgress(pct);
   }, [pending.length, finished.length, setProgress]);
 
+const handleStepUpdated = (updated: Steps) => {
+  setPending(prev => {
+    // quitamos este step de pendientes
+    const others = prev.filter(s => s.id !== updated.id);
+    // si ahora quedó como PENDING, lo volvemos a meter
+    return updated.status === "PENDING" ? [updated, ...others] : others;
+  });
+
+  setFinished(prev => {
+    // quitamos este step de finalizados
+    const others = prev.filter(s => s.id !== updated.id);
+    // si ahora quedó como FINISHED, lo agregamos
+    return updated.status === "FINISHED" ? [updated, ...others] : others;
+  });
+};
 
   const sensors = useSensors(
     // Requiere mover al menos 8px antes de activar drag (bueno para scroll)
@@ -122,14 +169,32 @@ export default function StepsBoard({ initialPending, initialFinished, setProgres
   const pendingCards = useMemo(
     () =>
       pending.map((s) => (
-        <TaskCard key={s.id} id={s.id} title={s.description} />
+        <TaskCard
+          key={s.id}
+          id={s.id}
+          title={s.description}
+          userName={s.user.name}
+          status="PENDING"
+          userId={s.user.id}
+          email={s.user.email}
+          onStepUpdated={handleStepUpdated} 
+        />
       )),
     [pending]
   );
   const finishedCards = useMemo(
     () =>
       finished.map((s) => (
-        <TaskCard key={s.id} id={s.id} title={s.description} />
+        <TaskCard
+          key={s.id}
+          id={s.id}
+          title={s.description}
+          userName={s.user.name}
+          status="FINISHED"
+          email={s.user.email}
+          userId={s.user.id}
+          onStepUpdated={handleStepUpdated}
+        />
       )),
     [finished]
   );
@@ -140,10 +205,10 @@ export default function StepsBoard({ initialPending, initialFinished, setProgres
     const found = [...pending, ...finished].find((s) => s.id === stepId);
     if (!found) return;
 
-    const nextStatus: Step["status"] =
+    const nextStatus: Steps["status"] =
       to === "pending" ? "PENDING" : "FINISHED";
 
-    const updated: Step = {
+    const updated: Steps = {
       ...found,
       status: nextStatus, // <- ahora es "PENDING" | "FINISHED" (no string)
     };
@@ -162,8 +227,7 @@ export default function StepsBoard({ initialPending, initialFinished, setProgres
     await editStatusStepToWork({
       stepId,
       status: to === "pending" ? "PENDING" : "FINISHED",
-    });   
-    
+    });
   }
 
   async function handleDragEnd(e: DragEndEvent) {

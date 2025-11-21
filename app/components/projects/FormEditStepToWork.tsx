@@ -32,8 +32,15 @@ import { editStepToWork } from "@/app/lib/orders-actions";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
+type FormEditStepToWorkProps = {
+  step: Steps;
+  onUpdated?: (updatedStep: Steps) => void;
+};
 
-export default function FormEditStepToWork({ step }: { step: Steps; }) {
+export default function FormEditStepToWork({
+  step,
+  onUpdated,
+}: FormEditStepToWorkProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -43,6 +50,7 @@ export default function FormEditStepToWork({ step }: { step: Steps; }) {
     defaultValues: {
       description: step.description,
       stepId: step.id,
+      status: step.status
     },
   });
 
@@ -61,14 +69,22 @@ export default function FormEditStepToWork({ step }: { step: Steps; }) {
       }
     } else {
       toast.success("Registro editado exitosamente");
-      onSuccess();
+      const updatedStep: Steps = {
+        ...step,
+        description: values.description,
+        status: values.status
+      };
+      onUpdated?.(updatedStep);
+
+      //this is there when de user admin need to edit step.
       router.refresh();
+      onSuccess();
     }
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="h-6 w-6 border-none">
+        <Button className="h-6 w-6 border-none">
           <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
@@ -76,12 +92,26 @@ export default function FormEditStepToWork({ step }: { step: Steps; }) {
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Editar item</DialogTitle>
-          <DialogDescription>
-            
-          </DialogDescription>
+          <DialogDescription>Estatus:{step.status}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Estado</FormLabel>
+                  <FormControl>
+                    <select {...field} className="border rounded px-2 py-1">
+                      <option value="PENDING">Pendiente</option>
+                      <option value="FINISHED">Finalizada</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="description"
@@ -89,7 +119,11 @@ export default function FormEditStepToWork({ step }: { step: Steps; }) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Descripción" {...field} className="md:w-[100%]" />
+                    <Textarea
+                      placeholder="Descripción"
+                      {...field}
+                      className="md:w-[100%]"
+                    />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>

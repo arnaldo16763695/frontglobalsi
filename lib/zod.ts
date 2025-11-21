@@ -1,4 +1,4 @@
-import { number, object, string } from "zod";
+import { number, object, string, enum as zEnum } from "zod";
 
 export const loginSchema = object({
   email: string({ required_error: "Email is required" })
@@ -165,6 +165,7 @@ export const editStepToWorkSchema = object({
     "Description is required"
   ),
   stepId: string(),
+  status: zEnum(["PENDING", "FINISHED"]),
 });
 
 export const updateWorkStatusSchema = object({

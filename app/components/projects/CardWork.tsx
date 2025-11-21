@@ -13,12 +13,12 @@ function CardWork({
   project,
   techniciansInWork,
   stepsPending,
-  stepsFinished,
+  stepsFinished,  
 }: {
   project: Projects;
   techniciansInWork: Technicians[];
   stepsPending: Steps[];
-  stepsFinished: Steps[];
+  stepsFinished: Steps[];  
 }) {
   const [progress, setProgress] = useState(
     (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length
@@ -86,11 +86,21 @@ function CardWork({
                   id: s.id,
                   description: s.description,
                   status: s.status,
+                  user:{
+                    id: s.user.id,
+                    name: s.user.name,
+                    email: s.user.email
+                  }
                 }))}
                 initialFinished={stepsFinished.map((s) => ({
                   id: s.id,
                   description: s.description,
                   status: s.status,
+                   user:{
+                    id: s.user.id,
+                    name: s.user.name,
+                    email: s.user.email
+                  }                
                 }))}
                 setProgress={setProgress}
               />

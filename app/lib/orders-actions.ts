@@ -116,6 +116,7 @@ export async function editStepToWork(
         },
         body: JSON.stringify({
           description: data.description,
+          status: data.status,
           userId: session?.user?.id,
         }),
       }
