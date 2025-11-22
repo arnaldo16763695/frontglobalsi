@@ -20,7 +20,13 @@ const regiterProjectPage = async () => {
               Registro de ordenes
             </CardHeader>
             <CardContent>
-              <FormAddOrder companies={companies} />
+              {companies === null ? (
+                <p className="p-6 text-center text-red-500">
+                  No se pudo conectar a la base de datos o al servidor.
+                </p>
+              ) : (
+                <FormAddOrder companies={companies} />
+              )}
             </CardContent>
           </Card>
         </div>

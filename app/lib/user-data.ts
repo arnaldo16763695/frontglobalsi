@@ -7,16 +7,23 @@ export async function fetchAllUsers() {
   try {
     //  await new Promise((resolve) => setTimeout(resolve, 3000))
 
-    const users = await fetch(`${process.env.API_URL}/api/users`, {
+    const res = await fetch(`${process.env.API_URL}/api/users`, {
       method: "GET",
       headers: {
         authorization: `Bearer ${session?.user?.accessToken}`,
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
-    return await users.json();
+    if (!res.ok) {
+      console.error("API error:", res.status);
+      return null; // possibly without conexion
+    }
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.log(error);
+    console.error("Network error:", error);
+    return null; // <-- aquí está el fix para ECONNREFUSED
   }
 }
 

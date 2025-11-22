@@ -16,8 +16,14 @@ const page = async () => {
     <>
       <HeaderSideBar title="Listado de usuarios" before="Inicio" href="/dashboard" />
       <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-          <DataTable columns={columns} data={data}  />
+        <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min">
+           {data === null ? (
+            <p className="p-6 text-center text-red-500">
+              No se pudo conectar a la base de datos o al servidor.
+            </p>
+          ) : (
+            <DataTable columns={columns} data={data} />
+          )}
         </div>
       </div>
     </>

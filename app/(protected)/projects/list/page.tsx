@@ -6,7 +6,6 @@ import { fetchAllProjects } from "@/app/lib/orders-data";
 
 const ListProjectPage = async () => {
   const data = await fetchAllProjects();
-  // console.log(data);
   return (
     <>
       <HeaderSideBar
@@ -16,8 +15,14 @@ const ListProjectPage = async () => {
       />
 
       <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-          <DataTableProject columns={columns} data={data} />
+        <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min">
+          {data === null ? (
+            <p className="p-6 text-center text-red-500">
+              No se pudo conectar a la base de datos o al servidor.
+            </p>
+          ) : (
+            <DataTableProject columns={columns} data={data} />
+          )}
         </div>
       </div>
     </>

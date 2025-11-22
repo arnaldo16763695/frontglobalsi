@@ -37,10 +37,10 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   function calcProgress(data: Steps[]) {
     const stepsPending = data.filter((e) => e.status === "PENDING");
     const stepsFinished = data.filter((e) => e.status === "FINISHED");
-    return  Math.round(stepsFinished.length * 100 / [...stepsPending, ...stepsFinished].length)
+    return Math.round(
+      (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length
+    );
   }
-
-  
 
   return (
     <>
@@ -61,16 +61,22 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 <span className="text-sm md:text-base">Fecha de creación:</span>{" "}
                 <span className="text-green-600 ">
                   {formatDateTime(project.createdAt)}
-                </span>             
+                </span>
               </div>
             </CardHeader>
             <CardContent>
-              <FormEditProject
-                project={project}
-                companies={companies}
-                client={client}
-                progress = {calcProgress(steps)}
-              />
+              {companies === null ? (
+                <p className="p-6 text-center text-red-500">
+                  No se pudo conectar a la base de datos o al servidor.
+                </p>
+              ) : (
+                <FormEditProject
+                  project={project}
+                  companies={companies}
+                  client={client}
+                  progress={calcProgress(steps)}
+                />
+              )}
               <div className="w-full flex flex-col md:flex-row gap2">
                 <div className="w-[100%] p-0 md:p-2 mt-4">
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
@@ -87,9 +93,13 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                           <div className="text-sm">{step.description}</div>
                           <div className="text-xs">
                             {step.status === "FINISHED" ? (
-                              <span className="text-green-800 dark:text-green-600 font-bold">Finalizada</span>
+                              <span className="text-green-800 dark:text-green-600 font-bold">
+                                Finalizada
+                              </span>
                             ) : (
-                              <span className="text-yellow-800 dark:text-yellow-600 font-bold">Pendiente</span>
+                              <span className="text-yellow-800 dark:text-yellow-600 font-bold">
+                                Pendiente
+                              </span>
                             )}
                           </div>
                         </div>
@@ -108,11 +118,11 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                       idWork={params.id}
                       technicians={technicians}
                     />
-                    <DialogWorkImages idWork={project.id}  />                   
+                    <DialogWorkImages idWork={project.id} />
                   </fieldset>
-                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 mt-4" >
-                       <legend className="font-bold">Ténicos encargados</legend>
-                           {techniciansInWork.length > 0 &&
+                  <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 mt-4">
+                    <legend className="font-bold">Ténicos encargados</legend>
+                    {techniciansInWork.length > 0 &&
                       techniciansInWork.map((tech) => (
                         <div
                           key={tech.technician.id}
@@ -129,7 +139,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                           </div>
                         </div>
                       ))}
-                    </fieldset>
+                  </fieldset>
                 </div>
               </div>
             </CardContent>

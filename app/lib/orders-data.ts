@@ -12,14 +12,15 @@ export async function fetchAllProjects() {
         authorization: `Bearer ${session?.user?.accessToken}`,
       },
     });
+    if (!res.ok) {
+      console.error("API error:", res.status);
+      return null; // possibly without conexion
+    }
     const data = await res.json();
-    return data;
+    return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.log("error: ", error);
-    return {
-      message: "Hubo un error",
-      error: error,
-    };
+    console.error("Network error:", error);
+    return null; // <-- aquí está el fix para ECONNREFUSED   
   }
 }
 
