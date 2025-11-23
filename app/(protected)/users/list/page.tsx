@@ -25,7 +25,7 @@ const page = async () => {
               No se pudo conectar a la base de datos o al servidor.
             </p>
           ) : (
-            <div className="w-[90%] max-w-[100vw] overflow-x-auto">
+            <div className="w-full max-w-[100vw] overflow-x-auto">
               <DataTable columns={columns} data={data} />
             </div>
           )}
