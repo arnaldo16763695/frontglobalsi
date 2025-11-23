@@ -50,18 +50,18 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
         href="/projects/list"
       />
 
-      <div className="flex text-xs md:text-sm flex-1 flex-col gap-4 p-2 md:p-4">
-        <div className="min-h-[100vh] flex-1 flex justify-center items-start rounded-xl bg-muted/50 md:min-h-min">
-          <Card className="w-[100%] mt-2 mx-2">
+      <div className="flex flex-1 flex-col gap-4 p-2 md:p-4">
+        <div className="min-h-screen flex-1 flex justify-center items-center rounded-xl bg-muted/50 md:min-h-min">
+          <Card className="w-[100%] mt-2 mx-1 md:mx-2">
             <CardHeader className="flex flex-col lg:flex-row justify-between">
               <div className="md:text-xl font-bold">
                 Gestión de orden de trabajo
               </div>
-              <div className="">
-                <span className="text-sm md:text-base">Fecha de creación:</span>{" "}
-                <span className="text-green-600 ">
+              <div className="text-xs md:text-base flex items-center">
+                <div className="">Fecha de creación:</div>
+                <div className="text-green-600 ml-2 ">
                   {formatDateTime(project.createdAt)}
-                </span>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
@@ -76,8 +76,8 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                   client={client}
                   progress={calcProgress(steps)}
                 />
-              )}
-              <div className="w-full flex flex-col md:flex-row gap2">
+              )} 
+              <div className="text-xs md:text-sm w-full flex flex-col md:flex-row gap2">
                 <div className="w-[100%] p-0 md:p-2 mt-4">
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
                     <legend className="font-bold">Tareas</legend>
@@ -87,11 +87,11 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                     {steps.map((step) => (
                       <div
                         key={step.id}
-                        className="flex py-1  justify-between border w-full rounded-md bg-slate-400 dark:bg-slate-600 "
+                        className="flex text-xs md:text-sm py-1 px-1  justify-between border w-full rounded-md bg-slate-400 dark:bg-slate-600 "
                       >
-                        <div className="flex flex-col px-2 w-[70%] md:w-[90%]">
-                          <div className="text-sm">{step.description}</div>
-                          <div className="text-xs">
+                        <div className="flex flex-col px-1 md:px-2 w-[90%] md:w-[80%]">
+                          <div className="">{step.description}</div>
+                          <div className="">
                             {step.status === "FINISHED" ? (
                               <span className="text-green-800 dark:text-green-600 font-bold">
                                 Finalizada
@@ -103,7 +103,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                             )}
                           </div>
                         </div>
-                        <div className="flex flex-col md:flex-row items-center w-[30%] md:w-[20%] md:gap-4 gap-4 justify-center">
+                        <div className="flex flex-col md:flex-row items-center w-[10%] md:w-[20%] md:gap-4 gap-4 justify-center">
                           <FormEditStepToWork step={step} />
                           <DiagDeleteStepToWork step={step} />
                         </div>

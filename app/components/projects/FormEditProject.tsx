@@ -20,40 +20,36 @@ const FormEditProject = ({
 }) => {
   return (
     <div className="flex-col">
-      <div className="flex flex-col gap-2 text-xs md:text-xl">
-        <div className="flex gap-1 justify-between p-2 ">
-          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
+      <div className="flex flex-col gap-2 text-xs md:text-sm">
+        <div className="flex gap-1 flex-col md:flex-row justify-between p-2 ">
+          <div className=" p-1 md:p-2 flex gap-1 items-center border rounded-md">
             <div>
-              <span className="text-sm md:text-base">Orden: </span>
+              <span className="">Orden: </span>
             </div>
             <div>
-              <span className="text-green-600 text-sm md:text-base">
+              <span className="text-green-600">
                 {project.workCode}
               </span>
             </div>
           </div>
 
-          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
+          <div className="p-1  md:p-2 flex gap-1 items-center border rounded-md">
             <div>
-              <span className=" text-sm md:text-base">Cliente: </span>
+              <span className="">Cliente: </span>
             </div>
             <div>
-              <span className="text-green-600 text-sm md:text-base">
+              <span className="text-green-600">
                 {client.name}
               </span>
             </div>
           </div>
 
           <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md ">
-            <div>
-              <span className=" text-sm md:text-base">
-                Estado de la orden:{" "}
-              </span>
-            </div>
-            <div>
+            <div className="">Estado de la orden: </div>
+            <div className="flex items-center">
               {
                 <span
-                  className={`text-sm md:text-base ${(() => {
+                  className={` ${(() => {
                     switch (project.progress) {
                       case "NOT_STARTED":
                         return "text-red-600";
@@ -89,10 +85,10 @@ const FormEditProject = ({
 
           <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
             <div>
-              <span className=" text-sm md:text-base">Empresa: </span>
+              Empresa:
             </div>
-            <div>
-              <span className="text-green-600 text-sm md:text-base">
+            <div className="flex items-center">
+              <span className="text-green-600">
                 {project.company.companyName}
               </span>
               <DiagEditCopanyInWork
@@ -104,8 +100,8 @@ const FormEditProject = ({
           </div>
 
           <div className="p-1 md:p-2 flex gap-2 items-center border rounded-md">
-            <ProgressWork progress={progress}  />
-            <span className="text-sm md:text-base">{progress} %</span>
+            <ProgressWork progress={progress} />
+            <span className="">{progress} %</span>
           </div>
         </div>
       </div>

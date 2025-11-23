@@ -37,7 +37,7 @@ function DialogWorkImages({ idWork }: { idWork: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="ml-2">
+        <Button className="ml-2 text-xs md:text-sm">
           Imagen
           <Plus />
         </Button>

@@ -63,9 +63,9 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button >Técnicos</Button> 
+        <Button className="text-xs md:text-sm" >Técnicos</Button> 
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="mx-auto max-w-[302px] md:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Asignar Técnico</DialogTitle>
           <DialogDescription>
@@ -73,7 +73,7 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mx-4">
           <FormField
           control={form.control}
           name="idTech"
@@ -95,7 +95,7 @@ export default function DiagAddTechToWork({ idWork, technicians }: { idWork: str
                 </SelectContent>
               </Select>
               <FormDescription>
-                You can manage email addresses in your{" "}
+                Seleccione el técnico que trabajará en la orden.{" "}
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -15,11 +15,11 @@ export default function ListItemsDialog({  idWork }: {  idWork:string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button >Agregar tareas</Button>
+        <Button className="text-xs md:text-sm" >Agregar tareas</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[80%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Agregar tareas</DialogTitle>
+          <DialogTitle className="text-xm">Agregar tareas</DialogTitle>
           <DialogDescription>
             Escriba la descripción de la tarea y presione agregar.
           </DialogDescription>
