@@ -20,7 +20,7 @@ const listClientsPage = async () => {
         href="/dashboard"
       />
       <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min">
+        <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min overflow-x-hidden">
           {data === null ? (
             <p className="p-6 text-center text-red-500">
               No se pudo conectar a la base de datos o al servidor.
