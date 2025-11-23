@@ -86,6 +86,7 @@ function CardWork({
                   id: s.id,
                   description: s.description,
                   status: s.status,
+                  worksId: s.worksId,
                   user:{
                     id: s.user.id,
                     name: s.user.name,
@@ -96,6 +97,7 @@ function CardWork({
                   id: s.id,
                   description: s.description,
                   status: s.status,
+                  worksId: s.worksId,
                    user:{
                     id: s.user.id,
                     name: s.user.name,

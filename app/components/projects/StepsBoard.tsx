@@ -30,6 +30,7 @@ function TaskCard({
   status,
   userId,
   email,
+  worksId,
   onStepUpdated,
 }: {
   id: string;
@@ -38,6 +39,7 @@ function TaskCard({
   status: string;
   userId: string;
   email: string;
+  worksId:string;
   onStepUpdated: (updated: Steps)=> void;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -81,6 +83,7 @@ function TaskCard({
             id,
             description: title,
             status: status === "PENDING" ? "PENDING" : "FINISHED",
+            worksId: worksId,
             user: {
               id: userId,
               name: userName,
@@ -175,6 +178,7 @@ const handleStepUpdated = (updated: Steps) => {
           title={s.description}
           userName={s.user.name}
           status="PENDING"
+          worksId={s.worksId}
           userId={s.user.id}
           email={s.user.email}
           onStepUpdated={handleStepUpdated} 
@@ -191,6 +195,7 @@ const handleStepUpdated = (updated: Steps) => {
           title={s.description}
           userName={s.user.name}
           status="FINISHED"
+          worksId={s.worksId}
           email={s.user.email}
           userId={s.user.id}
           onStepUpdated={handleStepUpdated}

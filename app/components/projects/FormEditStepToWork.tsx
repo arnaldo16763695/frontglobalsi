@@ -50,7 +50,7 @@ export default function FormEditStepToWork({
     defaultValues: {
       description: step.description,
       stepId: step.id,
-      status: step.status
+      status: step.status      
     },
   });
 
