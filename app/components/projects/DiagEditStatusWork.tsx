@@ -32,7 +32,6 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -58,7 +57,7 @@ export default function DiagEditStatusWork({
 }) {
   const [dialogOpen, setDialogOpen] = React.useState(false); // controlamos el diálogo
   const [comboOpen, setComboOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  // const [value, setValue] = React.useState("");
   const router = useRouter();
 
   // 1. Define your form.
@@ -68,20 +67,22 @@ export default function DiagEditStatusWork({
       status: initialStatus,
     },
   });
-  
+
   // 2. Define a submit handler.
- async function onSubmit(values: z.infer<typeof updateWorkStatusSchema>) {
-   console.log(values);
-   const res = await updateWorkStatus(projectId, { status: values.status});
-   console.log(res)
+  async function onSubmit(values: z.infer<typeof updateWorkStatusSchema>) {
+    const res = await updateWorkStatus(projectId, { status: values.status });
+    console.log(res);
     if (res.error) {
       if (res.error === "Conflict") {
         toast.error(res.message);
       }
-      if (res.error === "whitoutTech"){
+      if (res.error === "whitoutTech") {
         toast.error(res.message);
       }
-      if (res.error === "stepsPending"){
+      if (res.error === "stepsPending") {
+        toast.error(res.message);
+      }
+      if (res.error === "whitoutSteps") {
         toast.error(res.message);
       }
     } else {
@@ -113,9 +114,10 @@ export default function DiagEditStatusWork({
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs md:text-sm mr-2">Status</FormLabel>
+                  <FormLabel className="text-xs md:text-sm mr-2">
+                    Status
+                  </FormLabel>
                   <FormControl>
-                    {/* —— COMBOBOX —— */}
                     <Popover modal open={comboOpen} onOpenChange={setComboOpen}>
                       <PopoverTrigger asChild>
                         <Button
@@ -124,8 +126,9 @@ export default function DiagEditStatusWork({
                           aria-expanded={comboOpen}
                           className="w-[200px] justify-between"
                         >
-                           {field.value
-                            ? statuses.find(s => s.value === field.value)?.label
+                          {field.value
+                            ? statuses.find((s) => s.value === field.value)
+                                ?.label
                             : "Seleccione…"}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
@@ -133,23 +136,24 @@ export default function DiagEditStatusWork({
 
                       <PopoverContent
                         className="w-[200px] p-0"
-                        onOpenAutoFocus={(e) => e.preventDefault()} // evita saltos de foco
+                        onOpenAutoFocus={(e) => e.preventDefault()}
                         onCloseAutoFocus={(e) => e.preventDefault()}
                       >
                         <Command>
                           <CommandInput
-                            placeholder="Search framework..."
+                            placeholder="Buscar status..."
                             className="h-9"
                           />
                           <CommandList>
-                            <CommandEmpty>No framework found.</CommandEmpty>
+                            <CommandEmpty>
+                              No se encontraron resultados.
+                            </CommandEmpty>
                             <CommandGroup>
                               {statuses.map((s) => (
                                 <CommandItem
                                   key={s.value}
                                   value={s.value}
                                   onSelect={(v) => {
-                                    setValue(v === value ? "" : v);
                                     field.onChange(v);
                                     setComboOpen(false);
                                   }}
@@ -158,7 +162,7 @@ export default function DiagEditStatusWork({
                                   <Check
                                     className={cn(
                                       "ml-auto",
-                                      value === s.value
+                                      field.value === s.value
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
@@ -171,9 +175,6 @@ export default function DiagEditStatusWork({
                       </PopoverContent>
                     </Popover>
                   </FormControl>
-                  <FormDescription>
-                   
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -183,7 +184,13 @@ export default function DiagEditStatusWork({
         </Form>
 
         <DialogFooter>
-          <Button variant="outline" className="bg-red-500" onClick={() => setDialogOpen(false)}>Cancelar</Button>
+          <Button
+            variant="outline"
+            className="bg-red-500"
+            onClick={() => setDialogOpen(false)}
+          >
+            Cancelar
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

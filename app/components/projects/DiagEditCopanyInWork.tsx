@@ -68,7 +68,7 @@ export function DiagEditCopanyInWork({
       toast.success("Registro editado exitosamente");
       router.push(`/projects/${idProject}/edit`);
     }
-  }
+  } 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>

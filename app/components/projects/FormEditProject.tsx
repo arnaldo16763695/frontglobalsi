@@ -27,9 +27,7 @@ const FormEditProject = ({
               <span className="">Orden: </span>
             </div>
             <div>
-              <span className="text-green-600">
-                {project.workCode}
-              </span>
+              <span className="text-green-600">{project.workCode}</span>
             </div>
           </div>
 
@@ -38,9 +36,7 @@ const FormEditProject = ({
               <span className="">Cliente: </span>
             </div>
             <div>
-              <span className="text-green-600">
-                {client.name}
-              </span>
+              <span className="text-green-600">{client.name}</span>
             </div>
           </div>
 
@@ -84,18 +80,18 @@ const FormEditProject = ({
           </div>
 
           <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
-            <div>
-              Empresa:
-            </div>
+            <div>Empresa:</div>
             <div className="flex items-center">
               <span className="text-green-600">
                 {project.company.companyName}
               </span>
-              <DiagEditCopanyInWork
-                companyId={project.companyId}
-                companies={companies}
-                idProject={project.id}
-              />
+              {project.progress !== "FINISHED" && (
+                <DiagEditCopanyInWork
+                  companyId={project.companyId}
+                  companies={companies}
+                  idProject={project.id}
+                />
+              )}
             </div>
           </div>
 

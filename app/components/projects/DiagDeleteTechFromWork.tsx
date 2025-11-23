@@ -30,7 +30,7 @@ export default function DiagDeleteTechFromWork({ techId, workId }: { techId: str
   async function handleClick() {
     console.log(techId, workId  );
   
-    const res = await deleteTechFromWork(techId, workId);
+    const res = await deleteTechFromWork(techId, workId); 
     if (res.error) {
         toast.error(res.message);
     } else {

@@ -37,9 +37,10 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   function calcProgress(data: Steps[]) {
     const stepsPending = data.filter((e) => e.status === "PENDING");
     const stepsFinished = data.filter((e) => e.status === "FINISHED");
-    return Math.round(
-      (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length
-    );
+    const result =
+      (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length;
+    if (!Number(result)) return 0;
+    return Math.round(result);
   }
 
   return (
@@ -76,13 +77,15 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                   client={client}
                   progress={calcProgress(steps)}
                 />
-              )} 
+              )}
               <div className="text-xs md:text-sm w-full flex flex-col md:flex-row gap2">
                 <div className="w-[100%] p-0 md:p-2 mt-4">
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
                     <legend className="font-bold">Tareas</legend>
 
-                    <ListItemsDialog idWork={params.id} />
+                    {project.progress !== "FINISHED" && (
+                      <ListItemsDialog idWork={params.id} />
+                    )}
 
                     {steps.map((step) => (
                       <div
@@ -114,10 +117,12 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                 <div className="w-[100%] p-0 md:p-2 mt-4">
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2">
                     <legend className="font-bold">Agregar</legend>
-                    <DiagAddTechToWork
-                      idWork={params.id}
-                      technicians={technicians}
-                    />
+                    {project.progress !== "FINISHED" && (
+                      <DiagAddTechToWork
+                        idWork={params.id}
+                        technicians={technicians}
+                      />
+                    )}
                     <DialogWorkImages idWork={project.id} />
                   </fieldset>
                   <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 mt-4">

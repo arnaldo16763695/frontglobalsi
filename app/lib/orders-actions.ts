@@ -107,7 +107,7 @@ export async function editStepToWork(
   const session = await auth();
   try {
     const res = await fetch(
-      `${process.env.API_URL}/api/stepstoworks/${data.stepId}`,
+      `${process.env.API_URL}/api/stepstoworks/${data.stepId}/${idWork}`,
       {
         method: "PATCH",
         headers: {
@@ -121,9 +121,10 @@ export async function editStepToWork(
         }),
       }
     );
-    const client = await res.json();
+    const step = await res.json();
+    console.log(`${process.env.API_URL}/api/stepstoworks/${data.stepId}/${idWork}`, step )
     revalidatePath(`/projects/${idWork}/edit`);
-    return client;
+    return step;
   } catch (error) {
     console.log("error: ", error);
   }
@@ -156,11 +157,11 @@ export async function editStatusStepToWork(data: {
   }
 }
 
-export async function deleteStepToWork(idWork: string) {
+export async function deleteStepToWork(stepId: string, workId:string) {
   const session = await auth();
   try {
     const res = await fetch(
-      `${process.env.API_URL}/api/stepstoworks/${idWork}`,
+      `${process.env.API_URL}/api/stepstoworks/${stepId}/${workId}`,
       {
         method: "DELETE",
         headers: {
@@ -170,7 +171,7 @@ export async function deleteStepToWork(idWork: string) {
       }
     );
     const step = await res.json();
-    revalidatePath(`/projects/${idWork}/edit`);
+    revalidatePath(`/projects/${workId}/edit`);
     return step;
   } catch (error) {
     console.log("error: ", error);
@@ -184,6 +185,32 @@ export async function updateWorkStatus(
   const session = await auth();
   try {
     if (status.status === "IN_PROGRESS") {
+      const r = await fetch(
+        `${process.env.API_URL}/api/technicians/${idWork}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+        }
+      );
+
+      if (!r.ok) {
+        return { ok: false, error: "No se pudo verificar técnicos asignados." };
+      }
+
+      const exist = await r.json();
+
+      if (exist.length === 0) {
+        return {
+          ok: false,
+          error: "whitoutTech",
+          message: "Debe asignar al menos un técnico a la orden",
+        };
+      }
+    }
+    if (status.status === "FINISHED") {
       const r = await fetch(
         `${process.env.API_URL}/api/technicians/${idWork}`,
         {
@@ -232,6 +259,33 @@ export async function updateWorkStatus(
           ok: false,
           error: "stepsPending",
           message: "Aún existen tareas pendientes",
+        };
+      }
+    }
+
+    if (status.status === "FINISHED") {
+      const r = await fetch(
+        `${process.env.API_URL}/api/stepstoworks/${idWork}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+        }
+      );
+
+      if (!r.ok) {
+        return { ok: false, error: "No se pudo verificar técnicos asignados." };
+      }
+
+      const exist = await r.json();
+
+      if (exist.length === 0) {
+        return {
+          ok: false,
+          error: "whitoutSteps",
+          message: "No puede finalizar una orden sin tareas",
         };
       }
     }

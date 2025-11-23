@@ -29,9 +29,7 @@ export default function DiagDeleteStepToWork({ step }: { step: Steps }) {
 
   // 2. Define a submit handler.
   async function handleClick() {
-    console.log(step);
-  
-    const res = await deleteStepToWork(step.id);
+    const res = await deleteStepToWork(step.id, step.worksId);
     if (res.error) {
         toast.error(res.message);
     } else {

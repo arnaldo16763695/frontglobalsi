@@ -56,6 +56,7 @@ export type Steps = {
   id: string;
   description: string;
   status: "PENDING" | "FINISHED";
+  worksId: string;
   user: {
     id: string;
     name: string;

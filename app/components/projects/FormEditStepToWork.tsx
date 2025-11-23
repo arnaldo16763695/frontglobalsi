@@ -62,9 +62,12 @@ export default function FormEditStepToWork({
   async function onSubmit(values: z.infer<typeof editStepToWorkSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const res = await editStepToWork(step.id, values);
+    const res = await editStepToWork(step.worksId, values);
     if (res.error) {
       if (res.error === "Conflict") {
+        toast.error(res.message);
+      }
+      if (res.error === "workFinished") {
         toast.error(res.message);
       }
     } else {
