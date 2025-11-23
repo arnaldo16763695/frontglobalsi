@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -21,6 +21,13 @@ export const metadata: Metadata = {
     default: "Globalsi",
   },
   description: "Applicación para el control de ordenes trabajos",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1, // si luego quieres permitir zoom del usuario, puedes quitar esta línea
 };
 
 export default async function RootLayout({
