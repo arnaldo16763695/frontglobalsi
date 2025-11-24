@@ -2,7 +2,6 @@
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -31,6 +30,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import ReportDiagClients from "@/app/components/clients/ReportDiagClients";
+import { Clients } from "@/lib/types";
+import { normalize } from "@/lib/normaliceSearch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,9 +43,7 @@ export function DataTableClient<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const table = useReactTable({
     data,
     columns,
@@ -52,11 +51,23 @@ export function DataTableClient<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      const search = normalize(String(filterValue));
+      if (!search) return true;
+      console.log(search);
+      const client = row.original as Clients;
+
+      const target = normalize(
+        `${client.email ?? ""} ${client.name ?? ""} ${client.rut ?? ""}`
+      );
+
+      // OR entre varias "columnas"
+      return target.includes(search);
+    },
     state: {
       sorting,
-      columnFilters,
+      globalFilter,
     },
   });
 
@@ -65,11 +76,9 @@ export function DataTableClient<TData, TValue>({
       <div className="flex justify-between items-center py-4">
         <div className="w-full flex justify-between items-center">
           <Input
-            placeholder="Filter emails..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
+            placeholder="Buscar "
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
             className="max-w-sm"
           />
           <div>

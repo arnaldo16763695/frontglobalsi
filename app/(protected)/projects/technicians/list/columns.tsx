@@ -18,7 +18,6 @@ import Link from "next/link";
 import { Projects } from "@/lib/types";
 
 export const columns: ColumnDef<Projects>[] = [
-
   {
     id: "progress",
     accessorKey: "progress",
@@ -56,6 +55,7 @@ export const columns: ColumnDef<Projects>[] = [
   },
   {
     accessorKey: "workCode",
+    accessorFn: (row) => row.workCode,
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -73,25 +73,35 @@ export const columns: ColumnDef<Projects>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="hidden md:flex" 
       >
         Empresa
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+     cell: ({ row }) => (
+      <span className="hidden md:block">
+        {row.original.company?.companyName ?? "-"}
+      </span>
+    ),
   },
   {
     accessorKey: "company.rut",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Rut
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="hidden md:flex" 
+      >
+        Rut
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <span className="hidden md:block">
+        {row.original.company?.rut ?? "-"}
+      </span>
+    ),
   },
   {
     id: "actions",
@@ -107,7 +117,9 @@ export const columns: ColumnDef<Projects>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/projects/technicians/${row.original.id}/edit`}>Gestionar</Link>
+              <Link href={`/projects/technicians/${row.original.id}/edit`}>
+                Gestionar
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

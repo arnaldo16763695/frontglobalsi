@@ -26,11 +26,13 @@ import Link from "next/link";
 export const columns: ColumnDef<Client>[] = [
   {
     accessorKey: "status",
-    header: "Status",
+    header: ()=>(
+      <span className="hidden md:block">Status</span>
+    ),
     cell: ({ row }) => {
       // Obtén el valor de "status" y aplícale toLowerCase()
       const status = row.getValue<string>("status").toLowerCase();
-      return <div>{status}</div>;
+      return <div className="hidden md:block">{status}</div>;
     },
   },
   {
@@ -68,16 +70,25 @@ export const columns: ColumnDef<Client>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hidden md:block"
         >
           Rut
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
+    cell:({row})=>(
+      <span className="hidden md:block">{row.original.rut}</span>
+    )
   },
   {
     accessorKey: "phone",
-    header: "Teléfono",
+    header: ()=>(
+      <span className="hidden md:block">Teléfono</span>
+    ),
+    cell: ({row})=>(
+      <span className="hidden md:block">{row.original.phone}</span>
+    )
   },
   {
     id: "actions",

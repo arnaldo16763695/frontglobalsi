@@ -27,11 +27,13 @@ export type User = {
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "status",
-    header: "Status",
+    header: ()=>(
+      <span className="hidden md:block">Status</span>
+    ),
     cell: ({ row }) => {
       // Obtén el valor de "status" y aplícale toLowerCase()
       const status = row.getValue<string>("status").toLowerCase();
-      return <div>{status}</div>;
+      return <span className="hidden md:block">{status}</span>;
     },
   },
   {
@@ -64,11 +66,21 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "phone",
-    header: "Teléfono",
+    header: ()=>(
+      <span className="hidden md:block">Teléfono</span>
+    ),
+    cell: ({row})=>(
+      <span className="hidden md:block">{row.original.phone}</span>
+    )
   },
   {
     accessorKey: "role",
-    header: "Rol",
+    header: ()=>(
+      <span className="hidden md:block">Rol</span>
+    ),
+    cell: ({row})=>(
+      <span className="hidden md:block">{row.original.role}</span>
+    )
   },
   {
     id: "actions",

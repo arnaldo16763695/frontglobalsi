@@ -2,7 +2,6 @@
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -30,6 +29,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { Projects } from "@/lib/types";
+import { normalize } from "@/lib/normaliceSearch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,9 +42,11 @@ export function DataTableProject<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  //   []
+  // );
+  const [globalFilter, setGlobalFilter] = React.useState("");
+
   const table = useReactTable({
     data,
     columns,
@@ -51,23 +54,33 @@ export function DataTableProject<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      const search = normalize(String(filterValue));
+
+      const project = row.original as Projects;
+
+      const target = normalize(
+        `${project.workCode ?? ""} ${project.company?.companyName ?? ""} ${
+          project.company?.rut ?? ""
+        }`
+      );
+
+      return target.includes(search);
+    },
     state: {
       sorting,
-      columnFilters,
+      globalFilter,
     },
   });
- 
+
   return (
     <div className="p-2">
       <div className="flex justify-between items-center py-4">
         <Input
-          placeholder="Filter empresa..."
-          value={(table.getColumn("companyName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
-          }
+          placeholder="Buscar "
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
           className="max-w-sm"
         />
         <div className="px-4">

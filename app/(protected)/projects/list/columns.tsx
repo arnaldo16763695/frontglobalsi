@@ -59,7 +59,7 @@ export const columns: ColumnDef<Projects>[] = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}   
       >
         Codigo
         <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -86,12 +86,16 @@ export const columns: ColumnDef<Projects>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hidden md:block"
         >
           Rut
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )   
     },
+       cell: ({row})=>(
+        <span className="hidden md:block">{row.original.company.rut}</span>
+      )
   },
   {
     id: "actions",

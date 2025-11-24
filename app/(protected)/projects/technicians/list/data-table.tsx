@@ -2,7 +2,6 @@
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -30,6 +29,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { Projects } from "@/lib/types";
+import { normalize } from "@/lib/normaliceSearch";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,9 +43,8 @@ export function DataTableOrdersTech<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const table = useReactTable({
     data,
     columns,
@@ -51,23 +52,33 @@ export function DataTableOrdersTech<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      const search = normalize(String(filterValue));
+
+      const project = row.original as Projects;
+
+       const target = normalize(
+        `${project.workCode ?? ""} ${project.company?.companyName ?? ""} ${
+          project.company?.rut ?? ""
+        }`
+      );
+
+      return target.includes(search);
+    },
     state: {
       sorting,
-      columnFilters,
+      globalFilter,
     },
   });
- 
+  const { data: session } = useSession();
   return (
     <div className="p-2">
       <div className="flex justify-between items-center py-4">
         <Input
-          placeholder="Filter empresa..."
-          value={(table.getColumn("companyName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
-          }
+          placeholder="Buscar "
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
           className="max-w-sm"
         />
         <div className="px-4">
@@ -80,7 +91,9 @@ export function DataTableOrdersTech<TData, TValue>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Link href="/projects/register">Crear orden</Link>
+                {session?.user.role === "ADMIN" && (
+                  <Link href="/projects/register">Crear orden</Link>
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

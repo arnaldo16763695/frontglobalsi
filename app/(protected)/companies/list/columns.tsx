@@ -22,16 +22,18 @@ import Link from "next/link";
   location: string;
   observations: string;
   status: "ACTIVE" | "INAVTIVE" | "DELETE";
-};
+}; 
 
 export const columns: ColumnDef<Company>[] = [
   {
     accessorKey: "status",
-    header: "Status",
+    header: ()=>(
+      <span className="hidden md:block">Status</span>
+    ),
     cell: ({ row }) => {
       // Obtén el valor de "status" y aplícale toLowerCase()
       const status = row.getValue<string>("status").toLowerCase();
-      return <div>{status}</div>;
+      return <div className="hidden md:block">{status}</div>;
     },
   },
   {
@@ -41,12 +43,16 @@ export const columns: ColumnDef<Company>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hidden md:block"
         >
           Rut
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({row})=>(
+      <span className="hidden md:block">{row.original.rut}</span>
+    )
   },
   {
     accessorKey: "email",
