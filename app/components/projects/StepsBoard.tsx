@@ -21,6 +21,7 @@ type Props = {
   initialPending: Steps[];
   initialFinished: Steps[];
   setProgress: (progress: number) => void;
+  projectId: string
 };
 
 function TaskCard({
@@ -126,6 +127,7 @@ export default function StepsBoard({
   initialPending,
   initialFinished,
   setProgress,
+  projectId
 }: Props) {
   const [mounted, setMounted] = useState(false);
   const [pending, setPending] = useState<Steps[]>(initialPending);
@@ -232,6 +234,7 @@ const handleStepUpdated = (updated: Steps) => {
     await editStatusStepToWork({
       stepId,
       status: to === "pending" ? "PENDING" : "FINISHED",
+      worksId:projectId
     });
   }
 

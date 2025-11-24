@@ -132,12 +132,13 @@ export async function editStepToWork(
 
 export async function editStatusStepToWork(data: {
   stepId: string;
+  worksId: string;
   status: "PENDING" | "FINISHED";
 }) {
   const session = await auth();
   try {
     const res = await fetch(
-      `${process.env.API_URL}/api/stepstoworks/${data.stepId}`,
+      `${process.env.API_URL}/api/stepstoworks/${data.stepId}/${data.worksId}`,
       {
         method: "PATCH",
         headers: {
@@ -151,6 +152,7 @@ export async function editStatusStepToWork(data: {
       }
     );
     const result = await res.json();
+    console.log('edit step status', result)
     return result;
   } catch (error) {
     console.log("error: ", error);

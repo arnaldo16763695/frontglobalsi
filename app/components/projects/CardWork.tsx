@@ -105,6 +105,7 @@ function CardWork({
                   }                
                 }))}
                 setProgress={setProgress}
+                projectId={project.id}
               />
             </fieldset>
           </div>
