@@ -11,7 +11,7 @@ import { fetchAllCompanies } from "@/app/lib/company-data";
 import { fetchOneClient } from "@/app/lib/client-data";
 import { formatDateTime } from "@/lib/formatDataTime";
 import ListItemsDialog from "@/app/components/projects/ListItemsDialog";
-import { Steps, User, Technicians } from "@/lib/types";
+import { Steps, User, Technicians, Projects } from "@/lib/types";
 import FormEditStepToWork from "@/app/components/projects/FormEditStepToWork";
 import DiagDeleteStepToWork from "@/app/components/projects/DiagDeleteStepToWork";
 import DiagAddTechToWork from "@/app/components/projects/DiagAddTechToWork";
@@ -20,6 +20,7 @@ import DiagDeleteTechFromWork from "@/app/components/projects/DiagDeleteTechFrom
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import DialogWorkImages from "@/app/components/DialogWorkImages";
+import ReportDiagWork from "@/app/components/projects/ReportDiagWork";
 
 const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
   const session = await auth();
@@ -27,7 +28,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
     return redirect("/");
   }
   const params = await props.params;
-  const project = await fetchOneProject(params.id);
+  const project: Projects = await fetchOneProject(params.id);
   const client = await fetchOneClient(project.company.clientsId);
   const companies = await fetchAllCompanies();
   const steps: Steps[] = await fetchStepsToWorkByIdWork(params.id);
@@ -64,6 +65,11 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                   {formatDateTime(project.createdAt)}
                 </div>
               </div>
+              {project.progress === "FINISHED" && (
+                <div className="text-xs md:text-base flex items-center">
+                  <ReportDiagWork idWork={project.id}  />
+                </div>
+              )}
             </CardHeader>
             <CardContent>
               {companies === null ? (
