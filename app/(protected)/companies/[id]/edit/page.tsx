@@ -22,7 +22,7 @@ const page = async (props: { params: Promise<{ id: string }> }) => {
       />
 
       <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="min-h-[100vh] flex-1 flex justify-center items-center rounded-xl bg-muted/50 md:min-h-min">
+        <div className="min-h-[100vh] p-4 flex-1 flex justify-center  rounded-xl bg-muted/50 md:min-h-min">
           <Card className="md:w-[80%] w-[95%]">
             <CardHeader className="text-2xl font-bold">
               Edición de empresa

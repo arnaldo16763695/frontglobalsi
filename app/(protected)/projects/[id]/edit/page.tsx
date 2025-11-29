@@ -52,7 +52,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
       />
 
       <div className="flex flex-1 flex-col gap-4 p-2 md:p-4">
-        <div className="min-h-screen flex-1 flex justify-center items-center rounded-xl bg-muted/50 md:min-h-min">
+        <div className="min-h-screen flex-1 flex justify-center  rounded-xl bg-muted/50 md:min-h-min">
           <Card className="w-[100%] mt-2 mx-1 md:mx-2">
             <CardHeader className="flex flex-col lg:flex-row justify-between">
               <div className="md:text-xl font-bold">
@@ -90,7 +90,7 @@ const EditProjectPage = async (props: { params: Promise<{ id: string }> }) => {
                     {steps.map((step) => (
                       <div
                         key={step.id}
-                        className="flex text-xs md:text-sm py-1 px-1  justify-between border w-full rounded-md bg-slate-400 dark:bg-slate-600 "
+                        className="flex text-xs md:text-sm py-1 px-1  justify-between border w-full rounded-md bg-slate-200 dark:bg-slate-600 "
                       >
                         <div className="flex flex-col px-1 md:px-2 w-[90%] md:w-[80%]">
                           <div className="">{step.description}</div>
