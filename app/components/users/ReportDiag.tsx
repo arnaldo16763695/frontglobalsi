@@ -11,21 +11,21 @@ import {
 } from "@/components/ui/dialog";
 import { Printer } from "lucide-react";
 import FormCreateReport from "./FormCreateReport";
+import { useState } from "react";
 
 export default function ReportDiag() {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Printer className="cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Generar reporte</DialogTitle>
-          <DialogDescription>
-            
-          </DialogDescription>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormCreateReport />
+        <FormCreateReport setOpen={setOpen} />
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>

@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-function FormCreateReportCompany() {
+function FormCreateReportCompany({setOpen}:{setOpen:(open:boolean)=>void}) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,6 +74,7 @@ function FormCreateReportCompany() {
     // clear
     a.remove();
     window.URL.revokeObjectURL(url);
+    setOpen(false)
   } catch (error) {
     console.error("Error descargando el reporte:", error);
   }

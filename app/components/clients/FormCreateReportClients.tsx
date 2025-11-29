@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-function FormCreateReportClients() {
+function FormCreateReportClients({setOpen}:{setOpen: (open: boolean)=>void}) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,45 +40,45 @@ function FormCreateReportClients() {
     },
   });
 
-//   async function onSubmit(values: FormValues) {
-//     const filter = values.reportType; // "todos" | "activos" | "inactivos"
-//     window.open(`/api/reports/users/${filter}`, "_blank");
-//   }
+  //   async function onSubmit(values: FormValues) {
+  //     const filter = values.reportType; // "todos" | "activos" | "inactivos"
+  //     window.open(`/api/reports/users/${filter}`, "_blank");
+  //   }
 
   async function onSubmit(values: FormValues) {
-  const filter = values.reportType; // "todos" | "activos" | "inactivos"
+    const filter = values.reportType; // "todos" | "activos" | "inactivos"
 
-  try {
-    // Llamas directamente a tu ruta API en Next.js (que devuelve el PDF)
-    const res = await fetch(`/api/reports/clients/${filter}`, {
-      method: "GET",
-    });
+    try {
+      // Llamas directamente a tu ruta API en Next.js (que devuelve el PDF)
+      const res = await fetch(`/api/reports/clients/${filter}`, {
+        method: "GET",
+      });
 
-    if (!res.ok) {
-      throw new Error(`Error al generar reporte: ${res.statusText}`);
+      if (!res.ok) {
+        throw new Error(`Error al generar reporte: ${res.statusText}`);
+      }
+
+      // get  PDF as Blob
+      const blob = await res.blob();
+
+      // Create a temporal url to blob
+      const url = window.URL.createObjectURL(blob);
+
+      // create a hidden link
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "clients-report.pdf"; // file name
+      document.body.appendChild(a);
+      a.click();
+
+      // clear
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      setOpen(false)
+    } catch (error) {
+      console.error("Error descargando el reporte:", error);
     }
-
-    // get  PDF as Blob
-    const blob = await res.blob();
-
-    // Create a temporal url to blob
-    const url = window.URL.createObjectURL(blob);
-
-    // create a hidden link
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "clients-report.pdf"; // file name
-    document.body.appendChild(a);
-    a.click();
-
-    // clear
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Error descargando el reporte:", error);
   }
-}
-
 
   return (
     <Form {...form}>
