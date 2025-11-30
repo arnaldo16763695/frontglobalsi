@@ -10,6 +10,7 @@ import {
 } from "@/lib/zod";
 import { z } from "zod";
 import { itemRegisterSchema, technicianToWorkSchema } from "@/lib/zod";
+import { capitalAndPoint } from "@/lib/helpers";
 
 export async function orderRegister(
   values: z.infer<typeof projectRegisterSchema>
@@ -44,7 +45,7 @@ export async function orderRegister(
 
 export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>) {
   const session = await auth();
-  console.log("steps", data);
+
   try {
     const res = await fetch(`${process.env.API_URL}/api/stepstoworks`, {
       method: "POST",
@@ -53,7 +54,7 @@ export async function addItemInWork(data: z.infer<typeof itemRegisterSchema>) {
         authorization: `Bearer ${session?.user?.accessToken}`,
       },
       body: JSON.stringify({
-        description: data.description,
+        description: capitalAndPoint(data.description),
         worksId: data.worksId,
         userId: session?.user?.id,
         order: data.order,
@@ -115,14 +116,17 @@ export async function editStepToWork(
           authorization: `Bearer ${session?.user?.accessToken}`,
         },
         body: JSON.stringify({
-          description: data.description,
+          description: capitalAndPoint(data.description),
           status: data.status,
           userId: session?.user?.id,
         }),
       }
     );
     const step = await res.json();
-    console.log(`${process.env.API_URL}/api/stepstoworks/${data.stepId}/${idWork}`, step )
+    console.log(
+      `${process.env.API_URL}/api/stepstoworks/${data.stepId}/${idWork}`,
+      step
+    );
     revalidatePath(`/projects/${idWork}/edit`);
     return step;
   } catch (error) {
@@ -152,14 +156,14 @@ export async function editStatusStepToWork(data: {
       }
     );
     const result = await res.json();
-    console.log('edit step status', result)
+    console.log("edit step status", result);
     return result;
   } catch (error) {
     console.log("error: ", error);
   }
 }
 
-export async function deleteStepToWork(stepId: string, workId:string) {
+export async function deleteStepToWork(stepId: string, workId: string) {
   const session = await auth();
   try {
     const res = await fetch(
@@ -394,7 +398,7 @@ export async function addImageToWork(
   urlImageWork: string,
   imageKey: string,
   userId: string,
-  accessToken: string| undefined  
+  accessToken: string | undefined
 ) {
   const data = {
     worksId: idWork,
@@ -405,11 +409,11 @@ export async function addImageToWork(
   try {
     const images = await fetch(`${process.env.API_URL}/api/imagestowork`, {
       method: "POST",
-       headers: {
+      headers: {
         authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),      
+      body: JSON.stringify(data),
     });
     return images;
   } catch (error) {
@@ -417,20 +421,21 @@ export async function addImageToWork(
   }
 }
 
-export async function deleteImgFromDb(id:string){
-   const session = await auth();
+export async function deleteImgFromDb(id: string) {
+  const session = await auth();
   try {
-     const images = await fetch(`${process.env.API_URL}/api/imagestowork/${id}`, {
-      method: "DELETE",
-       headers: {
-        authorization: `Bearer ${session?.user.accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const images = await fetch(
+      `${process.env.API_URL}/api/imagestowork/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${session?.user.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return images;
   } catch (error) {
     console.log(error);
   }
 }
-
-
