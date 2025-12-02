@@ -10,7 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage, 
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { itemRegisterSchema } from "@/lib/zod";
@@ -59,7 +59,10 @@ const FormAddItems = ({ id }: { id: string }) => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-xs md:text-sm">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 text-xs md:text-sm"
+        >
           <div className="flex flex-col md:flex-row gap-2 justify-center">
             <FormField
               control={form.control}
@@ -72,13 +75,16 @@ const FormAddItems = ({ id }: { id: string }) => {
                       placeholder="Introduzca la tarea"
                       {...field}
                       className="md:w-[600px]"
-                    /> 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="self-end w-full md:w-auto text-xs md:text-sm" type="submit">
+            <Button
+              className="self-end w-full md:w-auto text-xs md:text-sm"
+              type="submit"
+            >
               Agregar
             </Button>
           </div>

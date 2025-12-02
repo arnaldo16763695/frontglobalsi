@@ -1,5 +1,5 @@
 "use client";
-
+import clsx from "clsx";
 import React from "react";
 import { Projects } from "@/lib/types";
 
@@ -7,6 +7,7 @@ import { Company, Clients } from "@/lib/types";
 import DiagEditStatusWork from "./DiagEditStatusWork";
 import { DiagEditCopanyInWork } from "./DiagEditCopanyInWork";
 import { ProgressWork } from "../Progress";
+import { UserPen } from "lucide-react";
 const FormEditProject = ({
   project,
   companies,
@@ -98,6 +99,32 @@ const FormEditProject = ({
           <div className="p-1 md:p-2 flex gap-2 items-center border rounded-md">
             <ProgressWork progress={progress} />
             <span className="">{progress} %</span>
+          </div>
+
+          <div className="p-1 md:p-2 flex gap-1 items-center border rounded-md">
+            {/* <div
+              className={`${
+                project.isStartedByTech && "bg-yellow-400"
+              } rounded-full p-1`}
+            >
+              <UserPen size={18} className="text-slate-700" />
+            </div> */}
+
+            <div
+              className={clsx("rounded-full p-1", {
+                "bg-yellow-400": project.isStartedByTech && true,
+                "bg-green-600": project.isFinishedByTech && true,
+              })}
+              title={
+                project.isStartedByTech && !project.isFinishedByTech
+                  ? "Iniciada por el técnico"
+                  : project.isFinishedByTech
+                  ? "Finalizada por el técnico"
+                  : "Aun no ha sido iniciada"
+              }
+            >
+              <UserPen size={18} className="text-slate-700" />
+            </div>
           </div>
         </div>
       </div>

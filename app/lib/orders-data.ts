@@ -157,6 +157,29 @@ export async function fetchAllOrdersByIdTech(idTech: string) {
     };
   }
 }
+export async function fetchAllOrdersFinoshedByIdTech(idTech: string) {
+  const session = await auth();
+  try {
+    const orders = await fetch(
+      `${process.env.API_URL}/api/works/technicians/finished/${idTech}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.user?.accessToken}`,
+        },
+      }
+    );
+    const data = await orders.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      message: "Hubo un error",
+      error: error,
+    };
+  }
+}
 
 export async function getAllImagesByWork(idWork: string) {
   const session = await auth();

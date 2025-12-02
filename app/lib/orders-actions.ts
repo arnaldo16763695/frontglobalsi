@@ -439,3 +439,55 @@ export async function deleteImgFromDb(id: string) {
     console.log(error);
   }
 }
+
+export async function startsTechOrder(idWork: string) {
+  const session = await auth();
+
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/api/works/startsorder/${idWork}`,
+      {
+        method: "PATCH",
+        headers: {
+          authorization: `Bearer ${session?.user.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      status: 500,
+      body: null,
+    };
+  }
+}
+
+export async function finishTechOrder(idWork: string) {
+  const session = await auth();
+
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/api/works/finishorder/${idWork}`,
+      {
+        method: "PATCH",
+        headers: {
+          authorization: `Bearer ${session?.user.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(await res.json(), '<----respuesta en el servidor');
+    // return await res.json();
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      status: 500,
+      body: null,
+    };
+  }
+}

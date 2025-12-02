@@ -1,24 +1,24 @@
 import React from "react";
 import HeaderSideBar from "@/app/components/HeaderSideBar";
-import {fetchAllOrdersByIdTech} from '@/app/lib/orders-data'
+import {fetchAllOrdersFinoshedByIdTech} from '@/app/lib/orders-data'
 import { auth } from "@/auth";
-import { DataTableOrdersTech } from "./data-table";
+import { DataTableFinishedOrdersTech } from "./data-table";
 import { columns } from "./columns";
 
 const TechProjectsList = async () => {
   const session = await auth();
-  const data = await fetchAllOrdersByIdTech(session?.user?.id || ""); 
+  const data = await fetchAllOrdersFinoshedByIdTech(session?.user?.id || ""); 
   return (
     <>
       <HeaderSideBar
-        title="Ordenes Pendientes"
+        title="Ordenes Finalizadas"
         before="Inicio"
         href="/dashboard"
       />
 
       <div className="flex flex-1 flex-col gap-4 p-4">
         <div className="w-full max-w-[100vw] overflow-x-auto">
-          <DataTableOrdersTech columns={columns} data={data} /> 
+          <DataTableFinishedOrdersTech columns={columns} data={data} /> 
         </div>
       </div>
     </>

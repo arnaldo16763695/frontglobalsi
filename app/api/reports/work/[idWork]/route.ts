@@ -34,7 +34,7 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": 'attachment; filename="users-report.pdf"',
+      "Content-Disposition": 'attachment; filename="order-report.pdf"',
     },
   });
 }

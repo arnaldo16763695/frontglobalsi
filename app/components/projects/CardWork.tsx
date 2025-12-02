@@ -6,19 +6,20 @@ import StepsBoard from "@/app/components/projects/StepsBoard";
 import { Projects, Steps, Technicians } from "@/lib/types";
 import { Progress } from "@/components/ui/progress";
 import DialogWorkImages from "../DialogWorkImages";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import ListItemsDialog from "./ListItemsDialog";
+import { SwitchInitProject } from "../SwitchInitProject";
+import { SwitchFinishProject } from "../SwitchFinishProject";
 
 function CardWork({
   project,
   techniciansInWork,
   stepsPending,
-  stepsFinished,  
+  stepsFinished,
 }: {
   project: Projects;
   techniciansInWork: Technicians[];
   stepsPending: Steps[];
-  stepsFinished: Steps[];  
+  stepsFinished: Steps[];
 }) {
   const [progress, setProgress] = useState(
     (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length
@@ -26,8 +27,13 @@ function CardWork({
   return (
     <Card className="w-[100%] mt-2 mx-2">
       <CardHeader className="flex flex-col justify-between">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-2">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-2 mb-4 md:mb-8">
           <div className="text-sm md:text-2xl">Gestión de orden de trabajo</div>
+          <SwitchInitProject workId={project.id} isStartedWork={project.isStartedByTech} />
+          {progress === 100 && project.isStartedByTech && !project.isFinishedByTech && <SwitchFinishProject workId={project.id}  />}
+        </div>
+
+        <div className="flex flex-col gap-4  md:flex-row md:gap-0 justify-between">
           <div className="text-xs md:text-sm">
             Código:
             <span className="text-green-600 ml-2">{project.workCode}</span>
@@ -51,65 +57,71 @@ function CardWork({
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="w-[100%] flex flex-col md:flex-row gap-4 p-0 md:p-2 mt-4">
-          <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
-            <legend className="text-xs md:text-sm font-bold">
-              Técnicos encargados
-            </legend>
+        {project.isStartedByTech && (
+          <>
+            <div className="w-[100%] flex flex-col md:flex-row gap-4 p-0 md:p-2 mt-4">
+              <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
+                <legend className="text-xs md:text-sm font-bold">
+                  Técnicos encargados
+                </legend>
 
-            {techniciansInWork.length > 0 &&
-              techniciansInWork.map((tech) => (
-                <div
-                  key={tech.technician.id}
-                  className="flex pl-8  justify-between  w-full border-b border-b-black dark:border-b-slate-500"
-                >
-                  {tech.technician.name}
-                </div>
-              ))}
-          </fieldset>
-          <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
-            <legend className="text-xs md:text-sm font-bold">Agregar</legend>
-            <Button className="mr-2">Tarea<Plus/></Button>
-            <DialogWorkImages idWork={project.id}  />
-          </fieldset>
-        </div>
-        <div className="w-[100%] p-0 md:p-2 mt-4">
-          {/* Gestión de tareas con DnD */}
-          <div className="w-[100%] p-0 md:p-2 mt-4">
-            <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
-              <legend className="text-xs md:text-sm font-bold">
-                Gestión de tareas
-              </legend>
+                {techniciansInWork.length > 0 &&
+                  techniciansInWork.map((tech) => (
+                    <div
+                      key={tech.technician.id}
+                      className="flex pl-8  justify-between  w-full border-b border-b-black dark:border-b-slate-500"
+                    >
+                      {tech.technician.name}
+                    </div>
+                  ))}
+              </fieldset>
+              <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
+                <legend className="text-xs md:text-sm font-bold">
+                  Agregar
+                </legend>
+                <ListItemsDialog idWork={project.id} />
+                <DialogWorkImages idWork={project.id} />
+              </fieldset>
+            </div>
+            <div className="w-[100%] p-0 md:p-2 mt-4">
+              {/* Gestión de tareas con DnD */}
+              <div className="w-[100%] p-0 md:p-2 mt-4">
+                <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
+                  <legend className="text-xs md:text-sm font-bold">
+                    Gestión de tareas
+                  </legend>
 
-              <StepsBoard
-                initialPending={stepsPending.map((s) => ({
-                  id: s.id,
-                  description: s.description,
-                  status: s.status,
-                  worksId: s.worksId,
-                  user:{
-                    id: s.user.id,
-                    name: s.user.name,
-                    email: s.user.email
-                  }
-                }))}
-                initialFinished={stepsFinished.map((s) => ({
-                  id: s.id,
-                  description: s.description,
-                  status: s.status,
-                  worksId: s.worksId,
-                   user:{
-                    id: s.user.id,
-                    name: s.user.name,
-                    email: s.user.email
-                  }                
-                }))}
-                setProgress={setProgress}
-                projectId={project.id}
-              />
-            </fieldset>
-          </div>
-        </div>
+                  <StepsBoard
+                    initialPending={stepsPending.map((s) => ({
+                      id: s.id,
+                      description: s.description,
+                      status: s.status,
+                      worksId: s.worksId,
+                      user: {
+                        id: s.user.id,
+                        name: s.user.name,
+                        email: s.user.email,
+                      },
+                    }))}
+                    initialFinished={stepsFinished.map((s) => ({
+                      id: s.id,
+                      description: s.description,
+                      status: s.status,
+                      worksId: s.worksId,
+                      user: {
+                        id: s.user.id,
+                        name: s.user.name,
+                        email: s.user.email,
+                      },
+                    }))}
+                    setProgress={setProgress}
+                    projectId={project.id}
+                  />
+                </fieldset>
+              </div>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

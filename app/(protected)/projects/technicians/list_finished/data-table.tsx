@@ -10,7 +10,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
 import {
   Table,
@@ -22,14 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+
 import { Projects } from "@/lib/types";
 import { normalize } from "@/lib/normaliceSearch";
 
@@ -38,7 +30,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DataTableOrdersTech<TData, TValue>({
+export function DataTableFinishedOrdersTech<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -71,7 +63,6 @@ export function DataTableOrdersTech<TData, TValue>({
       globalFilter,
     },
   });
-  const { data: session } = useSession();
   return (
     <div className="p-2">
       <div className="flex justify-between items-center py-4">
@@ -82,21 +73,7 @@ export function DataTableOrdersTech<TData, TValue>({
           className="max-w-sm"
         />
         <div className="px-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                {session?.user.role === "ADMIN" && (
-                  <Link href="/projects/register">Crear orden</Link>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+         
         </div>
       </div>
       <div className="rounded-md border">
@@ -140,7 +117,7 @@ export function DataTableOrdersTech<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-16 text-center text-green-600"
+                  className="h-16 text-center"
                 >
                   No hay ordenes pendientes.
                 </TableCell>

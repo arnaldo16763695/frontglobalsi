@@ -9,13 +9,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import FormAddItems from "./FormAddItems"
+import { Plus } from "lucide-react"
 
 
-export default function ListItemsDialog({  idWork }: {  idWork:string }) {
+export default function ListItemsDialog({  idWork }: {  idWork:string }) { 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-xs md:text-sm" >Agregar tareas</Button>
+        <Button className="text-xs md:text-sm" >Tarea<Plus/> </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[80%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>

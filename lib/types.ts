@@ -40,8 +40,11 @@ export type Projects = {
   finalObservation: string;
   images: string[];
   stepsToWork: string[];
-  startedAt: string;
-  finishedAt: string;
+  startedByTechAt: string;
+  finishedByTechAt: string;
+  assignedToTechAt?: string;
+  isStartedByTech?: boolean;
+  isFinishedByTech?:boolean;
   company: {
     companyName: string;
     rut: string;

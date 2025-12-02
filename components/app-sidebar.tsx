@@ -163,17 +163,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ],
     technicianNav: [
       {
-        title: "Proyectos",
+        title: "Ordenes",
         url: "#",
         icon: Settings,
         items: [
           {
-            title: "Ordenes",
+            title: "Pendientes",
             url: "/projects/technicians/list",
           },
           {
-            title: "Técnicos",
-            url: "#",
+            title: "Finalizadas",
+            url: "/projects/technicians/list_finished",
           },
         ],
       },

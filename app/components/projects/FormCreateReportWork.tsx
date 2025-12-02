@@ -27,7 +27,7 @@ function FormCreateReportWork({idWork, setOpen}:{idWork:string, setOpen: (open: 
     // create a hidden link
     const a = document.createElement("a");
     a.href = url;
-    a.download = "clients-report.pdf"; // file name
+    a.download = "order-report.pdf"; // file name
     document.body.appendChild(a);
     a.click();
 
