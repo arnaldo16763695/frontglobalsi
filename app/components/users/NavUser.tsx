@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  Bell,
+  // Bell,
   ChevronsUpDown,
-  CreditCard,
+  // CreditCard,
   LogOut,
 } from "lucide-react";
 
@@ -89,14 +89,14 @@ export function NavUser({
 
               <ThemeMenuItems />
 
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <CreditCard />
                 Pagos
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
                 Notificaciones
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()}>
