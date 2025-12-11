@@ -18,10 +18,12 @@ import { Steps } from "@/lib/types";
 import FormEditStepToWork from "./FormEditStepToWork";
 
 type Props = {
-  initialPending: Steps[];
-  initialFinished: Steps[];
+  pending: Steps[];
+  finished: Steps[];
+  setPending: React.Dispatch<React.SetStateAction<Steps[]>>;
+  setFinished: React.Dispatch<React.SetStateAction<Steps[]>>;
   setProgress: (progress: number) => void;
-  projectId: string
+  projectId: string;
 };
 
 function TaskCard({
@@ -40,8 +42,8 @@ function TaskCard({
   status: string;
   userId: string;
   email: string;
-  worksId:string;
-  onStepUpdated: (updated: Steps)=> void;
+  worksId: string;
+  onStepUpdated: (updated: Steps) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
@@ -57,17 +59,15 @@ function TaskCard({
       }}
     >
       <div className="flex items-center gap-2">
-        {/* HANDLE: solo aquí aplicamos listeners/attributes */}
         <div
           {...listeners}
           {...attributes}
           role="button"
           tabIndex={0}
-          // evita interferencias del navegador móvil:
           onContextMenu={(e) => e.preventDefault()}
           className="shrink-0 rounded p-1 cursor-grab active:cursor-grabbing w-[5%]"
           style={{
-            touchAction: "none", // imprescindible en handle
+            touchAction: "none",
             WebkitUserSelect: "none",
             userSelect: "none",
             WebkitTouchCallout: "none",
@@ -84,7 +84,7 @@ function TaskCard({
             id,
             description: title,
             status: status === "PENDING" ? "PENDING" : "FINISHED",
-            worksId: worksId,
+            worksId,
             user: {
               id: userId,
               name: userName,
@@ -124,50 +124,43 @@ function TaskColumn({
 }
 
 export default function StepsBoard({
-  initialPending,
-  initialFinished,
+  pending,
+  finished,
+  setPending,
+  setFinished,
   setProgress,
-  projectId
+  projectId,
 }: Props) {
   const [mounted, setMounted] = useState(false);
-  const [pending, setPending] = useState<Steps[]>(initialPending);
-  const [finished, setFinished] = useState<Steps[]>(initialFinished);
 
   useEffect(() => setMounted(true), []);
 
+  // recalcula el % de progreso cuando cambian las listas
   useEffect(() => {
     const total = pending.length + finished.length;
-    const pct = total === 0 ? 0 : Math.round((finished.length * 100) / total); // o con 1 decimal
-    // const pct = total === 0 ? 0 : Math.round(((finished.length * 1000) / total)) / 10; // 1 decimal
+    const pct = total === 0 ? 0 : Math.round((finished.length * 100) / total);
     setProgress(pct);
   }, [pending.length, finished.length, setProgress]);
 
-const handleStepUpdated = (updated: Steps) => {
-  setPending(prev => {
-    // quitamos este step de pendientes
-    const others = prev.filter(s => s.id !== updated.id);
-    // si ahora quedó como PENDING, lo volvemos a meter
-    return updated.status === "PENDING" ? [updated, ...others] : others;
-  });
+  const handleStepUpdated = (updated: Steps) => {
+    setPending((prev) => {
+      const others = prev.filter((s) => s.id !== updated.id);
+      return updated.status === "PENDING" ? [updated, ...others] : others;
+    });
 
-  setFinished(prev => {
-    // quitamos este step de finalizados
-    const others = prev.filter(s => s.id !== updated.id);
-    // si ahora quedó como FINISHED, lo agregamos
-    return updated.status === "FINISHED" ? [updated, ...others] : others;
-  });
-};
+    setFinished((prev) => {
+      const others = prev.filter((s) => s.id !== updated.id);
+      return updated.status === "FINISHED" ? [updated, ...others] : others;
+    });
+  };
 
   const sensors = useSensors(
-    // Requiere mover al menos 8px antes de activar drag (bueno para scroll)
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 },
     }),
-    // En móviles: requiere mantener 150ms + tolerancia leve antes de arrastrar
     useSensor(TouchSensor, {
       activationConstraint: { delay: 150, tolerance: 5 },
     }),
-    // (opcional) soporte de teclado
     useSensor(KeyboardSensor)
   );
 
@@ -183,11 +176,12 @@ const handleStepUpdated = (updated: Steps) => {
           worksId={s.worksId}
           userId={s.user.id}
           email={s.user.email}
-          onStepUpdated={handleStepUpdated} 
+          onStepUpdated={handleStepUpdated}
         />
       )),
     [pending]
   );
+
   const finishedCards = useMemo(
     () =>
       finished.map((s) => (
@@ -217,7 +211,7 @@ const handleStepUpdated = (updated: Steps) => {
 
     const updated: Steps = {
       ...found,
-      status: nextStatus, // <- ahora es "PENDING" | "FINISHED" (no string)
+      status: nextStatus,
     };
 
     setPending((p) => p.filter((s) => s.id !== stepId));
@@ -234,7 +228,7 @@ const handleStepUpdated = (updated: Steps) => {
     await editStatusStepToWork({
       stepId,
       status: to === "pending" ? "PENDING" : "FINISHED",
-      worksId:projectId
+      worksId: projectId,
     });
   }
 
@@ -248,7 +242,6 @@ const handleStepUpdated = (updated: Steps) => {
       await persistStatus(id, to);
     } catch (err) {
       console.error("Persist failed:", err);
-      // opcional: revertir si quieres
     }
   }
 

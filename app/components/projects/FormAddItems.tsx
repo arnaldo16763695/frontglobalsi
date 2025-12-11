@@ -20,18 +20,27 @@ import { fetchStepsToWorkByIdWork } from "@/app/lib/orders-data";
 import { Steps } from "@/lib/types";
 import ListItemsDnD from "./ListItemsDnD";
 import { Textarea } from "@/components/ui/textarea";
-const FormAddItems = ({ id }: { id: string }) => {
-  const [Mysteps, setMySteps] = useState<Steps[]>([]);
+import { useRouter } from "next/navigation";
 
+const FormAddItems = ({
+  id,
+  onStepsChanged,
+}: {
+  id: string;
+  onStepsChanged?: (steps: Steps[]) => void;
+}) => {
+  const [Mysteps, setMySteps] = useState<Steps[]>([]);
+  const router = useRouter();
+
+  // Traer las tareas actuales al montar (como lo tenías antes)
   useEffect(() => {
-    const fetchSteps = async () => {
+    const loadSteps = async () => {
       const steps = await fetchStepsToWorkByIdWork(id);
       setMySteps(steps);
     };
-    fetchSteps();
+    loadSteps();
   }, [id]);
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof itemRegisterSchema>>({
     resolver: zodResolver(itemRegisterSchema),
     defaultValues: {
@@ -41,21 +50,29 @@ const FormAddItems = ({ id }: { id: string }) => {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof itemRegisterSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     const data = { ...values, order: Mysteps.length };
 
     const res = await addItemInWork(data);
     if (res.error) {
       toast.error(res.message);
+      return;
+    }
+
+    // ⬇️ SIEMPRE traemos la lista actualizada desde el back
+    const steps = await fetchStepsToWorkByIdWork(id);
+    setMySteps(steps);
+    form.reset();
+
+    if (onStepsChanged) {
+      // Técnico: avisamos al padre (CardWork) para que actualice pending/finished
+      onStepsChanged(steps);
     } else {
-      const steps = await fetchStepsToWorkByIdWork(id);
-      setMySteps(steps);
-      form.reset();
+      // Admin: opcional refrescar la ruta si quieres que todo el server component se actualice
+      router.refresh();
     }
   }
+
   return (
     <>
       <Form {...form}>
@@ -100,7 +117,6 @@ const FormAddItems = ({ id }: { id: string }) => {
                     type="hidden"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}

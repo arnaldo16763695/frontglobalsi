@@ -21,16 +21,39 @@ function CardWork({
   stepsPending: Steps[];
   stepsFinished: Steps[];
 }) {
+  
+  
+  const [pendingSteps, setPendingSteps] = useState<Steps[]>(stepsPending);
+  const [finishedSteps, setFinishedSteps] = useState<Steps[]>(stepsFinished);
+
   const [progress, setProgress] = useState(
-    (stepsFinished.length * 100) / [...stepsPending, ...stepsFinished].length
+    (stepsFinished.length * 100) /
+      [...stepsPending, ...stepsFinished].length || 0
   );
+
+  const handleStepsChanged = (allSteps: Steps[]) => {
+    const pending = allSteps.filter((s) => s.status === "PENDING");
+    const finished = allSteps.filter((s) => s.status === "FINISHED");
+    setPendingSteps(pending);
+    setFinishedSteps(finished);
+  };
+
   return (
     <Card className="w-[100%] mt-2 mx-2">
       <CardHeader className="flex flex-col justify-between">
         <div className="flex flex-col md:flex-row justify-between items-start gap-2 mb-4 md:mb-8">
-          <div className="text-sm md:text-2xl">Gestión de orden de trabajo</div>
-          <SwitchInitProject workId={project.id} isStartedWork={project.isStartedByTech} />
-          {progress === 100 && project.isStartedByTech && !project.isFinishedByTech && <SwitchFinishProject workId={project.id}  />}
+          <div className="text-sm md:text-2xl">
+            Gestión de orden de trabajo
+          </div>
+          <SwitchInitProject
+            workId={project.id}
+            isStartedWork={project.isStartedByTech}
+          />
+          {progress === 100 &&
+            project.isStartedByTech &&
+            !project.isFinishedByTech && (
+              <SwitchFinishProject workId={project.id} />
+            )}
         </div>
 
         <div className="flex flex-col gap-4  md:flex-row md:gap-0 justify-between">
@@ -79,12 +102,16 @@ function CardWork({
                 <legend className="text-xs md:text-sm font-bold">
                   Agregar
                 </legend>
-                <ListItemsDialog idWork={project.id} />
+                {/* 👇 AQUÍ el técnico también puede agregar tareas */}
+                <ListItemsDialog
+                  idWork={project.id}
+                  onStepsChanged={handleStepsChanged}
+                />
                 <DialogWorkImages idWork={project.id} />
               </fieldset>
             </div>
+
             <div className="w-[100%] p-0 md:p-2 mt-4">
-              {/* Gestión de tareas con DnD */}
               <div className="w-[100%] p-0 md:p-2 mt-4">
                 <fieldset className="border p-2 md:px-4 md:py-2 space-y-2 w-[100%]">
                   <legend className="text-xs md:text-sm font-bold">
@@ -92,28 +119,10 @@ function CardWork({
                   </legend>
 
                   <StepsBoard
-                    initialPending={stepsPending.map((s) => ({
-                      id: s.id,
-                      description: s.description,
-                      status: s.status,
-                      worksId: s.worksId,
-                      user: {
-                        id: s.user.id,
-                        name: s.user.name,
-                        email: s.user.email,
-                      },
-                    }))}
-                    initialFinished={stepsFinished.map((s) => ({
-                      id: s.id,
-                      description: s.description,
-                      status: s.status,
-                      worksId: s.worksId,
-                      user: {
-                        id: s.user.id,
-                        name: s.user.name,
-                        email: s.user.email,
-                      },
-                    }))}
+                    pending={pendingSteps}
+                    finished={finishedSteps}
+                    setPending={setPendingSteps}
+                    setFinished={setFinishedSteps}
                     setProgress={setProgress}
                     projectId={project.id}
                   />

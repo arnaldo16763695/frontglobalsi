@@ -112,7 +112,7 @@ const FormEditProject = ({
 
             <div
               className={clsx("rounded-full p-1", {
-                "bg-yellow-400": project.isStartedByTech && true,
+                "bg-yellow-400": project.isStartedByTech && !project.isFinishedByTech && true,
                 "bg-green-600": project.isFinishedByTech && true,
               })}
               title={

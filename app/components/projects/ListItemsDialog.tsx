@@ -10,13 +10,22 @@ import {
 } from "@/components/ui/dialog"
 import FormAddItems from "./FormAddItems"
 import { Plus } from "lucide-react"
+import { Steps } from "@/lib/types";
 
-
-export default function ListItemsDialog({  idWork }: {  idWork:string }) { 
+export default function ListItemsDialog({
+  idWork,
+  onStepsChanged,
+}: {
+  idWork: string;
+  onStepsChanged?: (steps: Steps[]) => void;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-xs md:text-sm" >Tarea<Plus/> </Button>
+        <Button className="text-xs md:text-sm">
+          Tarea
+          <Plus />
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[80%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -26,12 +35,11 @@ export default function ListItemsDialog({  idWork }: {  idWork:string }) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <FormAddItems id={idWork}  />
+          {/* 👇 Le pasamos el callback al form */}
+          <FormAddItems id={idWork} onStepsChanged={onStepsChanged} />
         </div>
-        <DialogFooter>
-          {/* <Button type="submit">Save changes</Button> */}
-        </DialogFooter>
+        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+}
